@@ -133,160 +133,39 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/administracion/cargo"
-                        active={isActive("/administracion/cargo")}
+                        to="/administracion/producto"
+                        active={isActive("/administracion/producto")}
                       >
-                        Cargo
+                        Producto
                       </ListGroup.Item>
                       <ListGroup.Item
                         className="border-0"
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/administracion/carrera"
-                        active={isActive("/administracion/carrera")}
+                        to="/administracion/proveedor"
+                        active={isActive("/administracion/proveedor")}
                       >
-                        Carrera
+                        Proveedor
                       </ListGroup.Item>
                       <ListGroup.Item
                         className="border-0"
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/administracion/dedicacion"
-                        active={isActive("/administracion/dedicacion")}
+                        to="/administracion/cliente"
+                        active={isActive("/administracion/cliente")}
                       >
-                        Dedicación
+                        Cliente
                       </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/departamento_academico"
-                        active={isActive(
-                          "/administracion/departamento_academico"
-                        )}
-                      >
-                        Departamento académico
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/estado_civil"
-                        active={isActive("/administracion/estado_civil")}
-                      >
-                        Estado civil
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/grado"
-                        active={isActive("/administracion/grado")}
-                      >
-                        Grado
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/institucion"
-                        active={isActive("/administracion/institucion")}
-                      >
-                        Institución
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/pension"
-                        active={isActive("/administracion/pension")}
-                      >
-                        Sistemas de pensiones
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/regimen"
-                        active={isActive("/administracion/regimen")}
-                      >
-                        Régimen laboral
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/requisito"
-                        active={isActive("/administracion/requisito")}
-                      >
-                        Requisitos documentos
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/tipo_contrato"
-                        active={isActive("/administracion/tipo_contrato")}
-                      >
-                        Tipo de contrato
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/tipo_remuneracion"
-                        active={isActive("/administracion/tipo_remuneracion")}
-                      >
-                        Tipo de remuneración
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/tipo_resolucion"
-                        active={isActive("/administracion/tipo_resolucion")}
-                      >
-                        Tipo de resolución
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/tipo_trabajador"
-                        active={isActive("/administracion/tipo_trabajador")}
-                      >
-                        Tipo de trabajador
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/tipo_via"
-                        active={isActive("/administracion/tipo_via")}
-                      >
-                        Tipo de vía
-                      </ListGroup.Item>
+
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">
                   <Accordion.Header>
                     <i className="bi bi-stop-fill mx-2 text-secondary"></i>
-                    <strong>Gestión de personal</strong>
+                    <strong>Proceso</strong>
                   </Accordion.Header>
                   <Accordion.Body className="p-0">
                     <ListGroup className="list-group-flush">
@@ -298,7 +177,17 @@ const Sidebar = ({ show, handle }) => {
                         to="/trabajador"
                         active={isActive("/trabajador")}
                       >
-                        Trabajador
+                        Compra
+                      </ListGroup.Item>
+                      <ListGroup.Item
+                        className="border-0"
+                        action
+                        style={{ paddingLeft: "45px" }}
+                        as={Link}
+                        to="/trabajador"
+                        active={isActive("/trabajador")}
+                      >
+                        Deposito
                       </ListGroup.Item>
                       <ListGroup.Item
                         className="border-0"
@@ -308,7 +197,7 @@ const Sidebar = ({ show, handle }) => {
                         to="/designacion"
                         active={isActive("/designacion")}
                       >
-                        Designación
+                        Venta
                       </ListGroup.Item>
                       <ListGroup.Item
                         className="border-0"
@@ -318,31 +207,22 @@ const Sidebar = ({ show, handle }) => {
                         to="/rotacion"
                         active={isActive("/rotacion")}
                       >
-                        Rotación
+                        Caja
                       </ListGroup.Item>
-                    </ListGroup>
-                  </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="2">
-                  <Accordion.Header>
-                    <i className="bi bi-stop-fill mx-2 text-secondary"></i>
-                    <strong>Asistencia</strong>
-                  </Accordion.Header>
-                  <Accordion.Body className="p-0">
-                    <ListGroup className="list-group-flush">
                       <ListGroup.Item
                         className="border-0"
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/asistencia/importar"
-                        active={isActive("/asistencia/importar")}
+                        to="/rotacion"
+                        active={isActive("/rotacion")}
                       >
-                        Importar asistencia
+                        Almacén
                       </ListGroup.Item>
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>
+
                 <Accordion.Item eventKey="3">
                   <Accordion.Header>
                     <i className="bi bi-stop-fill mx-2 text-secondary"></i>
@@ -357,7 +237,7 @@ const Sidebar = ({ show, handle }) => {
                         to="/reporte/escalafonrario10"
                         active={isActive("/reporte/escalafonrario10")}
                       >
-                        Individuales
+                        Compras
                       </ListGroup.Item>
                       <ListGroup.Item
                         action
@@ -366,7 +246,16 @@ const Sidebar = ({ show, handle }) => {
                         to="/reporte/carrera"
                         active={isActive("/reporte/013")}
                       >
-                        Escalafonario Nro 013
+                        Ventas
+                      </ListGroup.Item>
+                      <ListGroup.Item
+                        action
+                        style={{ paddingLeft: "45px" }}
+                        as={Link}
+                        to="/reporte/carrera"
+                        active={isActive("/reporte/013")}
+                      >
+                        Compras y Ventas
                       </ListGroup.Item>
                       <ListGroup.Item
                         action
@@ -375,16 +264,7 @@ const Sidebar = ({ show, handle }) => {
                         to="/reporte/macro"
                         active={isActive("/reporte/014")}
                       >
-                        Escalafonario Nro 014
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/reporte/constancia"
-                        active={isActive("/reporte/015")}
-                      >
-                        Escalafonario Nro 015
+                        Caja
                       </ListGroup.Item>
                     </ListGroup>
                   </Accordion.Body>

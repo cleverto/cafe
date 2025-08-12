@@ -3,6 +3,10 @@ import React from "react";
 import { Route, Routes, HashRouter } from "react-router-dom";
 import Login from "./components/Login";
 import Home from "./components/dashboard/Home";
+
+import Producto from "./components/administracion/Producto";
+import Proveedor from "./components/administracion/Proveedor";
+
 import Trabajador from "./components/trabajador/Trabajador";
 
 import TrabajadorRegistrar from "./components/trabajador/TrabajadorRegistrar";
@@ -15,12 +19,7 @@ import TrabajadorVinculo from "./components/trabajador/TrabajadorVinculo";
 import TrabajadorVinculoDocente from "./components/trabajador/TrabajadorVinculoDocente";
 import TrabajadorAdjunto from "./components/trabajador/TrabajadorAdjunto";
 import TrabajadorBuscar from "./components/trabajador/TrabajadorBuscar";
-import ReporteFicha from "./components/reporte/Ficha";
-import ReporteFichaTrabajador from "./components/reporte/Trabajador";
-import ReporteEscalafonario10 from "./components/reporte/Escalafonario10";
-import ReporteEscalafonario13 from "./components/reporte/Escalafonario13";
-import ReporteEscalafonario14 from "./components/reporte/Escalafonario14";
-import ReporteEscalafonario15 from "./components/reporte/Escalafonario15";
+
 import DocenteAdjuntar from "./components/ficha/DocenteAdjuntar";
 import DocenteVinculo from "./components/ficha/DocenteVinculo";
 import DocenteEducacion from "./components/ficha/DocenteEducacion";
@@ -39,7 +38,6 @@ import RotacionRegistrar from "./components/trabajador/RotacionRegistrar";
 import Adm from "./components/administracion/Adm";
 
 
-import ImportarAsistencia from "./components/asistencia/Importar";
 
 
 import CambiarContrasena from "./components/configuracion/CambiarConstrasena";
@@ -53,7 +51,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/administracion/producto" element={<Producto />} />
+          <Route path="/administracion/proveedor" element={<Proveedor />} />
+
           <Route path="/trabajador" element={<Trabajador />} />
+
           <Route path="/trabajador/nuevo" element={<TrabajadorRegistrar />} />
           <Route
             path="/trabajador/modificar"
@@ -117,31 +119,6 @@ function App() {
 
 
 
-          <Route path="/reporte/ficha" element={<ReporteFicha />} />
-          <Route
-            path="/reporte/trabajador"
-            element={<ReporteFichaTrabajador />}
-          />
-          <Route
-            path="/reporte/escalafonario10"
-            element={<ReporteEscalafonario10 />}
-          />
-                    <Route
-            path="/reporte/escalafonario13"
-            element={<ReporteEscalafonario13 />}
-          />
-          <Route
-            path="/reporte/escalafonario14"
-            element={<ReporteEscalafonario14 />}
-          />
-          <Route
-            path="/reporte/escalafonario15"
-            element={<ReporteEscalafonario15 />}
-          />
-          <Route
-            path="/asistencia/importar"
-            element={<ImportarAsistencia />}
-          />
 
 
           <Route path="/cambiar" element={<CambiarContrasena />} />

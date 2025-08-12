@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Card, Button, Form, Container, Alert } from "react-bootstrap";
-import logo from "../assets/imagen/logo150.png";
 import fondo from "../assets/imagen/fondo_login.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -76,7 +75,7 @@ function Login() {
       attachTokenToHeaders();
 
       if (id_perfil === "1") {
-        navigate("./../trabajador");
+        navigate("./../home");
       } else if (nivel === "2") {
         navigate("./../trabajador");
       } else if (nivel === "P") {
@@ -101,10 +100,6 @@ function Login() {
     <Container fluid style={bgImageStyle}>
       <div className="col-sm-10 col-md-9 col-lg-5 mx-auto  w-100 h-100  d-flex justify-content-center align-items-center">
         <Card className="border-0 shadow  p-3 rounded-3 " > 
-          {/* style={{backgroundColor: "rgba(255, 255, 255, 0.3)"}} */}
-          <Card.Title className="text-center mt-5 fw-light fs-5">
-            <img src={logo} alt="logo" />
-          </Card.Title>
           <Card.Body className="p-4 p-sm-5 ">
             <Card.Title className="text-center mt-3 fw-light ">
               Inicio de sesión
