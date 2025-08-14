@@ -7,16 +7,13 @@ import Dashboard from "../dashboard/Dashboard.jsx";
 import ProveedorRegistrar from "./ProveedorRegistrar.jsx";
 import Swal from "sweetalert2";
 
-
 const Proveedor = () => {
-
   const [buscar, setBuscar] = useState("");
   const [show, setShow] = useState(false);
   const [columns, setColumns] = useState([]);
   const [rowdata, setRowdata] = useState([]);
   const [idmodulo, setIdmodulo] = useState("");
   const handleClose = () => setShow(false);
-
 
   useEffect(() => {
     get_columns();
@@ -84,12 +81,37 @@ const Proveedor = () => {
       },
       {
         id: 2,
+        name: "DNI",
+        selector: (row) => row.dni,
+        sortable: true,
+        width: "6rem",
+      },
+      {
+        id: 3,
         name: "Proveedor",
         selector: (row) => row.proveedor,
         sortable: true,
       },
       {
-        id: 3,
+        id: 4,
+        name: "Dirección",
+        selector: (row) => row.direccion,
+        sortable: true,
+      },
+      {
+        id: 5,
+        name: "Teléfono",
+        selector: (row) => row.telefono,
+        sortable: true,
+      },
+      {
+        id: 6,
+        name: "Zona",
+        selector: (row) => row.zona,
+        sortable: true,
+      },
+      {
+        id: 7,
         name: "Opciones ",
         button: true,
         width: "5rem",
@@ -116,9 +138,7 @@ const Proveedor = () => {
                 >
                   <i className="bi bi-pencil-fill me-2"></i>Modificar
                 </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={() => eliminar(row.id_proveedor)}
-                >
+                <Dropdown.Item onClick={() => eliminar(row.id_proveedor)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -142,16 +162,17 @@ const Proveedor = () => {
           <p>Registre sus proveedores de café</p>
         </div>
         <div className="pt-4">
-
-          <Button onClick={() => {
-            setIdmodulo("");
-            setShow(!show);
-          }}
-            className="mb-3 " variant="primary">
+          <Button
+            onClick={() => {
+              setIdmodulo("");
+              setShow(!show);
+            }}
+            className="mb-3 "
+            variant="primary"
+          >
             <i className="bi bi-file-earmark-plus-fill me-2"></i>
             Nuevo
           </Button>
-
         </div>
       </div>
       <div className="d-flex justify-content-end mb-2">

@@ -16,7 +16,7 @@ const Home = () => {
     }
   };
 
-  const componente2 = <Container fluid>hole escalafon</Container>;
+  const componente2 = <Container fluid>hola amigos</Container>;
   return (
     <>
       <Dashboard componente={componente2} />

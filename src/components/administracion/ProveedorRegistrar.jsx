@@ -6,7 +6,13 @@ import Swal from "sweetalert2";
 import ProveedorForm from "./ProveedorForm";
 
 const ProveedorRegistrar = (props) => {
+  const [listaUbigeo, setListaUbigeo] = useState([]);
 
+  // useEffect(() => {
+  //   get_lista_ubigeo();
+
+  //   // eslint-disable-next-line
+  // }, []);
 
   useEffect(() => {
     if (props.idmodulo) {
@@ -15,6 +21,48 @@ const ProveedorRegistrar = (props) => {
     // eslint-disable-next-line
   }, [props.idmodulo]);
 
+  // const get_lista_ubigeo = async () => {
+  //   let _datos = JSON.stringify({
+  //     modulo: "ubigeo",
+  //   });
+  //   const res = await Axios.post(
+  //     window.globales.url + "/administracion/lista",
+  //     _datos
+  //   );
+  //   setListaUbigeo(res.data.items);
+  //   formik.setFieldValue("id_ubigeo", res.data.items[0].id);
+  // };
+
+  const buscar_dni = (e) => {
+    const nuevoValor = e;
+    if (
+      nuevoValor &&
+      typeof nuevoValor === "string" &&
+      nuevoValor.length === 8
+    ) {
+      formik.setFieldValue("swdni", true);
+
+      get_dni_externo(nuevoValor);
+    }
+  };
+
+  const get_dni_externo = async (cad) => {
+    let _datos = JSON.stringify({ tipo: "dni", nro: cad });
+    formik.setFieldValue("proveedor", "");
+    await Axios.post(
+      window.globales.url + "/funciones/get_nombre",
+      _datos
+    ).then((res) => {
+      if (res.data.rpta === "1") {
+        formik.setFieldValue("dni", cad);
+        formik.setFieldValue(
+          "proveedor",
+          `${res.data.items.nombres} ${res.data.items.paterno} ${res.data.items.materno}`
+        );
+      }
+      formik.setFieldValue("swdni", false);
+    });
+  };
 
   const modulo = async (id) => {
     let _datos = JSON.stringify({
@@ -25,7 +73,6 @@ const ProveedorRegistrar = (props) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("operacion", "1");
           formik.setFieldValue("proveedor", res.data.items.proveedor);
-
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
@@ -34,7 +81,6 @@ const ProveedorRegistrar = (props) => {
         Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
       });
   };
-
 
   const guardar = async (data) => {
     let _datos = JSON.stringify(data);
@@ -67,12 +113,17 @@ const ProveedorRegistrar = (props) => {
     operacion: "0",
     idmodulo: props.idmodulo,
     proveedor: "",
+    dni: "",
+    direccion: "",
+    telefono: "",
     foco: "0",
+    id_ubigeo: "060801",
+    swdni: false,
+    loaging: false,
   };
 
   const validationSchema = Yup.object({
     proveedor: Yup.string().required("Requerido"),
-
   });
 
   const formik = useFormik({
@@ -84,17 +135,15 @@ const ProveedorRegistrar = (props) => {
       if (formik.values.operacion === "0") {
         resetForm();
       }
-
-
     },
   });
 
   return (
-
     <ProveedorForm
       {...formik}
+      buscar_dni={buscar_dni}
+      listaUbigeo={listaUbigeo}
     />
-
   );
 };
 
