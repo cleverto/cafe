@@ -8,11 +8,18 @@ import ProveedorForm from "./ProveedorForm";
 const ProveedorRegistrar = (props) => {
   const [listaUbigeo, setListaUbigeo] = useState([]);
 
-  // useEffect(() => {
-  //   get_lista_ubigeo();
+  useEffect(() => {
+    const opciones = [
+      { value: "060801", label: "CAJAMARCA - JAEN - JAEN" }
+    ];
 
-  //   // eslint-disable-next-line
-  // }, []);
+    setListaUbigeo(opciones);
+    formik.setFieldValue("id_ubigeo", "060801");
+    formik.setFieldValue("ubigeo", "CAJAMARCA - JAEN - JAEN");
+
+    // eslint-disable-next-line
+  }, []);
+
 
   useEffect(() => {
     if (props.idmodulo) {
@@ -21,18 +28,35 @@ const ProveedorRegistrar = (props) => {
     // eslint-disable-next-line
   }, [props.idmodulo]);
 
-  // const get_lista_ubigeo = async () => {
-  //   let _datos = JSON.stringify({
-  //     modulo: "ubigeo",
-  //   });
-  //   const res = await Axios.post(
-  //     window.globales.url + "/administracion/lista",
-  //     _datos
-  //   );
-  //   setListaUbigeo(res.data.items);
-  //   formik.setFieldValue("id_ubigeo", res.data.items[0].id);
-  // };
+  const buscar_ubigeo = async (inputValue) => {
+    const texto = String(inputValue || "").trim();
 
+    // Evitamos búsquedas vacías o muy cortas
+    if (texto.length < 2) {
+      setListaUbigeo([]);
+      return;
+    }
+
+    try {
+      const _datos = JSON.stringify({ text: texto });
+
+      const res = await Axios.post(
+        `${window.globales.url}/funciones/buscar_ubigeo`,
+        _datos
+      );
+
+      // Transformamos los datos para que React-Select los entienda
+      const opciones = res.data.items.map((data) => ({
+        value: data.id_ubigeo,
+        label: data.ubigeo
+      }));
+      setListaUbigeo(opciones);
+
+    } catch (error) {
+      console.error("Error buscando ubigeo:", error);
+      setListaUbigeo([]);
+    }
+  };
   const buscar_dni = (e) => {
     const nuevoValor = e;
     if (
@@ -72,7 +96,20 @@ const ProveedorRegistrar = (props) => {
       .then((res) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("operacion", "1");
+          formik.setFieldValue("dni", res.data.items.dni);
           formik.setFieldValue("proveedor", res.data.items.proveedor);
+          formik.setFieldValue("direccion", res.data.items.direccion);
+          formik.setFieldValue("telefono", res.data.items.telefono);
+          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
+          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
+
+
+          const opciones = [
+            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo }
+          ];
+          setListaUbigeo(opciones);
+          formik.setFieldValue("id_ubigeo",res.data.items.id_ubigeo);
+          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
@@ -91,15 +128,19 @@ const ProveedorRegistrar = (props) => {
           formik.setFieldValue("foco", "1");
           const obj = {
             id_proveedor: data.operacion === "0" ? res.data.id : data.idmodulo,
+            dni: data.dni,
             proveedor: data.proveedor,
+            direccion: data.direccion,
+            telefono: data.telefono,
+            ubigeo: data.ubigeo,
           };
-
+console.log(obj);
           if (data.operacion === "0") {
             props.inserta(obj);
           } else {
             props.modifica(obj);
-            props.handleClose();
           }
+          props.handleClose();
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
         }
@@ -118,6 +159,7 @@ const ProveedorRegistrar = (props) => {
     telefono: "",
     foco: "0",
     id_ubigeo: "060801",
+    ubigeo: "",
     swdni: false,
     loaging: false,
   };
@@ -130,11 +172,9 @@ const ProveedorRegistrar = (props) => {
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       guardar(values);
-      if (formik.values.operacion === "0") {
-        resetForm();
-      }
+
     },
   });
 
@@ -143,6 +183,7 @@ const ProveedorRegistrar = (props) => {
       {...formik}
       buscar_dni={buscar_dni}
       listaUbigeo={listaUbigeo}
+      buscar_ubigeo={buscar_ubigeo}
     />
   );
 };

@@ -107,7 +107,7 @@ const Proveedor = () => {
       {
         id: 6,
         name: "Zona",
-        selector: (row) => row.zona,
+        selector: (row) => row.ubigeo,
         sortable: true,
       },
       {

@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   Form,
   Row,
@@ -13,8 +13,6 @@ import Select from "react-select";
 
 const ProveedorForm = (props) => {
   const inputRef = useRef(null);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [listaUbigeo, setListaUbigeo] = useState([]);
 
   useEffect(() => {
     if (props.values.foco === "0") {
@@ -22,33 +20,6 @@ const ProveedorForm = (props) => {
     }
     props.setFieldValue("foco", "0");
   }, [props.values.foco]);
-  const options = [{ value: "060801", label: "JAEN" }];
-
-const buscar_ubigeo = async (inputValue) => {
-  const texto = String(inputValue || "").trim(); // ✅ Forzamos a string
-  if (texto.length < 2) {
-    setListaUbigeo([]);
-    return;
-  }
-
-  // Simulando búsqueda en datos locales
-  const datos = [
-    { id_ubigeo: 1, ubigeo: "Lima - Lima - Miraflores" },
-    { id_ubigeo: 2, ubigeo: "Lima - Lima - San Isidro" },
-    { id_ubigeo: 3, ubigeo: "Cusco - Cusco - San Blas" },
-  ];
-
-  const filtrados = datos
-    .filter((item) =>
-      item.ubigeo.toLowerCase().includes(texto.toLowerCase())
-    )
-    .map((item) => ({
-      value: item.id_ubigeo,
-      label: item.ubigeo,
-    }));
-
-  setListaUbigeo(filtrados);
-};
 
 
   return (
@@ -65,6 +36,7 @@ const buscar_ubigeo = async (inputValue) => {
               <Form.Label>DNI</Form.Label>
               <InputGroup>
                 <Form.Control
+                ref={inputRef}
                   value={props.values.dni}
                   onChange={props.handleChange}
                   onKeyDown={(e) => {
@@ -103,7 +75,7 @@ const buscar_ubigeo = async (inputValue) => {
               <Form.Label>Proveedor</Form.Label>
               <Form.Control
                 required
-                ref={inputRef}
+                
                 value={props.values.proveedor}
                 onChange={props.handleChange}
                 name="proveedor"
@@ -128,7 +100,7 @@ const buscar_ubigeo = async (inputValue) => {
               <Form.Label>Dirección</Form.Label>
               <Form.Control
                 required
-                ref={inputRef}
+                
                 value={props.values.direccion}
                 onChange={props.handleChange}
                 name="direccion"
@@ -172,14 +144,23 @@ const buscar_ubigeo = async (inputValue) => {
           </Col>
           <Col md="12" lg="12">
             <Select
-              options={options} // Lista de opciones
-              value={selectedOption} // Valor actual
-              onChange={setSelectedOption} // Actualiza el valor
-              onInputChange={(inputValue) => buscar_ubigeo(inputValue)}
-
-              placeholder="Seleccione un país..."
-              isClearable // Botón para limpiar
+              options={props.listaUbigeo}
+              value={props.listaUbigeo.find(
+                (opt) => opt.value === props.values.id_ubigeo
+              ) || null}
+              onChange={(option) => {
+                props.setFieldValue("id_ubigeo", option ? option.value : "");
+                props.setFieldValue("ubigeo", option ? option.label : "");
+              }}
+              onInputChange={(inputValue, { action }) => {
+                if (action === "input-change") {
+                  props.buscar_ubigeo(inputValue);
+                }
+              }}
+              placeholder="Seleccione un ubigeo..."
+              isClearable
             />
+
           </Col>
         </Row>
       </Form>
