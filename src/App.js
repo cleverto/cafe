@@ -7,6 +7,8 @@ import Home from "./components/dashboard/Home";
 import Producto from "./components/administracion/Producto";
 import Proveedor from "./components/administracion/Proveedor";
 
+import CompraRegistrar from "./components/proceso/CompraRegistrar";
+
 import Trabajador from "./components/trabajador/Trabajador";
 
 import TrabajadorRegistrar from "./components/trabajador/TrabajadorRegistrar";
@@ -51,8 +53,15 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
+
+          {/* Administracion */}
           <Route path="/administracion/producto" element={<Producto />} />
           <Route path="/administracion/proveedor" element={<Proveedor />} />
+
+          {/* Proceso */}
+          <Route path="/proceso/compra" element={<CompraRegistrar />} />
+
+          {/* Reporte */}
 
           <Route path="/trabajador" element={<Trabajador />} />
 

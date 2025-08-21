@@ -28,7 +28,6 @@ const Sidebar = ({ show, handle }) => {
   // const baseRoute = isAdmisionBaseUrl ? "/admision" : "";
 
   const getActiveAccordion = () => {
-    console.log(location.pathname.includes("trabajador"));
     if (location.pathname.includes("administracion")) {
       return "0";
     }
@@ -174,8 +173,8 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/trabajador"
-                        active={isActive("/trabajador")}
+                        to="/proceso/compra"
+                        active={isActive("/proceso/compra")}
                       >
                         Compra
                       </ListGroup.Item>
@@ -184,8 +183,8 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/trabajador"
-                        active={isActive("/trabajador")}
+                        to="/deposito"
+                        active={isActive("/deposito")}
                       >
                         Deposito
                       </ListGroup.Item>

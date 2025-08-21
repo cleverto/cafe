@@ -40,7 +40,6 @@ const Adm = () => {
     const partes = path.split("/");
     const cad = partes[partes.length - 1];
     setModulo(cad);
-    console.log(path);
 
     let _datos = JSON.stringify({ modulo: cad, campo: cad });
     const res = await Axios.post(
