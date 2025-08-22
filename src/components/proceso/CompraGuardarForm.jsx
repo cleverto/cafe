@@ -6,7 +6,6 @@ import {
   Col,
   Container,
   Button,
-  Card,
   InputGroup,
   Spinner,
 } from "react-bootstrap";
@@ -21,7 +20,7 @@ const CompraGuardarForm = (props) => {
     <Container className="mb-4 " >
       <Form
         noValidate
-        id="formId"
+        id="formIdModulo"
         onSubmit={props.handleSubmit}
         autoComplete="off"
       >
@@ -48,10 +47,10 @@ const CompraGuardarForm = (props) => {
                     <Form.Group>
 
                       <Form.Select
-                        value={props.values.moneda}
+                        value={props.values.id_moneda}
                         onChange={props.handleChange}
-                        name="moneda"
-                        isValid={!!props.touched.moneda}
+                        name="id_moneda"
+                        isValid={!!props.touched.id_moneda}
                       >
                         <option key="1" value="PEN">
                           PEN
@@ -65,9 +64,7 @@ const CompraGuardarForm = (props) => {
                   <div></div>
                   <div>{props.values.totalCompra ? ` ${props.values.totalCompra}` : "S/. 100,000.00"}</div>
                 </div>
-
               </div>
-
             </div>
           </Col>
         </Row>
@@ -111,6 +108,7 @@ const CompraGuardarForm = (props) => {
                     <i className="bi bi-search"></i>
                   )}
                 </Button>
+
                 <Button
                   variant="secondary"
                   onClick={() => props.buscar_dni(props.values.dni)}
@@ -127,31 +125,35 @@ const CompraGuardarForm = (props) => {
                 readOnly
                 disabled
                 value={props.values.proveedor || ""}
-                placeholder="Nombre del proveedor"
                 name="proveedor"
                 type="text"
+                isInvalid={!!props.errors.id_proveedor & props.touched.id_tipo_comprobante}
+                isValid={!!props.touched.id_proveedor}
               />
             </Form.Group>
+
           </Col>
           <Col md="12" lg="12">
 
           </Col>
           <Col md="12" lg="12">
             <Form.Group>
-              <Form.Label>Documento</Form.Label>
+              <Form.Label>Comprobante</Form.Label>
               <Form.Select
-                value={props.values.moneda}
+                value={props.values.id_tipo_comprobante}
                 onChange={props.handleChange}
-                name="moneda"
-                isValid={!!props.touched.moneda}
+                name="id_tipo_comprobante"
+                isInvalid={!!props.errors.id_tipo_comprobante & props.touched.id_tipo_comprobante}
+                isValid={!!props.touched.id_tipo_comprobante}
               >
-                <option key="1" value="PEN">
-                  Liquidación de compra
-                </option>
-                <option key="2" value="USD">
-                  DOLAR
-                </option>
+                {props.listaTipoComprobante.map((data, index) => (
+                  <option key={index} value={data.id}>
+                    {data.descripcion}
+                  </option>
+                ))}
+
               </Form.Select>
+
             </Form.Group>
           </Col>
 
@@ -161,19 +163,31 @@ const CompraGuardarForm = (props) => {
               <Form.Label>Nro de referencia</Form.Label>
               <Form.Control
                 required
-                value={props.values.nroReferencia}
-                onChange={props.handleChange}
-                name="nroReferencia"
+                value={props.values.referencia}
+                onChange={(e) => {
+                  const val = e.target.value;
+
+                  if (/^\d*$/.test(val) && val.length <= 8) {
+                    props.setFieldValue("referencia", val);
+                  }
+                }}
+                onBlur={(e) => {
+                  const val = props.values.referencia;
+                  if (val) {
+
+                    props.setFieldValue("referencia", val.padStart(8, "0"));
+                  }
+                }}
+                name="referencia"
                 type="text"
+                maxLength="8"
                 isInvalid={
-                  !!props.errors.nroReferencia &&
-                  props.touched.nroReferencia &&
-                  props.values.nroReferencia?.length === 0
+                  !!props.errors.referencia &&
+                  props.touched.referencia &&
+                  props.values.referencia?.length === 0
                 }
               />
-              <Form.Control.Feedback type="invalid">
-                {props.errors.nroReferencia}
-              </Form.Control.Feedback>
+
             </Form.Group>
           </Col>
 
@@ -183,7 +197,7 @@ const CompraGuardarForm = (props) => {
 
       </Form>
 
-    </Container>
+    </Container >
   );
 };
 

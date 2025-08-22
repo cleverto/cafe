@@ -86,8 +86,8 @@ const Sidebar = ({ show, handle }) => {
           <div id={show ? "mySidenav" : "mySidenav2"}>
             <div className="d-flex justify-content-between pb-4 ">
               <div>
-                <div class="d-flex">
-                  <div class=" flex-fill">
+                <div className="d-flex">
+                  <div className=" flex-fill">
                     <Link to="/home">
                       <img
                         src={logo}
@@ -99,7 +99,7 @@ const Sidebar = ({ show, handle }) => {
                       />
                     </Link>
                   </div>
-                  <div class="p-1  flex-fill">
+                  <div className="p-1  flex-fill">
                     <h6>Escalafón</h6>
                   </div>
                 </div>

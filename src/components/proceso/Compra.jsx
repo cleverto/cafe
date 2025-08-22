@@ -247,7 +247,7 @@ const Compra = (props) => {
           <Button
             className=""
             variant="outline-primary"
-            onClick={(e) =>setShow(!show)}
+            onClick={(e) => setShow(!show)}
           >
             <i className="bi bi-floppy me-2"></i>
             Guardar
@@ -754,12 +754,12 @@ const Compra = (props) => {
         onClose={() => setShow(false)}
         size="lg"
         title="Guardar compra"
-        formId="formId"
+        formId="formIdModulo"
         aceptarTexto="Guardar"
         cancelarTexto="Cancelar"
       >
         <CompraGuardarRegistrar
-          formId="formId"
+          formId="formIdModulo"
           handleClose={handleClose}
         />
       </ModalD>

@@ -6,7 +6,14 @@ import Swal from "sweetalert2";
 import CompraGuardarForm from "./CompraGuardarForm";
 
 const CompraGuardarRegistrar = (props) => {
+  const [listaTipoComprobante, setListaTipoComprobante] = useState([]);
 
+
+  useEffect(() => {
+    get_lista_tipo_comprobante();
+
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (props.idmodulo) {
@@ -15,6 +22,18 @@ const CompraGuardarRegistrar = (props) => {
     // eslint-disable-next-line
   }, [props.idmodulo]);
 
+
+  const get_lista_tipo_comprobante = async (id) => {
+    let _datos = JSON.stringify({
+      modulo: "tipo_comprobante",
+    });
+    const res = await Axios.post(
+      window.globales.url + "/administracion/lista",
+      _datos
+    );
+    setListaTipoComprobante(res.data.items);
+    formik.setFieldValue("id_tipo_comprobante", "04");
+  };
 
   const modulo = async (id) => {
     let _datos = JSON.stringify({
@@ -39,7 +58,7 @@ const CompraGuardarRegistrar = (props) => {
   const guardar = async (data) => {
     let _datos = JSON.stringify(data);
 
-    await Axios.post(window.globales.url + "/producto/guardar", _datos)
+    await Axios.post(window.globales.url + "/compra/guardar", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("foco", "1");
@@ -63,28 +82,66 @@ const CompraGuardarRegistrar = (props) => {
       });
   };
 
+  const buscar_dni = (e) => {
+    const nuevoValor = e;
+    if (
+      nuevoValor &&
+      typeof nuevoValor === "string" &&
+      nuevoValor.length === 8
+    ) {
+      formik.setFieldValue("swdni", true);
+
+      get_dni_externo(nuevoValor);
+    }
+  };
+
+  const get_dni_externo = async (cad) => {
+    let _datos = JSON.stringify({ tipo: "dni", nro: cad });
+    formik.setFieldValue("proveedor", "");
+    await Axios.post(
+      window.globales.url + "/funciones/get_nombre",
+      _datos
+    ).then((res) => {
+      if (res.data.rpta === "1") {
+        formik.setFieldValue(
+          "id_proveedor",
+          `${res.data.items.id_proveedor}`
+        );
+        formik.setFieldValue(
+          "proveedor",
+          `${res.data.items.nombrecompleto}`
+        );
+      }
+      formik.setFieldValue("swdni", false);
+    });
+  };
+
   const initialValues = {
     operacion: "0",
     idmodulo: props.idmodulo,
-    producto: "",
-    foco: "0",
+    id_proveedor: "",
+    id_tipo_comprobante: "",
+    id_moneda:"PEN",
+    proveedor:"",
+    referencia:"",
+    total: "0",
   };
 
-  const validationSchema = Yup.object({
-    producto: Yup.string().required("Requerido"),
-
-  });
+const validationSchema = Yup.object({
+  id_proveedor: Yup.string().required("Requerido"),
+  referencia: Yup.string()
+    .required("Requerido")
+    .matches(/^\d*$/, "Solo se permiten números")
+    .max(8, "Debe tener máximo 8 dígitos"),
+});
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
-      guardar(values);
-      if (formik.values.operacion === "0") {
-        resetForm();
-      }
 
+      guardar(values);
 
     },
   });
@@ -93,6 +150,8 @@ const CompraGuardarRegistrar = (props) => {
 
     <CompraGuardarForm
       {...formik}
+      buscar_dni={buscar_dni}
+      listaTipoComprobante={listaTipoComprobante}
     />
 
   );

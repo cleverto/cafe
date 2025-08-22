@@ -264,7 +264,7 @@ const TrabajadorRegistrarx = () => {
           listavia={listavia}
           handleInputChangeDNI={(e) => handleInputChangeDNI}
           handleKeyDownDNI={(e) => handleKeyDownDNI}
-          buscar_dni={(e) => buscar_dni}
+          // buscar_dni={(e) => buscar_dni}
           get_lista_provincia={(e) => get_lista_provincia}
           get_lista_distrito={(e) => get_lista_provincia}
         />
