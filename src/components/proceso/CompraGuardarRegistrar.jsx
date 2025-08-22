@@ -4,10 +4,12 @@ import * as Yup from "yup";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import CompraGuardarForm from "./CompraGuardarForm";
+import { useNavigate } from "react-router-dom";
 
 const CompraGuardarRegistrar = (props) => {
-  const [listaTipoComprobante, setListaTipoComprobante] = useState([]);
+  const navigate = useNavigate();
 
+  const [listaTipoComprobante, setListaTipoComprobante] = useState([]);
 
   useEffect(() => {
     get_lista_tipo_comprobante();
@@ -21,7 +23,6 @@ const CompraGuardarRegistrar = (props) => {
     }
     // eslint-disable-next-line
   }, [props.idmodulo]);
-
 
   const get_lista_tipo_comprobante = async (id) => {
     let _datos = JSON.stringify({
@@ -44,7 +45,6 @@ const CompraGuardarRegistrar = (props) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("operacion", "1");
           formik.setFieldValue("producto", res.data.items.producto);
-
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
@@ -54,25 +54,14 @@ const CompraGuardarRegistrar = (props) => {
       });
   };
 
-
   const guardar = async (data) => {
     let _datos = JSON.stringify(data);
 
     await Axios.post(window.globales.url + "/compra/guardar", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
-          formik.setFieldValue("foco", "1");
-          const obj = {
-            id_producto: data.operacion === "0" ? res.data.id : data.idmodulo,
-            producto: data.producto,
-          };
-
-          if (data.operacion === "0") {
-            props.inserta(obj);
-          } else {
-            props.modifica(obj);
-            props.handleClose();
-          }
+          props.handleClose();
+          navigate("/proceso/compra/pagar?id" + res.data.id);
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
         }
@@ -103,14 +92,8 @@ const CompraGuardarRegistrar = (props) => {
       _datos
     ).then((res) => {
       if (res.data.rpta === "1") {
-        formik.setFieldValue(
-          "id_proveedor",
-          `${res.data.items.id_proveedor}`
-        );
-        formik.setFieldValue(
-          "proveedor",
-          `${res.data.items.nombrecompleto}`
-        );
+        formik.setFieldValue("id_proveedor", `${res.data.items.id_proveedor}`);
+        formik.setFieldValue("proveedor", `${res.data.items.nombrecompleto}`);
       }
       formik.setFieldValue("swdni", false);
     });
@@ -121,39 +104,36 @@ const CompraGuardarRegistrar = (props) => {
     idmodulo: props.idmodulo,
     id_proveedor: "",
     id_tipo_comprobante: "",
-    id_moneda:"PEN",
-    proveedor:"",
-    referencia:"",
+    id_moneda: "PEN",
+    fecha: new Date().toISOString().slice(0, 10),
+    proveedor: "",
+    referencia: "",
     total: "0",
   };
 
-const validationSchema = Yup.object({
-  id_proveedor: Yup.string().required("Requerido"),
-  referencia: Yup.string()
-    .required("Requerido")
-    .matches(/^\d*$/, "Solo se permiten números")
-    .max(8, "Debe tener máximo 8 dígitos"),
-});
+  const validationSchema = Yup.object({
+    id_proveedor: Yup.string().required("Requerido"),
+    referencia: Yup.string()
+      .required("Requerido")
+      .matches(/^\d*$/, "Solo se permiten números")
+      .max(8, "Debe tener máximo 8 dígitos"),
+  });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit: (values, { resetForm }) => {
-
+    onSubmit: (values) => {
       guardar(values);
-
     },
   });
 
   return (
-
     <CompraGuardarForm
       {...formik}
       buscar_dni={buscar_dni}
       listaTipoComprobante={listaTipoComprobante}
     />
-
   );
 };
 

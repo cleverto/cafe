@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import {
   Form,
@@ -10,14 +9,11 @@ import {
   Spinner,
 } from "react-bootstrap";
 
-
 const CompraGuardarForm = (props) => {
-
   const inputRef = useRef(null);
 
-
   return (
-    <Container className="mb-4 " >
+    <Container className="mb-4 ">
       <Form
         noValidate
         id="formIdModulo"
@@ -27,11 +23,10 @@ const CompraGuardarForm = (props) => {
         <Row className="g-3 mb-4">
           <Col md="12" lg="12">
             <div class="">
-
               <div
                 style={{
                   backgroundColor: "#fff3cd", // amarillo suave
-                  color: "#856404",           // texto marrón oscuro
+                  color: "#856404", // texto marrón oscuro
                   fontWeight: "bold",
                   fontSize: "1.5rem",
                   textAlign: "right",
@@ -42,10 +37,8 @@ const CompraGuardarForm = (props) => {
                 }}
               >
                 <div class="d-flex justify-content-between ">
-                  <div >
-
+                  <div>
                     <Form.Group>
-
                       <Form.Select
                         value={props.values.id_moneda}
                         onChange={props.handleChange}
@@ -62,16 +55,17 @@ const CompraGuardarForm = (props) => {
                     </Form.Group>
                   </div>
                   <div></div>
-                  <div>{props.values.totalCompra ? ` ${props.values.totalCompra}` : "S/. 100,000.00"}</div>
+                  <div>
+                    {props.values.totalCompra
+                      ? ` ${props.values.totalCompra}`
+                      : "S/. 100,000.00"}
+                  </div>
                 </div>
               </div>
             </div>
           </Col>
         </Row>
         <Row className="g-3">
-
-
-
           <Col md="12" lg="12">
             <Form.Group>
               <Form.Label>DNI del proveedor</Form.Label>
@@ -113,28 +107,42 @@ const CompraGuardarForm = (props) => {
                   variant="secondary"
                   onClick={() => props.buscar_dni(props.values.dni)}
                 >
-
                   <i class="bi bi-plus-square"></i>
-
                 </Button>
               </InputGroup>
             </Form.Group>
             <Form.Group className="mt-2">
-
               <Form.Control
                 readOnly
                 disabled
                 value={props.values.proveedor || ""}
                 name="proveedor"
                 type="text"
-                isInvalid={!!props.errors.id_proveedor & props.touched.id_tipo_comprobante}
+                isInvalid={
+                  !!props.errors.id_proveedor &
+                  props.touched.id_tipo_comprobante
+                }
                 isValid={!!props.touched.id_proveedor}
               />
             </Form.Group>
-
           </Col>
+          <Col md="12" lg="12"></Col>
           <Col md="12" lg="12">
+            <Form.Group className="m-0">
+              <Form.Label>Fecha</Form.Label>
 
+              <Form.Control
+                value={props.values.fecha}
+                onChange={props.handleChange}
+                name="fecha"
+                type="date"
+                isInvalid={!!props.errors.fecha & props.touched.fecha}
+                isValid={!!props.touched.fecha}
+              />
+              <Form.Control.Feedback type="invalid">
+                {props.errors.fecha}
+              </Form.Control.Feedback>
+            </Form.Group>
           </Col>
           <Col md="12" lg="12">
             <Form.Group>
@@ -143,7 +151,10 @@ const CompraGuardarForm = (props) => {
                 value={props.values.id_tipo_comprobante}
                 onChange={props.handleChange}
                 name="id_tipo_comprobante"
-                isInvalid={!!props.errors.id_tipo_comprobante & props.touched.id_tipo_comprobante}
+                isInvalid={
+                  !!props.errors.id_tipo_comprobante &
+                  props.touched.id_tipo_comprobante
+                }
                 isValid={!!props.touched.id_tipo_comprobante}
               >
                 {props.listaTipoComprobante.map((data, index) => (
@@ -151,14 +162,12 @@ const CompraGuardarForm = (props) => {
                     {data.descripcion}
                   </option>
                 ))}
-
               </Form.Select>
-
             </Form.Group>
           </Col>
 
           {/* Nro de referencia */}
-          <Col md="10" lg="10">
+          <Col md="12" lg="12">
             <Form.Group>
               <Form.Label>Nro de referencia</Form.Label>
               <Form.Control
@@ -174,7 +183,6 @@ const CompraGuardarForm = (props) => {
                 onBlur={(e) => {
                   const val = props.values.referencia;
                   if (val) {
-
                     props.setFieldValue("referencia", val.padStart(8, "0"));
                   }
                 }}
@@ -187,17 +195,13 @@ const CompraGuardarForm = (props) => {
                   props.values.referencia?.length === 0
                 }
               />
-
             </Form.Group>
           </Col>
 
           {/* Moneda */}
-
         </Row>
-
       </Form>
-
-    </Container >
+    </Container>
   );
 };
 

@@ -9,6 +9,12 @@ import Proveedor from "./components/administracion/Proveedor";
 
 import CompraRegistrar from "./components/proceso/CompraRegistrar";
 
+import CreditoPagar from "./components/proceso/CreditoPagar";
+
+
+
+
+
 import Trabajador from "./components/trabajador/Trabajador";
 
 import TrabajadorRegistrar from "./components/trabajador/TrabajadorRegistrar";
@@ -58,8 +64,14 @@ function App() {
           <Route path="/administracion/producto" element={<Producto />} />
           <Route path="/administracion/proveedor" element={<Proveedor />} />
 
-          {/* Proceso */}
+          {/* Proceso compra */}
           <Route path="/proceso/compra" element={<CompraRegistrar />} />
+          {/* Proceso credito*/}
+          <Route path="/proceso/compra/pagar" element={<CreditoPagar />} />
+
+
+
+
 
           {/* Reporte */}
 
