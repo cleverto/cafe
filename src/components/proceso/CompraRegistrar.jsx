@@ -9,32 +9,37 @@ import Compra from "./Compra";
 const CompraRegistrar = (props) => {
   const [listaProducto, setListaProducto] = useState([]);
   const [rowdata, setRowdata] = useState([]);
+  const [total, setTotal] = useState("0");
 
   useEffect(() => {
     get_lista_producto();
-    get_lista_temp();
+
     // eslint-disable-next-line
   }, []);
 
 
+  useEffect(() => {
+    if (props.idmodulo != null) {
+      modulo(props.idmodulo);
+      get_lista_temp(props.idmodulo);
+      //get_lista(props.idmodulo);
+    } else {
+      get_lista_temp("");
+    }
+    // eslint-disable-next-line
+  }, [props.idmodulo]);
+
 
   const get_lista_temp = async (id) => {
-    let _datos = JSON.stringify({ id: localStorage.getItem("idusuario") });
+    let _datos = JSON.stringify({ id: id });
     const res = await Axios.post(
       window.globales.url + "/compra/lista_temp",
       _datos
     );
     setRowdata(res.data.items);
+    setTotal(res.data.total);
   };
 
-
-  useEffect(() => {
-    if (props.idmodulo) {
-      modulo(props.idmodulo);
-      get_lista(props.idmodulo);
-    }
-    // eslint-disable-next-line
-  }, [props.idmodulo]);
 
   const get_lista_producto = async () => {
 
@@ -60,47 +65,47 @@ const CompraRegistrar = (props) => {
     }
   };
 
-  const get_lista = async (id) => {
-    let _datos = JSON.stringify({
-      id: id,
-    });
-    const res = await Axios.post(window.globales.url + "/proveedor/lista", _datos);
+  // const get_lista = async (id) => {
+  //   let _datos = JSON.stringify({
+  //     id: id,
+  //   });
+  //   const res = await Axios.post(window.globales.url + "/proveedor/lista", _datos);
 
-    var data = res.data.items.map(function (el, i) {
-      return Object.assign({ nro: i + 1 }, el);
-    });
-    setRowdata(data);
-  };
-  const buscar_dni = (e) => {
-    const nuevoValor = e;
-    if (
-      nuevoValor &&
-      typeof nuevoValor === "string" &&
-      nuevoValor.length === 8
-    ) {
-      formik.setFieldValue("swdni", true);
+  //   var data = res.data.items.map(function (el, i) {
+  //     return Object.assign({ nro: i + 1 }, el);
+  //   });
+  //   setRowdata(data);
+  // };
+  // const buscar_dni = (e) => {
+  //   const nuevoValor = e;
+  //   if (
+  //     nuevoValor &&
+  //     typeof nuevoValor === "string" &&
+  //     nuevoValor.length === 8
+  //   ) {
+  //     formik.setFieldValue("swdni", true);
 
-      get_dni_externo(nuevoValor);
-    }
-  };
+  //     get_dni_externo(nuevoValor);
+  //   }
+  // };
 
-  const get_dni_externo = async (cad) => {
-    let _datos = JSON.stringify({ tipo: "dni", nro: cad });
-    formik.setFieldValue("proveedor", "");
-    await Axios.post(
-      window.globales.url + "/funciones/get_nombre",
-      _datos
-    ).then((res) => {
-      if (res.data.rpta === "1") {
-        formik.setFieldValue("dni", cad);
-        formik.setFieldValue(
-          "proveedor",
-          `${res.data.items.nombres} ${res.data.items.paterno} ${res.data.items.materno}`
-        );
-      }
-      formik.setFieldValue("swdni", false);
-    });
-  };
+  // const get_dni_externo = async (cad) => {
+  //   let _datos = JSON.stringify({ tipo: "dni", nro: cad });
+  //   formik.setFieldValue("proveedor", "");
+  //   await Axios.post(
+  //     window.globales.url + "/funciones/get_nombre",
+  //     _datos
+  //   ).then((res) => {
+  //     if (res.data.rpta === "1") {
+  //       formik.setFieldValue("dni", cad);
+  //       formik.setFieldValue(
+  //         "proveedor",
+  //         `${res.data.items.nombres} ${res.data.items.paterno} ${res.data.items.materno}`
+  //       );
+  //     }
+  //     formik.setFieldValue("swdni", false);
+  //   });
+  // };
 
   const modulo = async (id) => {
     // let _datos = JSON.stringify({
@@ -136,13 +141,13 @@ const CompraRegistrar = (props) => {
 
     let _datos = JSON.stringify(data);
 
-
     await Axios.post(window.globales.url + "/compra/guardar_producto", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
 
           const obj = {
             id_detalle: ide,
+            idmodulo: data.idmodulo,
             id_producto: data.id_producto,
             id_categoria: data.id_categoria,
             producto: data.producto,
@@ -164,6 +169,7 @@ const CompraRegistrar = (props) => {
             total: data.total,
           };
           setRowdata((prevData) => [obj, ...prevData]);
+          setTotal(res.data.total);
 
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
@@ -174,7 +180,7 @@ const CompraRegistrar = (props) => {
       });
   };
   const eliminar = (e, id) => {
-    let _datos = JSON.stringify({ id: id });
+    let _datos = JSON.stringify({ id: id, idmodulo:formik.values.idmodulo });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
       text: "¿Estás seguro de que deseas eliminar este registro?",
@@ -186,18 +192,15 @@ const CompraRegistrar = (props) => {
       if (result.isConfirmed) {
         Axios.post(window.globales.url + "/compra/eliminar_producto", _datos)
           .then((res) => {
-            if (res.data.rpta === "true") {
-              setRowdata((prevData) => prevData.filter((row) => row.id !== id));
+            if (res.data.rpta === "1") {
+              setRowdata((prevData) => prevData.filter((row) => row.id_detalle !== id));
             }
+
+            setTotal(res.data.total);
           })
           .catch((error) => {
             Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
           });
-
-        setRowdata((prevData) =>
-          prevData.filter((row) => row.id_detalle !== id)
-        );
-
 
       } else if (result.dismiss === Swal.DismissReason.cancel) {
 
@@ -205,9 +208,15 @@ const CompraRegistrar = (props) => {
     });
   };
 
+  const limpiarRowdata = () => {
+    setRowdata([]);
+    setTotal("0.00");
+  };
+
   const initialValues = {
     operacion: "0",
-    idmodulo: props.idmodulo,
+    idmodulo: props.idmodulo ? props.idmodulo : "",
+    id_credito: "",
     id_detalle: "",
     id_producto: "",
     id_categoria: "",
@@ -274,7 +283,9 @@ const CompraRegistrar = (props) => {
           {...formik}
           listaProducto={listaProducto}
           rowdata={rowdata}
+          total={total}
           eliminar={eliminar}
+          limpiarRowdata={limpiarRowdata}
         />
       }
     />

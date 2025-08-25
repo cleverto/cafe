@@ -44,11 +44,23 @@ const CompraGuardarForm = (props) => {
                         onChange={props.handleChange}
                         name="id_moneda"
                         isValid={!!props.touched.id_moneda}
+                        onClick={(e) => {
+                          const selected = e.target.selectedOptions[0];
+                          props.setFieldValue("simbolo", selected.getAttribute("data-simbolo"));
+                        }
+                        }
                       >
-                        <option key="1" value="PEN">
+                        <option
+                          ey="PEN"
+                          value="PEN"
+                          data-simbolo="S/">
                           PEN
                         </option>
-                        <option key="2" value="USD">
+                        <option
+                          key="PEN"
+                          value="USD"
+                          data-simbolo="$"
+                        >
                           DOLAR
                         </option>
                       </Form.Select>
@@ -56,9 +68,7 @@ const CompraGuardarForm = (props) => {
                   </div>
                   <div></div>
                   <div>
-                    {props.values.totalCompra
-                      ? ` ${props.values.totalCompra}`
-                      : "S/. 100,000.00"}
+                    {`${props.values.simbolo} ${props.values.total}`}
                   </div>
                 </div>
               </div>

@@ -108,7 +108,7 @@ const ProveedorRegistrar = (props) => {
             { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo }
           ];
           setListaUbigeo(opciones);
-          formik.setFieldValue("id_ubigeo",res.data.items.id_ubigeo);
+          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
           formik.setFieldValue("ubigeo", res.data.items.ubigeo);
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
@@ -134,7 +134,7 @@ const ProveedorRegistrar = (props) => {
             telefono: data.telefono,
             ubigeo: data.ubigeo,
           };
-console.log(obj);
+          console.log(obj);
           if (data.operacion === "0") {
             props.inserta(obj);
           } else {

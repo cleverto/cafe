@@ -11,13 +11,18 @@ import {
 import DataTable from "react-data-table-component";
 import Select from "react-select";
 import ModalD from "../global/ModalD";
+import ModalOc from "../global/ModalOc";
+import CreditoPagarRegistrar from "./CreditoPagarRegistrar";
 
 import CompraGuardarRegistrar from "./CompraGuardarRegistrar";
 
 const Compra = (props) => {
   const [show, setShow] = useState(false);
+  const [showPagar, setShowPagar] = useState(false);
   const [idmodulo, setIdmodulo] = useState("");
+  const [id_credito, setIdCredito] = useState("");
   const handleClose = () => setShow(false);
+  const handleClosePagar = () => setShowPagar(false);
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
@@ -232,6 +237,7 @@ const Compra = (props) => {
             className=" "
             variant="outline-primary"
             title="Nuevo"
+            onClick={(e) => props.limpiarRowdata()}
           >
             <i className="bi bi-file-earmark-plus"></i>
 
@@ -240,6 +246,7 @@ const Compra = (props) => {
             className="  mx-1"
             variant="outline-primary"
             title="Buscar"
+            onClick={(e) => { setShowPagar(!showPagar); console.log(showPagar); }}
           >
             <i className="bi bi-search"></i>
 
@@ -748,6 +755,18 @@ const Compra = (props) => {
         />
       </Card>
 
+    <div className="d-flex justify-content-end mt-4">
+      <Card
+        className="shadow-sm border-0"
+        style={{ minWidth: "280px", borderRadius: "12px" }}
+      >
+        <Card.Body className="text-end">
+          <h6 className="text-muted mb-1">Total</h6>
+          <h3 className="fw-bold text-success"> S/ {Number(props.total).toFixed(2)}</h3>
+        </Card.Body>
+      </Card>
+    </div>
+
       <ModalD
         operacion={idmodulo ? "1" : "0"}
         show={show}
@@ -761,8 +780,23 @@ const Compra = (props) => {
         <CompraGuardarRegistrar
           formId="formIdModulo"
           handleClose={handleClose}
+          limpiarRowdata={props.limpiarRowdata}
+          showPagar={(e) => setShowPagar(!showPagar)}
+          id_credito={(e) => setIdCredito(e)}
+          total={props.total}
         />
       </ModalD>
+      <ModalOc
+        componente={
+          <CreditoPagarRegistrar
+            id_credito={id_credito}
+            modulo="compra" />}
+        title="Realizar el pago"
+        posicion="end"
+        izquierda=""
+        show={showPagar}
+        handleClose={() => setShowPagar(false)}
+      />
     </Container>
   );
 };

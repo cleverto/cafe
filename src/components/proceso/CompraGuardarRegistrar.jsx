@@ -4,10 +4,9 @@ import * as Yup from "yup";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import CompraGuardarForm from "./CompraGuardarForm";
-import { useNavigate } from "react-router-dom";
 
 const CompraGuardarRegistrar = (props) => {
-  const navigate = useNavigate();
+
 
   const [listaTipoComprobante, setListaTipoComprobante] = useState([]);
 
@@ -17,12 +16,12 @@ const CompraGuardarRegistrar = (props) => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    if (props.idmodulo) {
-      modulo(props.idmodulo);
-    }
-    // eslint-disable-next-line
-  }, [props.idmodulo]);
+  // useEffect(() => {
+  //   if (props.idmodulo) {
+  //     modulo(props.idmodulo);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [props.idmodulo]);
 
   const get_lista_tipo_comprobante = async (id) => {
     let _datos = JSON.stringify({
@@ -36,23 +35,23 @@ const CompraGuardarRegistrar = (props) => {
     formik.setFieldValue("id_tipo_comprobante", "04");
   };
 
-  const modulo = async (id) => {
-    let _datos = JSON.stringify({
-      id: id,
-    });
-    await Axios.post(window.globales.url + "/producto/modulo", _datos)
-      .then((res) => {
-        if (res.data.rpta === "1") {
-          formik.setFieldValue("operacion", "1");
-          formik.setFieldValue("producto", res.data.items.producto);
-        } else {
-          Swal.fire({ text: res.data.msg, icon: "warning" });
-        }
-      })
-      .catch((error) => {
-        Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
-      });
-  };
+  // const modulo = async (id) => {
+  //   let _datos = JSON.stringify({
+  //     id: id,
+  //   });
+  //   await Axios.post(window.globales.url + "/producto/modulo", _datos)
+  //     .then((res) => {
+  //       if (res.data.rpta === "1") {
+  //         formik.setFieldValue("operacion", "1");
+  //         formik.setFieldValue("producto", res.data.items.producto);
+  //       } else {
+  //         Swal.fire({ text: res.data.msg, icon: "warning" });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
+  //     });
+  // };
 
   const guardar = async (data) => {
     let _datos = JSON.stringify(data);
@@ -60,8 +59,12 @@ const CompraGuardarRegistrar = (props) => {
     await Axios.post(window.globales.url + "/compra/guardar", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
+          formik.setFieldValue("idmodulo", res.data.id);
+
           props.handleClose();
-          navigate("/proceso/compra/pagar?id" + res.data.id);
+          props.limpiarRowdata();
+          props.showPagar();
+          props.id_credito(res.data.id_credito);
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
         }
@@ -108,7 +111,8 @@ const CompraGuardarRegistrar = (props) => {
     fecha: new Date().toISOString().slice(0, 10),
     proveedor: "",
     referencia: "",
-    total: "0",
+    simbolo:"S/ ",
+    total: props.total,
   };
 
   const validationSchema = Yup.object({
