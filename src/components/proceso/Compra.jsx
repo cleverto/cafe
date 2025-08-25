@@ -1,13 +1,5 @@
-
 import { useEffect, useRef, useState } from "react";
-import {
-  Form,
-  Row,
-  Col,
-  Container,
-  Button,
-  Card,
-} from "react-bootstrap";
+import { Form, Row, Col, Container, Button, Card } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import Select from "react-select";
 import ModalD from "../global/ModalD";
@@ -15,11 +7,13 @@ import ModalOc from "../global/ModalOc";
 import CreditoPagarRegistrar from "./CreditoPagarRegistrar";
 
 import CompraGuardarRegistrar from "./CompraGuardarRegistrar";
+import { useNavigate } from "react-router-dom";
 
 const Compra = (props) => {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showPagar, setShowPagar] = useState(false);
-  const [idmodulo, setIdmodulo] = useState("");
+
   const [id_credito, setIdCredito] = useState("");
   const handleClose = () => setShow(false);
   const handleClosePagar = () => setShowPagar(false);
@@ -32,7 +26,6 @@ const Compra = (props) => {
   }, []);
 
 
-
   const get_columns = () => {
     setColumns([
       {
@@ -41,7 +34,7 @@ const Compra = (props) => {
         selector: (row) => row.id_detalle,
         sortable: true,
         reorder: true,
-        omit: true
+        omit: true,
       },
       {
         id: 1,
@@ -49,13 +42,12 @@ const Compra = (props) => {
         selector: (row) => row.id_producto,
         sortable: true,
         reorder: true,
-        omit: true
+        omit: true,
       },
       {
         id: 2,
         name: "Producto",
         cell: (row) => (
-
           <Container className="p-0 pt-1 pb-2">
             <Row>
               <Col>
@@ -171,9 +163,8 @@ const Compra = (props) => {
                   </div>
                 </div>
               </Col>
-
             </Row>
-          </Container >
+          </Container>
         ),
         sortable: true,
         grow: 3,
@@ -218,7 +209,6 @@ const Compra = (props) => {
             >
               <i class="bi bi-archive text-danger"></i>
             </Button>
-
           </>
         ),
       },
@@ -229,7 +219,7 @@ const Compra = (props) => {
     <Container className="mb-4 " style={{ paddingBottom: "80px" }}>
       <div className="d-flex justify-content-between">
         <div className="">
-          <h5 >Compras</h5>
+          <h5>Compras</h5>
           <p className="text-muted">Rgistrar compras a proveedores</p>
         </div>
         <div className="pt-4 mb-3">
@@ -240,16 +230,14 @@ const Compra = (props) => {
             onClick={(e) => props.limpiarRowdata()}
           >
             <i className="bi bi-file-earmark-plus"></i>
-
           </Button>
           <Button
             className="  mx-1"
             variant="outline-primary"
             title="Buscar"
-            onClick={(e) => { setShowPagar(!showPagar); console.log(showPagar); }}
+            onClick={() => navigate("/proceso/compra/buscar")}
           >
             <i className="bi bi-search"></i>
-
           </Button>
           <Button
             className=""
@@ -269,7 +257,6 @@ const Compra = (props) => {
         autoComplete="off"
       >
         <Row className="g-3">
-
           <Col md="12" lg="12">
             <Select
               options={props.listaProducto}
@@ -281,17 +268,19 @@ const Compra = (props) => {
               onChange={(option) => {
                 props.setFieldValue("id_producto", option ? option.value : "");
                 props.setFieldValue("producto", option ? option.label : "");
-                props.setFieldValue("id_categoria", option ? option.id_categoria : "");
+                props.setFieldValue(
+                  "id_categoria",
+                  option ? option.id_categoria : ""
+                );
               }}
               placeholder="Seleccione un producto..."
               isClearable
-
               className={
                 props.errors.id_producto && props.touched.id_producto
                   ? "is-invalid"
                   : props.touched.id_producto
-                    ? "is-valid"
-                    : ""
+                  ? "is-valid"
+                  : ""
               }
             />
 
@@ -320,7 +309,6 @@ const Compra = (props) => {
                   props.touched.muestra &&
                   props.values.muestra?.length === 0
                 }
-
               />
               <Form.Control.Feedback type="invalid">
                 {props.errors.muestra}
@@ -345,7 +333,6 @@ const Compra = (props) => {
                   props.touched.rendimiento &&
                   props.values.rendimiento?.length === 0
                 }
-
               />
               <Form.Control.Feedback type="invalid">
                 {props.errors.rendimiento}
@@ -399,7 +386,6 @@ const Compra = (props) => {
                       props.touched.segunda &&
                       props.values.segunda?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.segunda}
@@ -424,7 +410,6 @@ const Compra = (props) => {
                       props.touched.bola &&
                       props.values.bola?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.bola}
@@ -449,7 +434,6 @@ const Compra = (props) => {
                       props.touched.cascara &&
                       props.values.cascara?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.cascara}
@@ -478,7 +462,6 @@ const Compra = (props) => {
                       props.touched.pasilla &&
                       props.values.pasilla?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.pasilla}
@@ -503,7 +486,6 @@ const Compra = (props) => {
                       props.touched.negro &&
                       props.values.negro?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.negro}
@@ -528,7 +510,6 @@ const Compra = (props) => {
                       props.touched.ripio &&
                       props.values.ripio?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.ripio}
@@ -553,7 +534,6 @@ const Compra = (props) => {
                       props.touched.impureza &&
                       props.values.impureza?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.impureza}
@@ -578,7 +558,6 @@ const Compra = (props) => {
                       props.touched.defectos &&
                       props.values.defectos?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.defectos}
@@ -603,7 +582,6 @@ const Compra = (props) => {
                       props.touched.taza &&
                       props.values.taza?.length === 0
                     }
-
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.taza}
@@ -630,7 +608,6 @@ const Compra = (props) => {
                   props.touched.humedad &&
                   props.values.humedad?.length === 0
                 }
-
               />
               <Form.Control.Feedback type="invalid">
                 {props.errors.humedad}
@@ -648,7 +625,10 @@ const Compra = (props) => {
                   let value = e.target.value;
                   if (/^\d*\.?\d{0,2}$/.test(value)) {
                     props.setFieldValue("cantidad", value);
-                    props.setFieldValue("total", (value * props.values.precio).toFixed(2));
+                    props.setFieldValue(
+                      "total",
+                      (value * props.values.precio).toFixed(2)
+                    );
                   }
                 }}
                 onWheel={(e) => e.currentTarget.blur()}
@@ -661,7 +641,6 @@ const Compra = (props) => {
                   props.touched.cantidad &&
                   props.values.cantidad?.length === 0
                 }
-
               />
               <Form.Control.Feedback type="invalid">
                 {props.errors.cantidad}
@@ -678,7 +657,10 @@ const Compra = (props) => {
                   let value = e.target.value;
                   if (/^\d*\.?\d{0,3}$/.test(value)) {
                     props.setFieldValue("precio", value);
-                    props.setFieldValue("total", (props.values.cantidad * value).toFixed(2));
+                    props.setFieldValue(
+                      "total",
+                      (props.values.cantidad * value).toFixed(2)
+                    );
                   }
                 }}
                 onWheel={(e) => e.currentTarget.blur()}
@@ -691,7 +673,6 @@ const Compra = (props) => {
                   props.touched.precio &&
                   props.values.precio?.length === 0
                 }
-
               />
               <Form.Control.Feedback type="invalid">
                 {props.errors.precio}
@@ -721,7 +702,6 @@ const Compra = (props) => {
                   props.touched.total &&
                   props.values.total?.length === 0
                 }
-
               />
               <Form.Control.Feedback type="invalid">
                 {props.errors.total}
@@ -732,11 +712,7 @@ const Compra = (props) => {
         <Row className="mt-4 mb-4">
           <Col md="12" lg="12">
             <div class="d-grid">
-              <Button
-                className="btn-block "
-                variant="secondary"
-                type="submit"
-              >
+              <Button className="btn-block " variant="secondary" type="submit">
                 <i className="bi bi-file-earmark-plus-fill me-2"></i>
                 Añadir producto
               </Button>
@@ -755,20 +731,23 @@ const Compra = (props) => {
         />
       </Card>
 
-    <div className="d-flex justify-content-end mt-4">
-      <Card
-        className="shadow-sm border-0"
-        style={{ minWidth: "280px", borderRadius: "12px" }}
-      >
-        <Card.Body className="text-end">
-          <h6 className="text-muted mb-1">Total</h6>
-          <h3 className="fw-bold text-success"> S/ {Number(props.total).toFixed(2)}</h3>
-        </Card.Body>
-      </Card>
-    </div>
+      <div className="d-flex justify-content-end mt-4">
+        <Card
+          className="shadow-sm border-0"
+          style={{ minWidth: "280px", borderRadius: "12px" }}
+        >
+          <Card.Body className="text-end">
+            <h6 className="text-muted mb-1">Total</h6>
+            <h3 className="fw-bold text-success">
+              {" "}
+              S/ {Number(props.total).toFixed(2)}
+            </h3>
+          </Card.Body>
+        </Card>
+      </div>
 
       <ModalD
-        operacion={idmodulo ? "1" : "0"}
+        operacion={props.idmodulo ? "1" : "0"}
         show={show}
         onClose={() => setShow(false)}
         size="lg"
@@ -779,6 +758,7 @@ const Compra = (props) => {
       >
         <CompraGuardarRegistrar
           formId="formIdModulo"
+          idmodulo={props.idmodulo}
           handleClose={handleClose}
           limpiarRowdata={props.limpiarRowdata}
           showPagar={(e) => setShowPagar(!showPagar)}
@@ -788,9 +768,8 @@ const Compra = (props) => {
       </ModalD>
       <ModalOc
         componente={
-          <CreditoPagarRegistrar
-            id_credito={id_credito}
-            modulo="compra" />}
+          <CreditoPagarRegistrar id_credito={id_credito} modulo="compra" />
+        }
         title="Realizar el pago"
         posicion="end"
         izquierda=""

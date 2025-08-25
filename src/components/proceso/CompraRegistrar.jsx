@@ -5,11 +5,27 @@ import Axios from "axios";
 import Swal from "sweetalert2";
 import Dashboard from "../dashboard/Dashboard";
 import Compra from "./Compra";
+import { useNavigate } from "react-router-dom";
 
 const CompraRegistrar = (props) => {
+  const navigate = useNavigate();
+  const [idmodulo, setIdmodulo] = useState("");
   const [listaProducto, setListaProducto] = useState([]);
   const [rowdata, setRowdata] = useState([]);
   const [total, setTotal] = useState("0");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.hash.split("?")[1]);
+    const idParam = params.get("id");
+
+    setIdmodulo(idParam);
+  }, []);
+
+  useEffect(() => {
+    if (idmodulo) {
+      get_lista(idmodulo);
+    }
+  }, [idmodulo]);
 
   useEffect(() => {
     get_lista_producto();
@@ -17,18 +33,16 @@ const CompraRegistrar = (props) => {
     // eslint-disable-next-line
   }, []);
 
-
   useEffect(() => {
     if (props.idmodulo != null) {
-      modulo(props.idmodulo);
-      get_lista_temp(props.idmodulo);
+      get_modulo(props.idmodulo);
+      get_lista(props.idmodulo);
       //get_lista(props.idmodulo);
     } else {
       get_lista_temp("");
     }
     // eslint-disable-next-line
   }, [props.idmodulo]);
-
 
   const get_lista_temp = async (id) => {
     let _datos = JSON.stringify({ id: id });
@@ -40,9 +54,7 @@ const CompraRegistrar = (props) => {
     setTotal(res.data.total);
   };
 
-
   const get_lista_producto = async () => {
-
     try {
       let _datos = JSON.stringify({ modulo: "producto", campo: "producto" });
 
@@ -58,24 +70,20 @@ const CompraRegistrar = (props) => {
         id_categoria: data.id_categoria,
       }));
       setListaProducto(opciones);
-
     } catch (error) {
       console.error("Error lista producto", error);
       setListaProducto([]);
     }
   };
 
-  // const get_lista = async (id) => {
-  //   let _datos = JSON.stringify({
-  //     id: id,
-  //   });
-  //   const res = await Axios.post(window.globales.url + "/proveedor/lista", _datos);
+  const get_lista = async (id) => {
+    let _datos = JSON.stringify({
+      id: id,
+    });
+    const res = await Axios.post(window.globales.url + "/compra/lista", _datos);
 
-  //   var data = res.data.items.map(function (el, i) {
-  //     return Object.assign({ nro: i + 1 }, el);
-  //   });
-  //   setRowdata(data);
-  // };
+    setRowdata(res.data.items);
+  };
   // const buscar_dni = (e) => {
   //   const nuevoValor = e;
   //   if (
@@ -89,50 +97,32 @@ const CompraRegistrar = (props) => {
   //   }
   // };
 
-  // const get_dni_externo = async (cad) => {
-  //   let _datos = JSON.stringify({ tipo: "dni", nro: cad });
-  //   formik.setFieldValue("proveedor", "");
-  //   await Axios.post(
-  //     window.globales.url + "/funciones/get_nombre",
-  //     _datos
-  //   ).then((res) => {
-  //     if (res.data.rpta === "1") {
-  //       formik.setFieldValue("dni", cad);
-  //       formik.setFieldValue(
-  //         "proveedor",
-  //         `${res.data.items.nombres} ${res.data.items.paterno} ${res.data.items.materno}`
-  //       );
-  //     }
-  //     formik.setFieldValue("swdni", false);
-  //   });
-  // };
-
-  const modulo = async (id) => {
-    // let _datos = JSON.stringify({
-    //   id: id,
-    // });
-    // await Axios.post(window.globales.url + "/proveedor/modulo", _datos)
-    //   .then((res) => {
-    //     if (res.data.rpta === "1") {
-    //       formik.setFieldValue("operacion", "1");
-    //       formik.setFieldValue("dni", res.data.items.dni);
-    //       formik.setFieldValue("proveedor", res.data.items.proveedor);
-    //       formik.setFieldValue("direccion", res.data.items.direccion);
-    //       formik.setFieldValue("telefono", res.data.items.telefono);
-    //       formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-    //       formik.setFieldValue("ubigeo", res.data.items.ubigeo);
-    //       const opciones = [
-    //         { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo }
-    //       ];
-    //       formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-    //       formik.setFieldValue("ubigeo", res.data.items.ubigeo);
-    //     } else {
-    //       Swal.fire({ text: res.data.msg, icon: "warning" });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
-    //   });
+  const get_modulo = async (id) => {
+    let _datos = JSON.stringify({
+      id: id,
+    });
+    await Axios.post(window.globales.url + "/proveedor/modulo", _datos)
+      .then((res) => {
+        if (res.data.rpta === "1") {
+          formik.setFieldValue("operacion", "1");
+          formik.setFieldValue("dni", res.data.items.dni);
+          formik.setFieldValue("proveedor", res.data.items.proveedor);
+          formik.setFieldValue("direccion", res.data.items.direccion);
+          formik.setFieldValue("telefono", res.data.items.telefono);
+          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
+          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
+          const opciones = [
+            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo },
+          ];
+          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
+          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
+        } else {
+          Swal.fire({ text: res.data.msg, icon: "warning" });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
+      });
   };
   const guardar = async (data) => {
     const ide = `${localStorage.getItem("idusuario")}-${Date.now()}`;
@@ -144,7 +134,6 @@ const CompraRegistrar = (props) => {
     await Axios.post(window.globales.url + "/compra/guardar_producto", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
-
           const obj = {
             id_detalle: ide,
             idmodulo: data.idmodulo,
@@ -170,7 +159,6 @@ const CompraRegistrar = (props) => {
           };
           setRowdata((prevData) => [obj, ...prevData]);
           setTotal(res.data.total);
-
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
         }
@@ -180,7 +168,7 @@ const CompraRegistrar = (props) => {
       });
   };
   const eliminar = (e, id) => {
-    let _datos = JSON.stringify({ id: id, idmodulo:formik.values.idmodulo });
+    let _datos = JSON.stringify({ id: id, idmodulo: formik.values.idmodulo });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
       text: "¿Estás seguro de que deseas eliminar este registro?",
@@ -193,7 +181,9 @@ const CompraRegistrar = (props) => {
         Axios.post(window.globales.url + "/compra/eliminar_producto", _datos)
           .then((res) => {
             if (res.data.rpta === "1") {
-              setRowdata((prevData) => prevData.filter((row) => row.id_detalle !== id));
+              setRowdata((prevData) =>
+                prevData.filter((row) => row.id_detalle !== id)
+              );
             }
 
             setTotal(res.data.total);
@@ -201,9 +191,7 @@ const CompraRegistrar = (props) => {
           .catch((error) => {
             Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
           });
-
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-
       }
     });
   };
@@ -237,8 +225,7 @@ const CompraRegistrar = (props) => {
     taza: "0",
     cantidad: "0",
     precio: "0",
-    total: "0"
-
+    total: "0",
   };
 
   const validationSchema = Yup.object({
@@ -247,9 +234,9 @@ const CompraRegistrar = (props) => {
     rendimiento: Yup.string().required("Requerido"),
     segunda: Yup.string().required("Requerido"),
     bola: Yup.string().required("Requerido"),
-    cascara: Yup.string().when('id_categoria', (id_categoria, schema) => {
+    cascara: Yup.string().when("id_categoria", (id_categoria, schema) => {
       return id_categoria === "1"
-        ? schema.required('Requerido')
+        ? schema.required("Requerido")
         : schema.notRequired();
     }),
 
@@ -276,11 +263,11 @@ const CompraRegistrar = (props) => {
   });
 
   return (
-
     <Dashboard
       componente={
         <Compra
           {...formik}
+          idmmodulo={idmodulo}
           listaProducto={listaProducto}
           rowdata={rowdata}
           total={total}
@@ -289,7 +276,6 @@ const CompraRegistrar = (props) => {
         />
       }
     />
-
   );
 };
 

@@ -7,7 +7,10 @@ import Home from "./components/dashboard/Home";
 import Producto from "./components/administracion/Producto";
 import Proveedor from "./components/administracion/Proveedor";
 
+
 import CompraRegistrar from "./components/proceso/CompraRegistrar";
+import CompraBuscar from "./components/proceso/CompraBuscar";
+
 
 import CreditoPagar from "./components/proceso/CreditoPagar";
 
@@ -66,6 +69,7 @@ function App() {
 
           {/* Proceso compra */}
           <Route path="/proceso/compra" element={<CompraRegistrar />} />
+          <Route path="/proceso/compra/buscar" element={<CompraBuscar />} />
           {/* Proceso credito*/}
           <Route path="/proceso/compra/pagar" element={<CreditoPagar />} />
 
