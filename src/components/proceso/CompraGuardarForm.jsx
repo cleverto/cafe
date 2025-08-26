@@ -46,30 +46,23 @@ const CompraGuardarForm = (props) => {
                         isValid={!!props.touched.id_moneda}
                         onClick={(e) => {
                           const selected = e.target.selectedOptions[0];
-                          props.setFieldValue("simbolo", selected.getAttribute("data-simbolo"));
-                        }
-                        }
+                          props.setFieldValue(
+                            "simbolo",
+                            selected.getAttribute("data-simbolo")
+                          );
+                        }}
                       >
-                        <option
-                          ey="PEN"
-                          value="PEN"
-                          data-simbolo="S/">
+                        <option ey="PEN" value="PEN" data-simbolo="S/">
                           PEN
                         </option>
-                        <option
-                          key="PEN"
-                          value="USD"
-                          data-simbolo="$"
-                        >
+                        <option key="PEN" value="USD" data-simbolo="$">
                           DOLAR
                         </option>
                       </Form.Select>
                     </Form.Group>
                   </div>
                   <div></div>
-                  <div>
-                    {`${props.values.simbolo} ${props.values.total}`}
-                  </div>
+                  <div>{`${props.values.simbolo} ${props.values.total}`}</div>
                 </div>
               </div>
             </div>
@@ -115,7 +108,10 @@ const CompraGuardarForm = (props) => {
 
                 <Button
                   variant="secondary"
-                  onClick={() => props.buscar_dni(props.values.dni)}
+                  onClick={() =>
+                    window.open(`#/administracion/proveedor`, "_blank")
+                  }
+
                 >
                   <i class="bi bi-plus-square"></i>
                 </Button>
