@@ -23,7 +23,10 @@ const CompraRegistrar = (props) => {
 
   useEffect(() => {
     if (idmodulo) {
+      get_modulo(idmodulo);
       get_lista(idmodulo);
+    } else {
+      get_lista_temp("");
     }
   }, [idmodulo]);
 
@@ -33,16 +36,16 @@ const CompraRegistrar = (props) => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    if (props.idmodulo != null) {
-      get_modulo(props.idmodulo);
-      get_lista(props.idmodulo);
-      //get_lista(props.idmodulo);
-    } else {
-      get_lista_temp("");
-    }
-    // eslint-disable-next-line
-  }, [props.idmodulo]);
+  // useEffect(() => {
+  //   if (props.idmodulo != null) {
+  //     get_modulo(props.idmodulo);
+  //     get_lista(props.idmodulo);
+  //     //get_lista(props.idmodulo);
+  //   } else {
+  //     get_lista_temp("");
+  //   }
+  //   // eslint-disable-next-line
+  // }, [props.idmodulo]);
 
   const get_lista_temp = async (id) => {
     let _datos = JSON.stringify({ id: id });
@@ -101,21 +104,13 @@ const CompraRegistrar = (props) => {
     let _datos = JSON.stringify({
       id: id,
     });
-    await Axios.post(window.globales.url + "/proveedor/modulo", _datos)
+    await Axios.post(window.globales.url + "/compra/modulo", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("operacion", "1");
-          formik.setFieldValue("dni", res.data.items.dni);
-          formik.setFieldValue("proveedor", res.data.items.proveedor);
-          formik.setFieldValue("direccion", res.data.items.direccion);
-          formik.setFieldValue("telefono", res.data.items.telefono);
-          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
-          const opciones = [
-            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo },
-          ];
-          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
+          formik.setFieldValue("total", res.data.items.total);
+          console.log( res.data.items.total);
+
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
