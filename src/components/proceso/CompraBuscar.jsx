@@ -167,10 +167,18 @@ const CompraBuscar = () => {
 
   const componente = (
     <>
-      <Container className="mb-4 " style={{ paddingBottom: "80px" }}>
+      <Container className="mb-4 mt-3 " style={{ paddingBottom: "0px" }}>
         <div className="d-flex justify-content-between">
           <div className="">
             <h5>Buscar compras</h5>
+          </div>
+          <div>
+            <Button
+              variant="light"
+              onClick={() => window.history.back()}
+            >
+           <i class="bi bi-backspace"></i>  Regresar
+            </Button>
           </div>
         </div>
         <hr className="mb-4 mt-2" />
