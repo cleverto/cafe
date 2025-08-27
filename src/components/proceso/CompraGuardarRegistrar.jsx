@@ -6,9 +6,15 @@ import Swal from "sweetalert2";
 import CompraGuardarForm from "./CompraGuardarForm";
 
 const CompraGuardarRegistrar = (props) => {
-
-
   const [listaTipoComprobante, setListaTipoComprobante] = useState([]);
+
+  useEffect(() => {
+    if (props.idmodulo) {
+      modulo(props.idmodulo);
+    }
+
+    // eslint-disable-next-line
+  }, [props.idmodulo]);
 
   useEffect(() => {
     get_lista_tipo_comprobante();
@@ -35,23 +41,34 @@ const CompraGuardarRegistrar = (props) => {
     formik.setFieldValue("id_tipo_comprobante", "04");
   };
 
-  // const modulo = async (id) => {
-  //   let _datos = JSON.stringify({
-  //     id: id,
-  //   });
-  //   await Axios.post(window.globales.url + "/producto/modulo", _datos)
-  //     .then((res) => {
-  //       if (res.data.rpta === "1") {
-  //         formik.setFieldValue("operacion", "1");
-  //         formik.setFieldValue("producto", res.data.items.producto);
-  //       } else {
-  //         Swal.fire({ text: res.data.msg, icon: "warning" });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
-  //     });
-  // };
+  const modulo = async (id) => {
+    let _datos = JSON.stringify({
+      id: id,
+    });
+    await Axios.post(window.globales.url + "/compra/modulo", _datos)
+      .then((res) => {
+        if (res.data.rpta === "1") {
+          formik.setFieldValue("operacion", "1");
+          formik.setFieldValue("id_moneda", res.data.items.id_moneda);
+          formik.setFieldValue("total", res.data.items.total);
+          formik.setFieldValue("sinbolo", res.data.items.sinbolo);
+          formik.setFieldValue("dni", res.data.items.dni);
+          formik.setFieldValue("id_proveedor", res.data.items.id_proveedor);
+          formik.setFieldValue("proveedor", res.data.items.proveedor);
+          formik.setFieldValue("fecha", res.data.items.fecha);
+          formik.setFieldValue(
+            "id_tipo_comprobante",
+            res.data.items.id_tipo_comprobante
+          );
+          formik.setFieldValue("referencia", res.data.items.referencia);
+        } else {
+          Swal.fire({ text: res.data.msg, icon: "warning" });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
+      });
+  };
 
   const guardar = async (data) => {
     let _datos = JSON.stringify(data);
@@ -61,10 +78,12 @@ const CompraGuardarRegistrar = (props) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("idmodulo", res.data.id);
 
+          if (props.operacion === "0") {
+            props.limpiarRowdata();
+            props.showPagar();
+            props.id_credito(res.data.id_credito);
+          }
           props.handleClose();
-          props.limpiarRowdata();
-          props.showPagar();
-          props.id_credito(res.data.id_credito);
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
         }
@@ -105,13 +124,14 @@ const CompraGuardarRegistrar = (props) => {
   const initialValues = {
     operacion: "0",
     idmodulo: props.idmodulo,
+    dni: "",
     id_proveedor: "",
     id_tipo_comprobante: "",
     id_moneda: "PEN",
     fecha: new Date().toISOString().slice(0, 10),
     proveedor: "",
     referencia: "",
-    simbolo:"S/ ",
+    simbolo: "S/ ",
     total: props.total,
   };
 

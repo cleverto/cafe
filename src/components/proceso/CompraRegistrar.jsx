@@ -19,11 +19,15 @@ const CompraRegistrar = (props) => {
     const idParam = params.get("id");
 
     setIdmodulo(idParam);
+    formik.setFieldValue("idmodulo", idParam);
   }, []);
 
   useEffect(() => {
-    if (idmodulo) {
+    if (idmodulo != null) {
+      //get_modulo(idmodulo);
       get_lista(idmodulo);
+    } else {
+      get_lista_temp("");
     }
   }, [idmodulo]);
 
@@ -32,17 +36,6 @@ const CompraRegistrar = (props) => {
 
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (props.idmodulo != null) {
-      get_modulo(props.idmodulo);
-      get_lista(props.idmodulo);
-      //get_lista(props.idmodulo);
-    } else {
-      get_lista_temp("");
-    }
-    // eslint-disable-next-line
-  }, [props.idmodulo]);
 
   const get_lista_temp = async (id) => {
     let _datos = JSON.stringify({ id: id });
@@ -83,6 +76,7 @@ const CompraRegistrar = (props) => {
     const res = await Axios.post(window.globales.url + "/compra/lista", _datos);
 
     setRowdata(res.data.items);
+    formik.setFieldValue("operacion", "1");
   };
   // const buscar_dni = (e) => {
   //   const nuevoValor = e;
@@ -97,37 +91,37 @@ const CompraRegistrar = (props) => {
   //   }
   // };
 
-  const get_modulo = async (id) => {
-    let _datos = JSON.stringify({
-      id: id,
-    });
-    await Axios.post(window.globales.url + "/proveedor/modulo", _datos)
-      .then((res) => {
-        if (res.data.rpta === "1") {
-          formik.setFieldValue("operacion", "1");
-          formik.setFieldValue("dni", res.data.items.dni);
-          formik.setFieldValue("proveedor", res.data.items.proveedor);
-          formik.setFieldValue("direccion", res.data.items.direccion);
-          formik.setFieldValue("telefono", res.data.items.telefono);
-          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
-          const opciones = [
-            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo },
-          ];
-          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
-        } else {
-          Swal.fire({ text: res.data.msg, icon: "warning" });
-        }
-      })
-      .catch((error) => {
-        Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
-      });
-  };
+  // const get_modulo = async (id) => {
+  //   let _datos = JSON.stringify({
+  //     id: id,
+  //   });
+  //   await Axios.post(window.globales.url + "/proveedor/modulo", _datos)
+  //     .then((res) => {
+  //       if (res.data.rpta === "1") {
+  //         formik.setFieldValue("operacion", "1");
+  //         formik.setFieldValue("dni", res.data.items.dni);
+  //         formik.setFieldValue("proveedor", res.data.items.proveedor);
+  //         formik.setFieldValue("direccion", res.data.items.direccion);
+  //         formik.setFieldValue("telefono", res.data.items.telefono);
+  //         formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
+  //         formik.setFieldValue("ubigeo", res.data.items.ubigeo);
+  //         const opciones = [
+  //           { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo },
+  //         ];
+  //         formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
+  //         formik.setFieldValue("ubigeo", res.data.items.ubigeo);
+  //       } else {
+  //         Swal.fire({ text: res.data.msg, icon: "warning" });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
+  //     });
+  // };
   const guardar = async (data) => {
-    const ide = `${localStorage.getItem("idusuario")}-${Date.now()}`;
-    data.id_detalle = ide;
-    data.id_usuario = localStorage.getItem("idusuario");
+    // const ide = `${localStorage.getItem("idusuario")}-${Date.now()}`;
+    // data.id_detalle = ide;
+    // data.id_usuario = localStorage.getItem("idusuario");
 
     let _datos = JSON.stringify(data);
 
@@ -135,8 +129,8 @@ const CompraRegistrar = (props) => {
       .then((res) => {
         if (res.data.rpta === "1") {
           const obj = {
-            id_detalle: ide,
-            idmodulo: data.idmodulo,
+            id_detalle: res.data.id,
+            idmodulo: idmodulo,
             id_producto: data.id_producto,
             id_categoria: data.id_categoria,
             producto: data.producto,
@@ -168,7 +162,10 @@ const CompraRegistrar = (props) => {
       });
   };
   const eliminar = (e, id) => {
-    let _datos = JSON.stringify({ id: id, idmodulo: formik.values.idmodulo });
+    const params = new URLSearchParams(window.location.hash.split("?")[1]);
+    const idParam = params.get("id");
+
+    let _datos = JSON.stringify({ id: id, idmodulo: idParam });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
       text: "¿Estás seguro de que deseas eliminar este registro?",
@@ -202,8 +199,8 @@ const CompraRegistrar = (props) => {
   };
 
   const initialValues = {
-    operacion: "0",
-    idmodulo: props.idmodulo ? props.idmodulo : "",
+    operacion: idmodulo ? "1" : "0",
+    idmodulo: idmodulo ? idmodulo : "",
     id_credito: "",
     id_detalle: "",
     id_producto: "",
