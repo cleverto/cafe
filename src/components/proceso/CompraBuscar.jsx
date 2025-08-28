@@ -16,6 +16,8 @@ import * as Yup from "yup";
 import DataTable from "react-data-table-component";
 import Dashboard from "../dashboard/Dashboard";
 import { useNavigate } from "react-router-dom";
+import ModalOc from "../global/ModalOc";
+import CreditoPagarRegistrar from "./CreditoPagarRegistrar";
 
 const CompraBuscar = () => {
   const navigate = useNavigate();
@@ -23,6 +25,10 @@ const CompraBuscar = () => {
   const [columns, setColumns] = useState([]);
   const [rowdata, setRowData] = useState([]);
   const [filterData, setFilterData] = useState([]);
+
+  const [idCredito, setIdCredito] = useState(false);
+  const [showPagar, setShowPagar] = useState(false);
+  const handleClosePagar = () => setShowPagar(false);
 
   useEffect(() => {
     get_columns();
@@ -115,6 +121,14 @@ const CompraBuscar = () => {
                 >
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={(e) => {
+                    setIdCredito(row.id_credito);
+                    setShowPagar(!showPagar);
+                  }}
+                >
+                  <i class="bi bi-cash me-2"></i> Pagar
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </>
@@ -177,7 +191,7 @@ const CompraBuscar = () => {
               variant="light"
               onClick={() => window.history.back()}
             >
-           <i class="bi bi-backspace"></i>  Regresar
+              <i class="bi bi-backspace"></i>  Regresar
             </Button>
           </div>
         </div>
@@ -257,6 +271,17 @@ const CompraBuscar = () => {
           />
         </Card>
       </Container>
+
+      <ModalOc
+        componente={
+          <CreditoPagarRegistrar id_credito={idCredito} modulo="compra" />
+        }
+        title="Realizar el pago"
+        posicion="end"
+        izquierda=""
+        show={showPagar}
+        handleClose={() => setShowPagar(false)}
+      />
     </>
   );
 

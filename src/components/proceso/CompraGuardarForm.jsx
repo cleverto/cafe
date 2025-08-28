@@ -76,10 +76,16 @@ const CompraGuardarForm = (props) => {
                 <Form.Control
                   ref={inputRef}
                   value={props.values.dni}
-                  onChange={props.handleChange}
+                  onChange={(e) => {
+                    props.setFieldValue("proveedor", "");
+                    props.handleChange(e);
+                    
+
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
+
                       props.buscar_dni(props.values.dni);
                     }
                   }}
@@ -111,7 +117,6 @@ const CompraGuardarForm = (props) => {
                   onClick={() =>
                     window.open(`#/administracion/proveedor`, "_blank")
                   }
-
                 >
                   <i class="bi bi-plus-square"></i>
                 </Button>

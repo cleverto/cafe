@@ -13,18 +13,30 @@ const Compra = (props) => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showPagar, setShowPagar] = useState(false);
-
+  const [idmodulo, setIdmodulo] = useState("");
   const [id_credito, setIdCredito] = useState("");
   const handleClose = () => setShow(false);
   const handleClosePagar = () => setShowPagar(false);
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    get_columns();
+    const params = new URLSearchParams(window.location.hash.split("?")[1]);
+    const idParam = params.get("id");
 
+    setIdmodulo(idParam);
+  }, []);
+
+  useEffect(() => {
+    get_columns();
     // eslint-disable-next-line
   }, []);
 
+  // useEffect(() => {
+  //   if (idmodulo) {
+  //     console.log(idmodulo);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [idmodulo]);
 
   const get_columns = () => {
     setColumns([
@@ -205,7 +217,9 @@ const Compra = (props) => {
           <>
             <Button
               variant="outline-light"
-              onClick={(e) => props.eliminar(e, row.id_detalle)}
+              onClick={(e) => {
+                props.eliminar(e, row.id_detalle);
+              }}
             >
               <i class="bi bi-archive text-danger"></i>
             </Button>
@@ -218,11 +232,11 @@ const Compra = (props) => {
   return (
     <Container className="mb-4 " style={{ paddingBottom: "80px" }}>
       <div className="d-flex justify-content-between">
-        <div className="">
+        <div className="pt-4">
           <h5>Compras</h5>
-          <p className="text-muted">Rgistrar compras a proveedores</p>
         </div>
-        <div className="pt-4 mb-3">
+
+        <div className="pt-3 mb-3">
           <Button
             className=" "
             variant="outline-primary"
@@ -241,15 +255,15 @@ const Compra = (props) => {
           </Button>
           <Button
             className=""
-            variant="outline-primary"
+            variant={idmodulo ? "outline-danger" : "outline-primary"}
             onClick={(e) => setShow(!show)}
           >
             <i className="bi bi-floppy me-2"></i>
-            Guardar
+            {idmodulo ? "Modificar" : "Guardar"}
           </Button>
         </div>
       </div>
-
+      <hr className="mt-0 mb-4" />
       <Form
         noValidate
         id="formId"
@@ -279,8 +293,8 @@ const Compra = (props) => {
                 props.errors.id_producto && props.touched.id_producto
                   ? "is-invalid"
                   : props.touched.id_producto
-                  ? "is-valid"
-                  : ""
+                    ? "is-valid"
+                    : ""
               }
             />
 
@@ -747,18 +761,18 @@ const Compra = (props) => {
       </div>
 
       <ModalD
-        operacion={props.idmodulo ? "1" : "0"}
+        operacion={idmodulo ? "1" : "0"}
         show={show}
         onClose={() => setShow(false)}
         size="lg"
         title="Guardar compra"
         formId="formIdModulo"
-        aceptarTexto="Guardar"
+        aceptarTexto={idmodulo ? "Modificar" : "Guardar"}
         cancelarTexto="Cancelar"
       >
         <CompraGuardarRegistrar
           formId="formIdModulo"
-          idmodulo={props.idmodulo}
+          idmodulo={idmodulo}
           handleClose={handleClose}
           limpiarRowdata={props.limpiarRowdata}
           showPagar={(e) => setShowPagar(!showPagar)}
