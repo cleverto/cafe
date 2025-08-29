@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import Select from "react-select";
 
-const ProveedorForm = (props) => {
+const CajaForm = (props) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -168,4 +168,4 @@ const ProveedorForm = (props) => {
   );
 };
 
-export default ProveedorForm;
+export default CajaForm;

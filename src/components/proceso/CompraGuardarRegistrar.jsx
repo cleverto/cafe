@@ -61,6 +61,7 @@ const CompraGuardarRegistrar = (props) => {
             res.data.items.id_tipo_comprobante
           );
           formik.setFieldValue("referencia", res.data.items.referencia);
+          formik.setFieldValue("total", res.data.total);
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }

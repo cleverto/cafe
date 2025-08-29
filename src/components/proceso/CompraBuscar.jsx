@@ -28,10 +28,12 @@ const CompraBuscar = () => {
 
   const [idCredito, setIdCredito] = useState(false);
   const [showPagar, setShowPagar] = useState(false);
-  const handleClosePagar = () => setShowPagar(false);
 
   useEffect(() => {
     get_columns();
+    if (values) {
+      buscar(values);
+    }
 
     // eslint-disable-next-line
   }, []);
@@ -187,11 +189,8 @@ const CompraBuscar = () => {
             <h5>Buscar compras</h5>
           </div>
           <div>
-            <Button
-              variant="light"
-              onClick={() => window.history.back()}
-            >
-              <i class="bi bi-backspace"></i>  Regresar
+            <Button variant="light" onClick={() => window.history.back()}>
+              <i class="bi bi-backspace"></i> Regresar
             </Button>
           </div>
         </div>

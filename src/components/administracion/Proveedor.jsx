@@ -156,12 +156,11 @@ const Proveedor = () => {
 
   const componente = (
     <>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between mt-4 ">
         <div className="">
-          <h2>Proveedor</h2>
-          <p>Registre sus proveedores de café</p>
+          <h4>Proveedor</h4>
         </div>
-        <div className="pt-4">
+        <div className="">
           <Button
             onClick={() => {
               setIdmodulo("");
@@ -175,6 +174,15 @@ const Proveedor = () => {
           </Button>
         </div>
       </div>
+      <hr
+      className="mt-0"
+        style={{
+          border: 0,
+          borderTop: "1px solid #6cabd4ff",
+          borderBottom: "1px solid #fff",
+        }}
+      />
+
       <div className="d-flex justify-content-end mb-2">
         <Form.Group as={Col} md="12">
           <Form.Control

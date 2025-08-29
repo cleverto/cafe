@@ -99,7 +99,7 @@ function Login() {
   return (
     <Container fluid style={bgImageStyle}>
       <div className="col-sm-10 col-md-9 col-lg-5 mx-auto  w-100 h-100  d-flex justify-content-center align-items-center">
-        <Card className="border-0 shadow  p-3 rounded-3 " style={{ opacity: 0.8 }}> 
+        <Card className="border-0 shadow  p-3 rounded-3 " style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}> 
           <Card.Body className="p-4 p-sm-5 ">
             <Card.Title className="text-center mt-3 fw-light ">
               Inicio de sesión

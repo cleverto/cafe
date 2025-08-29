@@ -7,7 +7,7 @@ import ProveedorForm from "./ProveedorForm";
 import { useLocation } from "react-router-dom";
 
 
-const ProveedorRegistrar = (props) => {
+const CajaRegistrar = (props) => {
   const [listaUbigeo, setListaUbigeo] = useState([]);
     const location = useLocation();
 
@@ -196,4 +196,4 @@ const ProveedorRegistrar = (props) => {
   );
 };
 
-export default ProveedorRegistrar;
+export default CajaRegistrar;

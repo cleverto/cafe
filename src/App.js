@@ -11,8 +11,9 @@ import Proveedor from "./components/administracion/Proveedor";
 import CompraRegistrar from "./components/proceso/CompraRegistrar";
 import CompraBuscar from "./components/proceso/CompraBuscar";
 
-
 import CreditoPagar from "./components/proceso/CreditoPagar";
+
+import Caja from "./components/proceso/Caja";
 
 
 
@@ -72,6 +73,9 @@ function App() {
           <Route path="/proceso/compra/buscar" element={<CompraBuscar />} />
           {/* Proceso credito*/}
           <Route path="/proceso/compra/pagar" element={<CreditoPagar />} />
+          {/* Proceso caja*/}
+          <Route path="/proceso/caja" element={<Caja />} />
+
 
 
 

@@ -241,7 +241,10 @@ const Compra = (props) => {
             className=" "
             variant="outline-primary"
             title="Nuevo"
-            onClick={(e) => props.limpiarRowdata()}
+            onClick={() => {
+              navigate("/proceso/compra");
+              window.location.reload();
+            }}
           >
             <i className="bi bi-file-earmark-plus"></i>
           </Button>
@@ -255,7 +258,7 @@ const Compra = (props) => {
           </Button>
           <Button
             className=""
-            variant={idmodulo ? "outline-danger" : "outline-primary"}
+            variant={idmodulo ? "danger" : "primary"}
             onClick={(e) => setShow(!show)}
           >
             <i className="bi bi-floppy me-2"></i>
@@ -293,8 +296,8 @@ const Compra = (props) => {
                 props.errors.id_producto && props.touched.id_producto
                   ? "is-invalid"
                   : props.touched.id_producto
-                    ? "is-valid"
-                    : ""
+                  ? "is-valid"
+                  : ""
               }
             />
 

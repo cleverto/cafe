@@ -157,7 +157,6 @@ const Sidebar = ({ show, handle }) => {
                       >
                         Cliente
                       </ListGroup.Item>
-
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>
@@ -203,8 +202,8 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/rotacion"
-                        active={isActive("/rotacion")}
+                        to="/proceso/caja"
+                        active={isActive("/proceso/caja")}
                       >
                         Caja
                       </ListGroup.Item>
@@ -213,8 +212,8 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/rotacion"
-                        active={isActive("/rotacion")}
+                        to="/proceso/caja"
+                        active={isActive("/proceso/caja")}
                       >
                         Almacén
                       </ListGroup.Item>

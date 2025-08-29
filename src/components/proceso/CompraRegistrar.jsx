@@ -5,10 +5,8 @@ import Axios from "axios";
 import Swal from "sweetalert2";
 import Dashboard from "../dashboard/Dashboard";
 import Compra from "./Compra";
-import { useNavigate } from "react-router-dom";
 
 const CompraRegistrar = (props) => {
-  const navigate = useNavigate();
   const [idmodulo, setIdmodulo] = useState("");
   const [listaProducto, setListaProducto] = useState([]);
   const [rowdata, setRowdata] = useState([]);
@@ -23,11 +21,14 @@ const CompraRegistrar = (props) => {
   }, []);
 
   useEffect(() => {
-    if (idmodulo != null) {
+   
+      if (!idmodulo) { 
+       console.log(idmodulo);
       //get_modulo(idmodulo);
-      get_lista(idmodulo);
-    } else {
       get_lista_temp("");
+    } else {
+      get_lista(idmodulo);
+      
     }
   }, [idmodulo]);
 
@@ -77,6 +78,7 @@ const CompraRegistrar = (props) => {
 
     setRowdata(res.data.items);
     formik.setFieldValue("operacion", "1");
+    setTotal(res.data.total);
   };
   // const buscar_dni = (e) => {
   //   const nuevoValor = e;
