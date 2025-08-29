@@ -2,29 +2,27 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  Card,
-  Col,
   Container,
-  Dropdown,
-  Form,
   Row,
 } from "react-bootstrap";
-import DataTable from "react-data-table-component";
 import ModalD from "../global/ModalD.jsx";
 import Dashboard from "../dashboard/Dashboard.jsx";
-import ProveedorRegistrar from "../administracion/ProveedorRegistrar.jsx";
+import CajaRegistrar from "../proceso/CajaRegistrar.jsx";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import CajaBuscar from "./CajaUsuario.jsx";
 import CajaUsuario from "./CajaUsuario.jsx";
 
 const Caja = () => {
   const [datos, setDatos] = useState([]);
   const [datosUsuarios, setDatosUsuarios] = useState([]);
   const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+
+  const [showRegistrar, setShowRegistrar] = useState(false);
+  const handleCloseRegistrar = () => setShow(false);
   const [idmodulo, setIdmodulo] = useState("");
   const [idUsuario, setIdUsuario] = useState("");
-  const handleClose = () => setShow(false);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -83,8 +81,7 @@ const Caja = () => {
           </Button>
           <Button
             onClick={() => {
-              setIdmodulo("");
-              setShow(!show);
+              setShowRegistrar(!show);
             }}
             className=" "
             variant="primary"
@@ -111,7 +108,9 @@ const Caja = () => {
           >
             <p className="text-dark mb-1 fw-medium">Apertura de caja</p>
             <p className="text-dark fw-bold fs-4 mb-0">S/ {datos.apertura}</p>
-            <p className="text-dark fs-4 mb-0 text-muted">$ {datos.apertura_dolares}</p>
+            <p className="text-dark fs-4 mb-0 text-muted">
+              $ {datos.apertura_dolares}
+            </p>
           </div>
 
           <div
@@ -120,7 +119,9 @@ const Caja = () => {
           >
             <p className="text-dark mb-1 fw-medium">Ingresos</p>
             <p className="text-dark fw-bold fs-4 mb-0">{datos.ingresos}</p>
-            <p className="text-dark fs-4 mb-0 text-muted">$ {datos.ingresos_dolares}</p>
+            <p className="text-dark fs-4 mb-0 text-muted">
+              $ {datos.ingresos_dolares}
+            </p>
           </div>
 
           <div
@@ -129,7 +130,9 @@ const Caja = () => {
           >
             <p className="text-dark mb-1 fw-medium">Salidas</p>
             <p className="text-dark fw-bold fs-4 mb-0">{datos.egresos}</p>
-            <p className="text-dark  fs-4 mb-0 text-muted">{datos.egresos_dolares}</p>
+            <p className="text-dark  fs-4 mb-0 text-muted">
+              {datos.egresos_dolares}
+            </p>
           </div>
 
           <div
@@ -138,7 +141,9 @@ const Caja = () => {
           >
             <p className="text-dark mb-1 fw-medium">Saldo</p>
             <p className="text-dark fs-4 mb-0">{datos.saldo}</p>
-            <p className="text-dark fw-bold fs-4 mb-0 text-muted">{datos.saldo_dolares}</p>
+            <p className="text-dark fw-bold fs-4 mb-0 text-muted">
+              {datos.saldo_dolares}
+            </p>
           </div>
         </div>
       </Container>
@@ -176,9 +181,8 @@ const Caja = () => {
             >
               <p className="text-dark mb-1">{item.usuario}</p>
               <p className="text-dark fw-bold fs-4 mb-0">
-               {item.simbolo} {item.saldo_apertura ?? 0}
+                {item.simbolo} {item.saldo_apertura ?? 0}
               </p>
- 
             </div>
           ))}
         </div>
@@ -197,6 +201,22 @@ const Caja = () => {
         <CajaUsuario
           formId="formId"
           handleClose={handleClose}
+          id_usuario={idUsuario}
+        />
+      </ModalD>
+      <ModalD
+        operacion="0"
+        show={showRegistrar}
+        onClose={() => setShowRegistrar(false)}
+        size="lg"
+        title="Registrar movimiento"
+        formId="formId"
+        aceptarTexto=""
+        cancelarTexto="Cancelar"
+      >
+        <CajaRegistrar
+          formId="formId"
+          handleClose={handleCloseRegistrar}
           id_usuario={idUsuario}
         />
       </ModalD>

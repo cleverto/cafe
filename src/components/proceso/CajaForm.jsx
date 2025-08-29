@@ -1,27 +1,14 @@
-import Axios from "axios";
-import { useEffect, useRef } from "react";
+
 import {
   Form,
   Row,
   Col,
   Container,
-  InputGroup,
-  Button,
-  Spinner,
+  ToggleButton,
+  ButtonGroup,
 } from "react-bootstrap";
-import Select from "react-select";
 
 const CajaForm = (props) => {
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (props.values.foco === "0") {
-      inputRef.current?.focus();
-    }
-    props.setFieldValue("foco", "0");
-  }, [props.values.foco]);
-
-
   return (
     <Container className="">
       <Form
@@ -31,136 +18,121 @@ const CajaForm = (props) => {
         autoComplete="off"
       >
         <Row className="g-3">
-          <Col md="12" lg="12">
-            <Form.Group>
-              <Form.Label>DNI</Form.Label>
-              <InputGroup>
-                <Form.Control
-                ref={inputRef}
-                  value={props.values.dni}
-                  onChange={props.handleChange}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      props.buscar_dni(props.values.dni);
-                    }
-                  }}
-                  name="dni"
-                  type="text"
-                  placeholder="Buscar por DNI"
-                  maxLength="8"
-                />
+          <Col md="12" className=" mb-2 mt-4 text-center">
+            <ButtonGroup>
+              <ToggleButton
+                id={`radio-1`}
+                type="radio"
+                variant="outline-primary"
+                name="radio"
+                value="I"
+                checked={props.values.movimiento === "I"}
+                onChange={(e) =>
+                  props.setFieldValue("movimiento", e.target.value)
+                }
+              >
+                Ingreso
+              </ToggleButton>
+              <ToggleButton
+                id={`radio-2`}
+                type="radio"
+                variant="outline-danger"
+                name="radio"
+                value="S"
+                checked={props.values.movimiento === "S"}
+                onChange={(e) =>
+                  props.setFieldValue("movimiento", e.target.value)
+                }
+              >
+                Salida
+              </ToggleButton>
+            </ButtonGroup>
+          </Col>
 
-                <Button
-                  variant="secondary"
-                  onClick={() => props.buscar_dni(props.values.dni)}
-                >
-                  {props.values.swdni ? (
-                    <Spinner
-                      as="span"
-                      animation="grow"
-                      size="sm"
-                      role="status"
-                      aria-hidden="false"
-                    />
-                  ) : (
-                    <i className="bi bi-search"></i>
-                  )}
-                </Button>
-              </InputGroup>
+          <Col md="12" lg="12">
+            <Form.Group className="m-0">
+              <Form.Label>Concepto</Form.Label>
+              <Form.Select
+                value={props.values.concepto}
+                onChange={props.handleChange}
+                name="concepto"
+                isValid={!!props.touched.concepto}
+              >
+                {props.listaConcepto.map((data, index) => (
+                  <option key={index} value={data.id}>
+                    {data.descripcion}
+                  </option>
+                ))}
+              </Form.Select>
             </Form.Group>
           </Col>
           <Col md="12" lg="12">
-            <Form.Group>
-              <Form.Label>Proveedor</Form.Label>
+            <Form.Group className="m-0">
+              <Form.Label>Fecha</Form.Label>
               <Form.Control
-                required
-                
-                value={props.values.proveedor}
+                value={props.values.fecha}
                 onChange={props.handleChange}
-                name="proveedor"
-                type="text"
-                placeholder="Proveedor"
-                maxlength="50"
-                isInvalid={
-                  !!props.errors.proveedor &&
-                  props.touched.proveedor &&
-                  props.values.proveedor?.length === 0
-                }
-                isValid={!!props.touched.proveedor}
+                name="fecha"
+                type="date"
+                isInvalid={!!props.errors.fecha & props.touched.fecha}
+                isValid={!!props.touched.fecha}
               />
               <Form.Control.Feedback type="invalid">
-                {props.errors.proveedor}
+                {props.errors.fecha}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          <Col md="12" lg="12">
+            <Form.Group className=" m-0">
+              <Form.Label>Observaciones</Form.Label>
+
+              <Form.Control
+                required
+                value={props.values.observaciones}
+                onChange={props.handleChange}
+                name="celular"
+                type="text"
+                maxLength="50"
+                style={{ textTransform: "uppercase" }}
+                isInvalid={
+                  !!props.errors.observaciones & props.touched.observaciones
+                }
+                isValid={!!props.touched.observaciones}
+              />
+
+              <Form.Control.Feedback type="invalid">
+                {props.errors.observaciones}
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
 
           <Col md="12" lg="12">
             <Form.Group>
-              <Form.Label>Dirección</Form.Label>
+              <Form.Label>Monto</Form.Label>
               <Form.Control
                 required
-                
-                value={props.values.direccion}
-                onChange={props.handleChange}
-                name="direccion"
+                value={props.values.monto}
+                onChange={(e) => {
+                  let value = e.target.value;
+                  if (/^\d*\.?\d{0,2}$/.test(value)) {
+                    props.setFieldValue("monto", value);
+                  }
+                }}
+                onWheel={(e) => e.currentTarget.blur()}
+                name="monto"
                 type="text"
-                placeholder="Direccion"
-                maxlength="150"
+                inputMode="decimal"
+                maxLength="6"
                 isInvalid={
-                  !!props.errors.direccion &&
-                  props.touched.direccion &&
-                  props.values.direccion?.length === 0
+                  !!props.errors.monto &&
+                  props.touched.monto &&
+                  props.values.monto?.length === 0
                 }
-                isValid={!!props.touched.direccion}
               />
               <Form.Control.Feedback type="invalid">
-                {props.errors.direccion}
+                {props.errors.monto}
               </Form.Control.Feedback>
             </Form.Group>
-          </Col>
-          <Col md="12" lg="12">
-            <Form.Group>
-              <Form.Label>Teléfono</Form.Label>
-              <Form.Control
-                required
-                value={props.values.telefono}
-                onChange={props.handleChange}
-                name="telefono"
-                type="text"
-                placeholder="Telefono"
-                maxlength="50"
-                isInvalid={
-                  !!props.errors.telefono &&
-                  props.touched.telefono &&
-                  props.values.telefono?.length === 0
-                }
-                isValid={!!props.touched.telefono}
-              />
-              <Form.Control.Feedback type="invalid">
-                {props.errors.telefono}
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-          <Col md="12" lg="12">
-            <Select
-              options={props.listaUbigeo}
-              value={props.listaUbigeo.find(
-                (opt) => opt.value === props.values.id_ubigeo
-              ) || null}
-              onChange={(option) => {
-                props.setFieldValue("id_ubigeo", option ? option.value : "");
-                props.setFieldValue("ubigeo", option ? option.label : "");
-              }}
-              onInputChange={(inputValue, { action }) => {
-                if (action === "input-change") {
-                  props.buscar_ubigeo(inputValue);
-                }
-              }}
-              placeholder="Seleccione un ubigeo..."
-              isClearable
-            />
-
           </Col>
         </Row>
       </Form>

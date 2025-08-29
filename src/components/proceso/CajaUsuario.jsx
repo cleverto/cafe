@@ -49,8 +49,8 @@ const CajaUsuario = (props) => {
         width: "6rem",
         omit: true,
       },
-      {
-        id: 1,
+            {
+        id: 2,
         name: "Fecha",
         selector: (row) => row.fecha,
         sortable: true,
@@ -59,7 +59,17 @@ const CajaUsuario = (props) => {
         center: true,
       },
       {
-        id: 2,
+        id: 3,
+        name: "Concepto",
+        selector: (row) => row.concepto,
+        sortable: true,
+        reorder: true,
+        width: "10rem",
+        center: true,
+      },
+
+      {
+        id: 4,
         name: "Referencia",
         selector: (row) => row.referencia,
         sortable: true,
@@ -67,22 +77,21 @@ const CajaUsuario = (props) => {
       },
 
       {
-        id: 3,
+        id: 5,
         name: "Quien",
         selector: (row) => row.proveedor,
         sortable: true,
         wrap: true,
       },
       {
-        id: 4,
+        id: 6,
         name: "Observaciones",
         selector: (row) => row.observaciones,
         sortable: true,
         width: "10rem",
-
       },
       {
-        id: 5,
+        id: 7,
         name: "",
         selector: (row) => row.simbolo,
         sortable: true,
@@ -90,7 +99,7 @@ const CajaUsuario = (props) => {
         right: true,
       },
       {
-        id: 6,
+        id: 8,
         name: "Monto",
         selector: (row) => row.monto,
         cell: (row) => (
@@ -119,7 +128,6 @@ const CajaUsuario = (props) => {
               <Dropdown.Toggle
                 className="rounded-circle"
                 size="sm"
-             
                 variant="outline-light"
               >
                 <span>
@@ -139,7 +147,6 @@ const CajaUsuario = (props) => {
                 >
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
-
               </Dropdown.Menu>
             </Dropdown>
           </>
@@ -167,13 +174,13 @@ const CajaUsuario = (props) => {
     },
     headCells: {
       style: {
-        paddingLeft: "8px",  // padding izquierda del header
+        paddingLeft: "8px", // padding izquierda del header
         paddingRight: "8px", // padding derecha del header
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px",  // padding izquierda de cada celda
+        paddingLeft: "8px", // padding izquierda de cada celda
         paddingRight: "8px", // padding derecha de cada celda
         paddingTop: "4px",
         paddingBottom: "4px",

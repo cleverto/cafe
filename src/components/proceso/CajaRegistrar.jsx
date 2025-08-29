@@ -3,22 +3,18 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Axios from "axios";
 import Swal from "sweetalert2";
-import ProveedorForm from "./ProveedorForm";
+import CajaForm from "./CajaForm";
 import { useLocation } from "react-router-dom";
 
-
 const CajaRegistrar = (props) => {
+  const [listaConcepto, setListaConcepto] = useState([]);
   const [listaUbigeo, setListaUbigeo] = useState([]);
-    const location = useLocation();
+  const location = useLocation();
 
   const esProveedor = location.pathname.includes("proveedor");
 
-
-
   useEffect(() => {
-    const opciones = [
-      { value: "060801", label: "CAJAMARCA - JAEN - JAEN" }
-    ];
+    const opciones = [{ value: "060801", label: "CAJAMARCA - JAEN - JAEN" }];
 
     setListaUbigeo(opciones);
     formik.setFieldValue("id_ubigeo", "060801");
@@ -27,6 +23,11 @@ const CajaRegistrar = (props) => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    get_lista_concepto();
+
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (props.idmodulo) {
@@ -34,6 +35,18 @@ const CajaRegistrar = (props) => {
     }
     // eslint-disable-next-line
   }, [props.idmodulo]);
+
+  const get_lista_concepto = async () => {
+    let _datos = JSON.stringify({
+      modulo: "concepto",
+    });
+    const res = await Axios.post(
+      window.globales.url + "/administracion/lista",
+      _datos
+    );
+    setListaConcepto(res.data.items);
+    formik.setFieldValue("id_concepto", res.data.items.id);
+  };
 
   const buscar_ubigeo = async (inputValue) => {
     const texto = String(inputValue || "").trim();
@@ -55,10 +68,9 @@ const CajaRegistrar = (props) => {
       // Transformamos los datos para que React-Select los entienda
       const opciones = res.data.items.map((data) => ({
         value: data.id_ubigeo,
-        label: data.ubigeo
+        label: data.ubigeo,
       }));
       setListaUbigeo(opciones);
-
     } catch (error) {
       console.error("Error buscando ubigeo:", error);
       setListaUbigeo([]);
@@ -110,9 +122,8 @@ const CajaRegistrar = (props) => {
           formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
           formik.setFieldValue("ubigeo", res.data.items.ubigeo);
 
-
           const opciones = [
-            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo }
+            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo },
           ];
           setListaUbigeo(opciones);
           formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
@@ -160,16 +171,11 @@ const CajaRegistrar = (props) => {
   const initialValues = {
     operacion: "0",
     idmodulo: props.idmodulo,
-    proveedor: "",
-    tipo: esProveedor ? "0" : "1",
-    dni: "",
-    direccion: "",
-    telefono: "",
-    foco: "0",
-    id_ubigeo: "060801",
-    ubigeo: "",
-    swdni: false,
-    loaging: false,
+    movimiento:"S",
+    id_concepto:"",
+    fecha:"",
+    observaciones:"",
+    monto: "0.00",
   };
 
   const validationSchema = Yup.object({
@@ -182,16 +188,14 @@ const CajaRegistrar = (props) => {
     enableReinitialize: true,
     onSubmit: (values) => {
       guardar(values);
-
     },
   });
 
   return (
-    <ProveedorForm
-      {...formik}
-      buscar_dni={buscar_dni}
-      listaUbigeo={listaUbigeo}
-      buscar_ubigeo={buscar_ubigeo}
+    <CajaForm
+      {...formik}      
+      listaConcepto={listaConcepto}
+      
     />
   );
 };
