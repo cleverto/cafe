@@ -46,6 +46,7 @@ const CajaUsuario = (props) => {
         selector: (row) => row.id_compra,
         sortable: true,
         reorder: true,
+        width: "6rem",
         omit: true,
       },
       {
@@ -54,45 +55,59 @@ const CajaUsuario = (props) => {
         selector: (row) => row.fecha,
         sortable: true,
         reorder: true,
-        omit: true,
+        width: "8rem",
         center: true,
       },
       {
         id: 2,
-        name: "Nro",
-        selector: (row) => row.nro_comprobante,
-        sortable: true,
-        width: "6rem",
-      },
-      {
-        id: 3,
         name: "Referencia",
         selector: (row) => row.referencia,
         sortable: true,
-        width: "6rem",
-        right: true,
+        width: "8rem",
       },
+
       {
-        id: 4,
+        id: 3,
         name: "Quien",
         selector: (row) => row.proveedor,
         sortable: true,
+        wrap: true,
+      },
+      {
+        id: 4,
+        name: "Observaciones",
+        selector: (row) => row.observaciones,
+        sortable: true,
+        width: "10rem",
+
       },
       {
         id: 5,
-        name: "Monto",
-        selector: (row) => row.monto,
-        cell: (row) =>
-          Number(row.total).toLocaleString("es-PE", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }),
+        name: "",
+        selector: (row) => row.simbolo,
         sortable: true,
-        width: "6rem",
+        width: "4rem",
         right: true,
       },
       {
         id: 6,
+        name: "Monto",
+        selector: (row) => row.monto,
+        cell: (row) => (
+          <span style={{ color: row.movimiento === "S" ? "red" : "inherit" }}>
+            {Number(row.monto).toLocaleString("es-PE", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </span>
+        ),
+        sortable: true,
+        width: "6rem",
+        right: true,
+      },
+
+      {
+        id: 7,
         name: " ",
         button: true,
         width: "5rem",
@@ -104,10 +119,11 @@ const CajaUsuario = (props) => {
               <Dropdown.Toggle
                 className="rounded-circle"
                 size="sm"
-                variant="outline-secondary"
+             
+                variant="outline-light"
               >
                 <span>
-                  <i className="bi bi-three-dots-vertical"></i>
+                  <i className="bi bi-three-dots-vertical text-secondary"></i>
                 </span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -123,14 +139,7 @@ const CajaUsuario = (props) => {
                 >
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={(e) => {
-                    setIdCredito(row.id_credito);
-                    setShowPagar(!showPagar);
-                  }}
-                >
-                  <i class="bi bi-cash me-2"></i> Pagar
-                </Dropdown.Item>
+
               </Dropdown.Menu>
             </Dropdown>
           </>
@@ -150,6 +159,27 @@ const CajaUsuario = (props) => {
         Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
       });
   };
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "32px", // altura mínima de la fila
+      },
+    },
+    headCells: {
+      style: {
+        paddingLeft: "8px",  // padding izquierda del header
+        paddingRight: "8px", // padding derecha del header
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "8px",  // padding izquierda de cada celda
+        paddingRight: "8px", // padding derecha de cada celda
+        paddingTop: "4px",
+        paddingBottom: "4px",
+      },
+    },
+  };
 
   const componente = (
     <>
@@ -161,6 +191,7 @@ const CajaUsuario = (props) => {
             noDataComponent={<span>No hay información por mostrar</span>}
             persistTableHead
             responsive
+            customStyles={customStyles}
           />
         </Card>
       </Container>

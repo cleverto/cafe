@@ -18,13 +18,14 @@ const ModalD = (props) => {
         <Button variant="secondary" onClick={props.onClose}>
           {props.cancelarTexto}
         </Button>
-        <Button
-          variant={props.operacion === "1" ? "danger" : "primary"}
-          type="submit"
-          form={props.formId} // Enlaza el botón con el formulario
-        >
-          {props.aceptarTexto}
-        </Button>
+        {props.aceptarTexto && (
+          <Button
+            variant={props.operacion === "1" ? "danger" : "primary"}
+            type="submit"
+            form={props.formId} // Enlaza el botón con el formulario
+          >
+            {props.aceptarTexto}
+          </Button>)}
       </Modal.Footer>
     </Modal>
   );

@@ -110,7 +110,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Apertura de caja</p>
-            <p className="text-dark fw-bold fs-4 mb-0">{datos.apertura}</p>
+            <p className="text-dark fw-bold fs-4 mb-0">S/ {datos.apertura}</p>
+            <p className="text-dark fs-4 mb-0 text-muted">$ {datos.apertura_dolares}</p>
           </div>
 
           <div
@@ -119,6 +120,7 @@ const Caja = () => {
           >
             <p className="text-dark mb-1 fw-medium">Ingresos</p>
             <p className="text-dark fw-bold fs-4 mb-0">{datos.ingresos}</p>
+            <p className="text-dark fs-4 mb-0 text-muted">$ {datos.ingresos_dolares}</p>
           </div>
 
           <div
@@ -127,6 +129,7 @@ const Caja = () => {
           >
             <p className="text-dark mb-1 fw-medium">Salidas</p>
             <p className="text-dark fw-bold fs-4 mb-0">{datos.egresos}</p>
+            <p className="text-dark  fs-4 mb-0 text-muted">{datos.egresos_dolares}</p>
           </div>
 
           <div
@@ -134,7 +137,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Saldo</p>
-            <p className="text-dark fw-bold fs-4 mb-0">{datos.saldo}</p>
+            <p className="text-dark fs-4 mb-0">{datos.saldo}</p>
+            <p className="text-dark fw-bold fs-4 mb-0 text-muted">{datos.saldo_dolares}</p>
           </div>
         </div>
       </Container>
@@ -172,8 +176,9 @@ const Caja = () => {
             >
               <p className="text-dark mb-1">{item.usuario}</p>
               <p className="text-dark fw-bold fs-4 mb-0">
-                {item.saldo_apertura ?? 0}
+               {item.simbolo} {item.saldo_apertura ?? 0}
               </p>
+ 
             </div>
           ))}
         </div>
@@ -186,7 +191,7 @@ const Caja = () => {
         size="xl"
         title="Resumen de caja por usuario"
         formId="formId"
-        aceptarTexto="Aceptar"
+        aceptarTexto=""
         cancelarTexto="Cancelar"
       >
         <CajaUsuario
