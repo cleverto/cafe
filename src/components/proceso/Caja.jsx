@@ -2,29 +2,27 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  Card,
-  Col,
   Container,
-  Dropdown,
-  Form,
   Row,
 } from "react-bootstrap";
-import DataTable from "react-data-table-component";
 import ModalD from "../global/ModalD.jsx";
 import Dashboard from "../dashboard/Dashboard.jsx";
-import ProveedorRegistrar from "../administracion/ProveedorRegistrar.jsx";
+import CajaRegistrar from "../proceso/CajaRegistrar.jsx";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import CajaBuscar from "./CajaUsuario.jsx";
 import CajaUsuario from "./CajaUsuario.jsx";
 
 const Caja = () => {
   const [datos, setDatos] = useState([]);
   const [datosUsuarios, setDatosUsuarios] = useState([]);
   const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+
+  const [showRegistrar, setShowRegistrar] = useState(false);
+  const handleCloseRegistrar = () => setShowRegistrar(false);
   const [idmodulo, setIdmodulo] = useState("");
   const [idUsuario, setIdUsuario] = useState("");
-  const handleClose = () => setShow(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,29 +37,6 @@ const Caja = () => {
     setDatosUsuarios(res.data.saldo_usuarios);
   };
 
-  const eliminar = async (id) => {
-    let _datos = JSON.stringify({ id: id });
-    Swal.fire({
-      title: "¿Confirmar Eliminación?",
-      text: "¿Estás seguro de que deseas eliminar este registro?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, continuar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.post(window.globales.url + "/proveedor/eliminar", _datos)
-          .then((res) => {
-            if (res.data.rpta === "1") {
-            }
-          })
-          .catch((error) => {
-            Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
-          });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-      }
-    });
-  };
 
   const componente = (
     <>
@@ -83,8 +58,7 @@ const Caja = () => {
           </Button>
           <Button
             onClick={() => {
-              setIdmodulo("");
-              setShow(!show);
+              setShowRegistrar(!show);
             }}
             className=" "
             variant="primary"
@@ -102,7 +76,6 @@ const Caja = () => {
           borderBottom: "1px solid #fff",
         }}
       />
-
       <Container>
         <div className="d-flex flex-wrap gap-3 p-4">
           <div
@@ -110,8 +83,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Apertura de caja</p>
-            <p className="text-dark fw-bold fs-4 mb-0">S/ {datos.apertura}</p>
-            <p className="text-dark fs-4 mb-0 text-muted">$ {datos.apertura_dolares}</p>
+            <p className="text-dark fw-bold fs-4 mb-0">S/ {Number(datos.apertura).toLocaleString("es-PE")}</p>
+            <p className="text-dark fs-4 mb-0 text-muted">$ {Number(datos.apertura_dolares).toLocaleString("es-PE")}</p>
           </div>
 
           <div
@@ -119,8 +92,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Ingresos</p>
-            <p className="text-dark fw-bold fs-4 mb-0">{datos.ingresos}</p>
-            <p className="text-dark fs-4 mb-0 text-muted">$ {datos.ingresos_dolares}</p>
+            <p className="text-dark fw-bold fs-4 mb-0">  S/ {Number(datos.ingresos).toLocaleString("es-PE")}</p>
+            <p className="text-dark fs-4 mb-0 text-muted">$ {Number(datos.ingresos_dolares).toLocaleString("es-PE")}</p>
           </div>
 
           <div
@@ -128,8 +101,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Salidas</p>
-            <p className="text-dark fw-bold fs-4 mb-0">{datos.egresos}</p>
-            <p className="text-dark  fs-4 mb-0 text-muted">{datos.egresos_dolares}</p>
+            <p className="text-dark fw-bold fs-4 mb-0">S/ {Number(datos.egresos_dolares).toLocaleString("es-PE")}</p>
+            <p className="text-dark  fs-4 mb-0 text-muted">$ {Number(datos.egresos_dolares).toLocaleString("es-PE")}</p>
           </div>
 
           <div
@@ -137,8 +110,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Saldo</p>
-            <p className="text-dark fs-4 mb-0">{datos.saldo}</p>
-            <p className="text-dark fw-bold fs-4 mb-0 text-muted">{datos.saldo_dolares}</p>
+            <p className="text-dark fs-4 mb-0">S/ {Number(datos.saldo).toLocaleString("es-PE")}</p>
+            <p className="text-dark fw-bold fs-4 mb-0 text-muted">$ {Number(datos.saldo_dolares).toLocaleString("es-PE")}</p>
           </div>
         </div>
       </Container>
@@ -176,9 +149,8 @@ const Caja = () => {
             >
               <p className="text-dark mb-1">{item.usuario}</p>
               <p className="text-dark fw-bold fs-4 mb-0">
-               {item.simbolo} {item.saldo_apertura ?? 0}
+                {item.simbolo} {item.saldo_apertura ?? 0}
               </p>
- 
             </div>
           ))}
         </div>
@@ -197,6 +169,23 @@ const Caja = () => {
         <CajaUsuario
           formId="formId"
           handleClose={handleClose}
+          id_usuario={idUsuario}
+        />
+      </ModalD>
+      <ModalD
+        operacion="0"
+        show={showRegistrar}
+        onClose={() => setShowRegistrar(false)}
+        size="lg"
+        title="Registrar movimiento"
+        formId="formId"
+        aceptarTexto="Guardar"
+        cancelarTexto="Cancelar"
+      >
+        <CajaRegistrar
+          formId="formId"
+          handleClose={handleCloseRegistrar}
+          get_lista={get_lista}
           id_usuario={idUsuario}
         />
       </ModalD>

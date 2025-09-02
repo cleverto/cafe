@@ -1,7 +1,9 @@
 
-const isAdmisionBaseUrl =
-window.location.origin === "https://escalafon.unj.edu.pe";
-const url = isAdmisionBaseUrl ? "https://escalafon.unj.edu.pe/admision/index.php" : "http://localhost:8080/api-cafe";
+const isAdmisionBaseUrl = window.location.hostname.includes("smartrockola.com");
+
+const url = isAdmisionBaseUrl
+  ? "https://smartrockola.com/api-cafe/index.php"
+  : "http://localhost:8080/api-cafe";
 
 const globales = {
   nombre:"colibri",
