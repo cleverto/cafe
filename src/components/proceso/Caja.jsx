@@ -19,7 +19,7 @@ const Caja = () => {
   const handleClose = () => setShow(false);
 
   const [showRegistrar, setShowRegistrar] = useState(false);
-  const handleCloseRegistrar = () => setShow(false);
+  const handleCloseRegistrar = () => setShowRegistrar(false);
   const [idmodulo, setIdmodulo] = useState("");
   const [idUsuario, setIdUsuario] = useState("");
   
@@ -81,7 +81,7 @@ const Caja = () => {
           </Button>
           <Button
             onClick={() => {
-              setShowRegistrar(!show);
+              setShowRegistrar(!showRegistrar);
             }}
             className=" "
             variant="primary"
@@ -107,10 +107,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Apertura de caja</p>
-            <p className="text-dark fw-bold fs-4 mb-0">S/ {datos.apertura}</p>
-            <p className="text-dark fs-4 mb-0 text-muted">
-              $ {datos.apertura_dolares}
-            </p>
+            <p className="text-dark fw-bold fs-4 mb-0">S/ {Number(datos.apertura).toLocaleString("es-PE")}</p>
+            <p className="text-dark fs-4 mb-0 text-muted">$ {Number(datos.apertura_dolares).toLocaleString("es-PE")}</p>
           </div>
 
           <div
@@ -118,10 +116,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Ingresos</p>
-            <p className="text-dark fw-bold fs-4 mb-0">{datos.ingresos}</p>
-            <p className="text-dark fs-4 mb-0 text-muted">
-              $ {datos.ingresos_dolares}
-            </p>
+            <p className="text-dark fw-bold fs-4 mb-0">  S/ {Number(datos.ingresos).toLocaleString("es-PE")}</p>
+            <p className="text-dark fs-4 mb-0 text-muted">$ {Number(datos.ingresos_dolares).toLocaleString("es-PE")}</p>
           </div>
 
           <div
@@ -129,10 +125,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Salidas</p>
-            <p className="text-dark fw-bold fs-4 mb-0">{datos.egresos}</p>
-            <p className="text-dark  fs-4 mb-0 text-muted">
-              {datos.egresos_dolares}
-            </p>
+            <p className="text-dark fw-bold fs-4 mb-0">S/ {Number(datos.egresos_dolares).toLocaleString("es-PE")}</p>
+            <p className="text-dark  fs-4 mb-0 text-muted">$ {Number(datos.egresos_dolares).toLocaleString("es-PE")}</p>
           </div>
 
           <div
@@ -140,10 +134,8 @@ const Caja = () => {
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
           >
             <p className="text-dark mb-1 fw-medium">Saldo</p>
-            <p className="text-dark fs-4 mb-0">{datos.saldo}</p>
-            <p className="text-dark fw-bold fs-4 mb-0 text-muted">
-              {datos.saldo_dolares}
-            </p>
+            <p className="text-dark fs-4 mb-0">S/ {Number(datos.saldo).toLocaleString("es-PE")}</p>
+            <p className="text-dark fw-bold fs-4 mb-0 text-muted">$ {Number(datos.saldo_dolares).toLocaleString("es-PE")}</p>
           </div>
         </div>
       </Container>
@@ -181,7 +173,7 @@ const Caja = () => {
             >
               <p className="text-dark mb-1">{item.usuario}</p>
               <p className="text-dark fw-bold fs-4 mb-0">
-                {item.simbolo} {item.saldo_apertura ?? 0}
+                {item.simbolo} {Number(item.saldo_apertura).toLocaleString("es-PE")  ?? 0}
               </p>
             </div>
           ))}
@@ -211,12 +203,13 @@ const Caja = () => {
         size="lg"
         title="Registrar movimiento"
         formId="formId"
-        aceptarTexto=""
+        aceptarTexto="Guardar"
         cancelarTexto="Cancelar"
       >
         <CajaRegistrar
           formId="formId"
           handleClose={handleCloseRegistrar}
+          get_lista={get_lista}
           id_usuario={idUsuario}
         />
       </ModalD>

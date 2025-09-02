@@ -6,19 +6,14 @@ import Swal from "sweetalert2";
 import ProveedorForm from "./ProveedorForm";
 import { useLocation } from "react-router-dom";
 
-
 const ProveedorRegistrar = (props) => {
   const [listaUbigeo, setListaUbigeo] = useState([]);
-    const location = useLocation();
+  const location = useLocation();
 
   const esProveedor = location.pathname.includes("proveedor");
 
-
-
   useEffect(() => {
-    const opciones = [
-      { value: "060801", label: "CAJAMARCA - JAEN - JAEN" }
-    ];
+    const opciones = [{ value: "060801", label: "CAJAMARCA - JAEN - JAEN" }];
 
     setListaUbigeo(opciones);
     formik.setFieldValue("id_ubigeo", "060801");
@@ -26,7 +21,6 @@ const ProveedorRegistrar = (props) => {
 
     // eslint-disable-next-line
   }, []);
-
 
   useEffect(() => {
     if (props.idmodulo) {
@@ -55,10 +49,9 @@ const ProveedorRegistrar = (props) => {
       // Transformamos los datos para que React-Select los entienda
       const opciones = res.data.items.map((data) => ({
         value: data.id_ubigeo,
-        label: data.ubigeo
+        label: data.ubigeo,
       }));
       setListaUbigeo(opciones);
-
     } catch (error) {
       console.error("Error buscando ubigeo:", error);
       setListaUbigeo([]);
@@ -66,19 +59,31 @@ const ProveedorRegistrar = (props) => {
   };
   const buscar_dni = (e) => {
     const nuevoValor = e;
-    if (
-      nuevoValor &&
-      typeof nuevoValor === "string" &&
-      nuevoValor.length === 8
-    ) {
-      formik.setFieldValue("swdni", true);
 
-      get_dni_externo(nuevoValor);
+    if (nuevoValor && typeof nuevoValor === "string") {
+      if (nuevoValor.length === 8) {
+        // Es DNI
+        formik.setFieldValue("swdni", true);
+        get_dni_externo(nuevoValor);
+      } else if (nuevoValor.length === 11) {
+        // Es RUC
+        formik.setFieldValue("swdni", false);
+        get_dni_externo(nuevoValor);
+      }
     }
   };
 
   const get_dni_externo = async (cad) => {
-    let _datos = JSON.stringify({ tipo: "dni", nro: cad });
+    let tipo = "";
+    if (cad.length === 8) {
+      tipo = "dni";
+    } else if (cad.length === 11) {
+      tipo = "ruc";
+    } else {
+      return;
+    }
+
+    let _datos = JSON.stringify({ tipo: tipo, nro: cad });
     formik.setFieldValue("proveedor", "");
     await Axios.post(
       window.globales.url + "/funciones/get_solo_nombre",
@@ -86,10 +91,7 @@ const ProveedorRegistrar = (props) => {
     ).then((res) => {
       if (res.data.rpta === "1") {
         formik.setFieldValue("dni", cad);
-        formik.setFieldValue(
-          "proveedor",
-          `${res.data.items.nombres} ${res.data.items.paterno} ${res.data.items.materno}`
-        );
+        formik.setFieldValue("proveedor", `${res.data.items.nombrecompleto}`);
       }
       formik.setFieldValue("swdni", false);
     });
@@ -103,16 +105,15 @@ const ProveedorRegistrar = (props) => {
       .then((res) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("operacion", "1");
-          formik.setFieldValue("dni", res.data.items.dni);
+          formik.setFieldValue("dni", res.data.items.nro);
           formik.setFieldValue("proveedor", res.data.items.proveedor);
           formik.setFieldValue("direccion", res.data.items.direccion);
           formik.setFieldValue("telefono", res.data.items.telefono);
           formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
           formik.setFieldValue("ubigeo", res.data.items.ubigeo);
 
-
           const opciones = [
-            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo }
+            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo },
           ];
           setListaUbigeo(opciones);
           formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
@@ -135,13 +136,13 @@ const ProveedorRegistrar = (props) => {
           formik.setFieldValue("foco", "1");
           const obj = {
             id_proveedor: data.operacion === "0" ? res.data.id : data.idmodulo,
-            dni: data.dni,
+            nro: data.dni,
             proveedor: data.proveedor,
             direccion: data.direccion,
             telefono: data.telefono,
             ubigeo: data.ubigeo,
           };
-          console.log(obj);
+
           if (data.operacion === "0") {
             props.inserta(obj);
           } else {
@@ -174,6 +175,14 @@ const ProveedorRegistrar = (props) => {
 
   const validationSchema = Yup.object({
     proveedor: Yup.string().required("Requerido"),
+    dni: Yup.string()
+      .matches(/^\d+$/, "Solo se permiten números")
+      .test(
+        "len",
+        "Debe tener 8 o 11 dígitos",
+        (val) => val && (val.length === 8 || val.length === 11)
+      )
+      .required("Requerido"),
   });
 
   const formik = useFormik({
@@ -182,7 +191,6 @@ const ProveedorRegistrar = (props) => {
     enableReinitialize: true,
     onSubmit: (values) => {
       guardar(values);
-
     },
   });
 

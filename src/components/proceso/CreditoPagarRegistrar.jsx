@@ -9,7 +9,6 @@ const CreditoPagarRegistrar = (props) => {
   const [listaTipoCaja, setListaTipoCaja] = useState([]);
   const [rowData, setRowdata] = useState([]);
 
-
   useEffect(() => {
     if (props.id_credito) {
       modulo(props.id_credito);
@@ -27,8 +26,6 @@ const CreditoPagarRegistrar = (props) => {
     );
     setRowdata(res.data.items);
   };
-
-
 
   useEffect(() => {
     get_lista_medio_pago();
@@ -49,10 +46,10 @@ const CreditoPagarRegistrar = (props) => {
     formik.setFieldValue("tipo_caja", res.data.items[0].descripcion);
   };
 
-
   const modulo = async (id) => {
     let _datos = JSON.stringify({
-      id: id, modulo: props.modulo,
+      id: id,
+      modulo: props.modulo,
     });
     await Axios.post(window.globales.url + "/credito/modulo_origen", _datos)
       .then((res) => {
@@ -65,8 +62,6 @@ const CreditoPagarRegistrar = (props) => {
           formik.setFieldValue("simbolo", res.data.items.simbolo);
           formik.setFieldValue("referencia", res.data.items.nro_comprobante);
           formik.setFieldValue("saldo", res.data.items.saldo);
-
-
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
@@ -76,14 +71,12 @@ const CreditoPagarRegistrar = (props) => {
       });
   };
 
-
   const guardar = async (data) => {
     let _datos = JSON.stringify(data);
 
     await Axios.post(window.globales.url + "/credito/guardar_detalle", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
-
           const obj = {
             id: res.data.id,
             fecha: data.fecha,
@@ -93,6 +86,9 @@ const CreditoPagarRegistrar = (props) => {
           formik.setFieldValue("saldo", res.data.saldo);
 
           setRowdata((prevData) => [obj, ...prevData]);
+
+          formik.setFieldValue("monto", "0");
+          formik.setFieldTouched("monto", false);
 
           return true;
         } else {
@@ -126,9 +122,7 @@ const CreditoPagarRegistrar = (props) => {
           .catch((error) => {
             Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
           });
-
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-
       }
     });
   };
@@ -147,16 +141,17 @@ const CreditoPagarRegistrar = (props) => {
     referencia: "",
   };
 
-  ;
-
   const validationSchema = Yup.object({
     monto: Yup.string()
       .required("Requerido")
-      .matches(/^\d+(\.\d{1,2})?$/, "Solo se permiten números con máximo dos decimales")
-      .test("mayor-a-cero", "Debe ser mayor a cero", value => {
+      .matches(
+        /^\d+(\.\d{1,2})?$/,
+        "Solo se permiten números con máximo dos decimales"
+      )
+      .test("mayor-a-cero", "Debe ser mayor a cero", (value) => {
         const num = parseFloat(value);
         return !isNaN(num) && num > 0;
-      })
+      }),
   });
   const formik = useFormik({
     initialValues,
@@ -170,12 +165,10 @@ const CreditoPagarRegistrar = (props) => {
       } else {
         console.error("Error al guardar");
       }
-
     },
   });
 
   return (
-
     <CreditoPagar
       {...formik}
       eliminar={eliminar}
@@ -183,7 +176,6 @@ const CreditoPagarRegistrar = (props) => {
       idmodulo={props.id_credito}
       rowData={rowData}
     />
-
   );
 };
 

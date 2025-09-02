@@ -51,12 +51,46 @@ const CajaForm = (props) => {
 
           <Col md="12" lg="12">
             <Form.Group className="m-0">
+              <Form.Label>Moneda</Form.Label>
+              <Form.Select
+                value={props.values.id_moneda}
+                onChange={props.handleChange}
+                name="id_moneda"
+                isValid={!!props.touched.id_moneda}
+              >
+                {props.listaMoneda.map((data, index) => (
+                  <option key={index} value={data.id}>
+                    {data.descripcion}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md="12" lg="12">
+            <Form.Group className="m-0">
+              <Form.Label>Tipo de caja</Form.Label>
+              <Form.Select
+                value={props.values.id_tipo_caja}
+                onChange={props.handleChange}
+                name="id_tipo_caja"
+                isValid={!!props.touched.id_tipo_caja}
+              >
+                {props.listaTipoCaja.map((data, index) => (
+                  <option key={index} value={data.id}>
+                    {data.descripcion}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md="12" lg="12">
+            <Form.Group className="m-0">
               <Form.Label>Concepto</Form.Label>
               <Form.Select
-                value={props.values.concepto}
+                value={props.values.id_concepto}
                 onChange={props.handleChange}
-                name="concepto"
-                isValid={!!props.touched.concepto}
+                name="id_concepto"
+                isValid={!!props.touched.id_concepto}
               >
                 {props.listaConcepto.map((data, index) => (
                   <option key={index} value={data.id}>

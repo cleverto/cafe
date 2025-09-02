@@ -4,31 +4,18 @@ import * as Yup from "yup";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import CajaForm from "./CajaForm";
-import { useLocation } from "react-router-dom";
 
 const CajaRegistrar = (props) => {
   const [listaConcepto, setListaConcepto] = useState([]);
-  const [listaUbigeo, setListaUbigeo] = useState([]);
-  const location = useLocation();
-
-  const esProveedor = location.pathname.includes("proveedor");
-
-  useEffect(() => {
-    const opciones = [{ value: "060801", label: "CAJAMARCA - JAEN - JAEN" }];
-
-    setListaUbigeo(opciones);
-    formik.setFieldValue("id_ubigeo", "060801");
-    formik.setFieldValue("ubigeo", "CAJAMARCA - JAEN - JAEN");
-
-    // eslint-disable-next-line
-  }, []);
+  const [listaTipoCaja, setListaTipoCaja] = useState([]);
+  const [listaMoneda, setListaMoneda] = useState([]);
 
   useEffect(() => {
     get_lista_concepto();
-
+    get_lista_tipo_caja();
+    get_lista_moneda();
     // eslint-disable-next-line
   }, []);
-
   useEffect(() => {
     if (props.idmodulo) {
       modulo(props.idmodulo);
@@ -36,6 +23,17 @@ const CajaRegistrar = (props) => {
     // eslint-disable-next-line
   }, [props.idmodulo]);
 
+  const get_lista_moneda = async () => {
+    let _datos = JSON.stringify({
+      modulo: "moneda",
+    });
+    const res = await Axios.post(
+      window.globales.url + "/administracion/lista",
+      _datos
+    );
+    setListaMoneda(res.data.items);
+    formik.setFieldValue("id_moneda", "PEN");
+  };
   const get_lista_concepto = async () => {
     let _datos = JSON.stringify({
       modulo: "concepto",
@@ -45,89 +43,36 @@ const CajaRegistrar = (props) => {
       _datos
     );
     setListaConcepto(res.data.items);
-    formik.setFieldValue("id_concepto", res.data.items.id);
+    formik.setFieldValue("id_concepto", res.data.items[0].id);
+    console.log("id_concepto.id");
   };
 
-  const buscar_ubigeo = async (inputValue) => {
-    const texto = String(inputValue || "").trim();
-
-    // Evitamos búsquedas vacías o muy cortas
-    if (texto.length < 2) {
-      setListaUbigeo([]);
-      return;
-    }
-
-    try {
-      const _datos = JSON.stringify({ text: texto });
-
-      const res = await Axios.post(
-        `${window.globales.url}/funciones/buscar_ubigeo`,
-        _datos
-      );
-
-      // Transformamos los datos para que React-Select los entienda
-      const opciones = res.data.items.map((data) => ({
-        value: data.id_ubigeo,
-        label: data.ubigeo,
-      }));
-      setListaUbigeo(opciones);
-    } catch (error) {
-      console.error("Error buscando ubigeo:", error);
-      setListaUbigeo([]);
-    }
-  };
-  const buscar_dni = (e) => {
-    const nuevoValor = e;
-    if (
-      nuevoValor &&
-      typeof nuevoValor === "string" &&
-      nuevoValor.length === 8
-    ) {
-      formik.setFieldValue("swdni", true);
-
-      get_dni_externo(nuevoValor);
-    }
-  };
-
-  const get_dni_externo = async (cad) => {
-    let _datos = JSON.stringify({ tipo: "dni", nro: cad });
-    formik.setFieldValue("proveedor", "");
-    await Axios.post(
-      window.globales.url + "/funciones/get_solo_nombre",
-      _datos
-    ).then((res) => {
-      if (res.data.rpta === "1") {
-        formik.setFieldValue("dni", cad);
-        formik.setFieldValue(
-          "proveedor",
-          `${res.data.items.nombres} ${res.data.items.paterno} ${res.data.items.materno}`
-        );
-      }
-      formik.setFieldValue("swdni", false);
+  const get_lista_tipo_caja = async () => {
+    let _datos = JSON.stringify({
+      modulo: "tipo_caja",
     });
+    const res = await Axios.post(
+      window.globales.url + "/administracion/lista",
+      _datos
+    );
+    setListaTipoCaja(res.data.items);
+    formik.setFieldValue("id_tipo_caja", res.data.items[0].id);
   };
 
   const modulo = async (id) => {
     let _datos = JSON.stringify({
       id: id,
     });
-    await Axios.post(window.globales.url + "/proveedor/modulo", _datos)
+    await Axios.post(window.globales.url + "/caja/modulo", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
+          console.log(res.data.items.id_concepto);
           formik.setFieldValue("operacion", "1");
-          formik.setFieldValue("dni", res.data.items.dni);
-          formik.setFieldValue("proveedor", res.data.items.proveedor);
-          formik.setFieldValue("direccion", res.data.items.direccion);
-          formik.setFieldValue("telefono", res.data.items.telefono);
-          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
-
-          const opciones = [
-            { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo },
-          ];
-          setListaUbigeo(opciones);
-          formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-          formik.setFieldValue("ubigeo", res.data.items.ubigeo);
+          formik.setFieldValue("movimiento", res.data.items.movimiento);
+          formik.setFieldValue("id_concepto", res.data.items.id_concepto);
+          formik.setFieldValue("fecha", res.data.items.fecha);
+          formik.setFieldValue("observaciones", res.data.items.observaciones);
+          formik.setFieldValue("monto", res.data.items.monto);
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
@@ -140,25 +85,26 @@ const CajaRegistrar = (props) => {
   const guardar = async (data) => {
     let _datos = JSON.stringify(data);
 
-    await Axios.post(window.globales.url + "/proveedor/guardar", _datos)
+    await Axios.post(window.globales.url + "/caja/guardar", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
-          formik.setFieldValue("foco", "1");
-          const obj = {
-            id_proveedor: data.operacion === "0" ? res.data.id : data.idmodulo,
-            dni: data.dni,
-            proveedor: data.proveedor,
-            direccion: data.direccion,
-            telefono: data.telefono,
-            ubigeo: data.ubigeo,
-          };
-          console.log(obj);
+          props.handleClose();
           if (data.operacion === "0") {
-            props.inserta(obj);
+            props.get_lista();
           } else {
+            
+            
+            const obj = {
+              id_caja: res.data.modulo.id_caja,
+              referencia: res.data.modulo.concepto,
+              Quien: res.data.modulo.proveedor,
+              observaciones: res.data.modulo.observaciones,
+              simbolo: res.data.modulo.simbolo,
+              monto: res.data.modulo.monto,
+            };
+
             props.modifica(obj);
           }
-          props.handleClose();
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
         }
@@ -171,15 +117,23 @@ const CajaRegistrar = (props) => {
   const initialValues = {
     operacion: "0",
     idmodulo: props.idmodulo,
-    movimiento:"S",
-    id_concepto:"",
-    fecha:"",
-    observaciones:"",
+    id_concepto: "",
+    movimiento: "S",
+    id_concepto: "",
+    fecha: new Date().toISOString().slice(0, 10),
+    observaciones: "",
     monto: "0.00",
   };
 
   const validationSchema = Yup.object({
-    proveedor: Yup.string().required("Requerido"),
+    fecha: Yup.date()
+      .typeError("Ingrese una fecha válida") // Si no es fecha
+      .required("La fecha es obligatoria"),
+
+    monto: Yup.number()
+      .typeError("Ingrese un monto válido") // Si no es número
+      .positive("El monto debe ser mayor que 0") // Mayor a 0
+      .required("El monto es obligatorio"),
   });
 
   const formik = useFormik({
@@ -193,9 +147,10 @@ const CajaRegistrar = (props) => {
 
   return (
     <CajaForm
-      {...formik}      
+      {...formik}
       listaConcepto={listaConcepto}
-      
+      listaTipoCaja={listaTipoCaja}
+      listaMoneda={listaMoneda}
     />
   );
 };

@@ -21,7 +21,6 @@ const ProveedorForm = (props) => {
     props.setFieldValue("foco", "0");
   }, [props.values.foco]);
 
-
   return (
     <Container className="">
       <Form
@@ -33,10 +32,10 @@ const ProveedorForm = (props) => {
         <Row className="g-3">
           <Col md="12" lg="12">
             <Form.Group>
-              <Form.Label>DNI</Form.Label>
+              <Form.Label>Nro de dni o ruc</Form.Label>
               <InputGroup>
                 <Form.Control
-                ref={inputRef}
+                  ref={inputRef}
                   value={props.values.dni}
                   onChange={props.handleChange}
                   onKeyDown={(e) => {
@@ -47,8 +46,10 @@ const ProveedorForm = (props) => {
                   }}
                   name="dni"
                   type="text"
-                  placeholder="Buscar por DNI"
-                  maxLength="8"
+                  placeholder="Buscar por DNI o RUC"
+                  maxLength="11"
+                  isInvalid={!!props.errors.dni && props.errors.dni}
+                  isValid={!!props.touched.dni}
                 />
 
                 <Button
@@ -72,15 +73,14 @@ const ProveedorForm = (props) => {
           </Col>
           <Col md="12" lg="12">
             <Form.Group>
-              <Form.Label>Proveedor</Form.Label>
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
                 required
-                
                 value={props.values.proveedor}
                 onChange={props.handleChange}
                 name="proveedor"
                 type="text"
-                placeholder="Proveedor"
+                placeholder="Nombre"
                 maxlength="50"
                 isInvalid={
                   !!props.errors.proveedor &&
@@ -100,7 +100,6 @@ const ProveedorForm = (props) => {
               <Form.Label>Dirección</Form.Label>
               <Form.Control
                 required
-                
                 value={props.values.direccion}
                 onChange={props.handleChange}
                 name="direccion"
@@ -145,9 +144,11 @@ const ProveedorForm = (props) => {
           <Col md="12" lg="12">
             <Select
               options={props.listaUbigeo}
-              value={props.listaUbigeo.find(
-                (opt) => opt.value === props.values.id_ubigeo
-              ) || null}
+              value={
+                props.listaUbigeo.find(
+                  (opt) => opt.value === props.values.id_ubigeo
+                ) || null
+              }
               onChange={(option) => {
                 props.setFieldValue("id_ubigeo", option ? option.value : "");
                 props.setFieldValue("ubigeo", option ? option.label : "");
@@ -160,7 +161,6 @@ const ProveedorForm = (props) => {
               placeholder="Seleccione un ubigeo..."
               isClearable
             />
-
           </Col>
         </Row>
       </Form>
