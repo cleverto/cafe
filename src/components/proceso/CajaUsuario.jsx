@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-
-  Card,
-  Container,
-  Dropdown,
-} from "react-bootstrap";
-
+import { Card, Container, Dropdown } from "react-bootstrap";
 
 import Axios from "axios";
 import Swal from "sweetalert2";
@@ -13,12 +7,18 @@ import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 
 import { useNavigate } from "react-router-dom";
+import CajaRegistrar from "./CajaRegistrar";
+import ModalD from "../global/ModalD";
 
 const CajaUsuario = (props) => {
   const navigate = useNavigate();
 
+  const [idModulo, setIdModulo] = useState("");
   const [columns, setColumns] = useState([]);
   const [rowdata, setRowData] = useState([]);
+
+  const [showRegistrar, setShowRegistrar] = useState(false);
+  const handleCloseRegistrar = () => setShowRegistrar(false);
 
   useEffect(() => {
     get_columns();
@@ -51,6 +51,14 @@ const CajaUsuario = (props) => {
       },
       {
         id: 2,
+        name: "Concepto",
+        selector: (row) => row.concepto,
+        sortable: true,
+        reorder: true,
+        width: "8rem",
+      },
+      {
+        id: 3,
         name: "Referencia",
         selector: (row) => row.referencia,
         sortable: true,
@@ -58,22 +66,21 @@ const CajaUsuario = (props) => {
       },
 
       {
-        id: 3,
+        id: 4,
         name: "Quien",
         selector: (row) => row.proveedor,
         sortable: true,
         wrap: true,
       },
       {
-        id: 4,
+        id: 5,
         name: "Observaciones",
         selector: (row) => row.observaciones,
         sortable: true,
         width: "10rem",
-
       },
       {
-        id: 5,
+        id: 6,
         name: "",
         selector: (row) => row.simbolo,
         sortable: true,
@@ -81,7 +88,7 @@ const CajaUsuario = (props) => {
         right: true,
       },
       {
-        id: 6,
+        id: 7,
         name: "Monto",
         selector: (row) => row.monto,
         cell: (row) => (
@@ -98,7 +105,7 @@ const CajaUsuario = (props) => {
       },
 
       {
-        id: 7,
+        id: 8,
         name: " ",
         button: true,
         width: "5rem",
@@ -119,24 +126,33 @@ const CajaUsuario = (props) => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item
-                       onClick={() => navigate("/proceso/caja/buscar")}
+                    onClick={() => {
+                      setIdModulo(row.id_caja);
+                      setShowRegistrar(!showRegistrar);
+                    }}
                   >
                     <i className="bi bi-pencil-fill me-2"></i>Modificar
                   </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={(e) => eliminar(e, row.id_caja)}
-                  >
+                  <Dropdown.Item onClick={(e) => eliminar(e, row.id_caja)}>
                     <i className="bi bi-trash-fill me-2"></i>Eliminar
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </>
-          ) : null // 👈 si no es 1, no muestra nada
-      }
+          ) : null, // 👈 si no es 1, no muestra nada
+      },
     ]);
   };
+  const modifica = (obj) => {
+    setRowData((prevData) =>
+      prevData.map((item) =>
+        String(item.id_caja) === String(obj.id_caja)
+          ? { ...item, ...obj }
+          : item
+      )
+    );
+  };
   const eliminar = async (e, id) => {
-
     let _datos = JSON.stringify({ id: id });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
@@ -181,13 +197,13 @@ const CajaUsuario = (props) => {
     },
     headCells: {
       style: {
-        paddingLeft: "8px",  // padding izquierda del header
+        paddingLeft: "8px", // padding izquierda del header
         paddingRight: "8px", // padding derecha del header
       },
     },
     cells: {
       style: {
-        paddingLeft: "8px",  // padding izquierda de cada celda
+        paddingLeft: "8px", // padding izquierda de cada celda
         paddingRight: "8px", // padding derecha de cada celda
         paddingTop: "4px",
         paddingBottom: "4px",
@@ -209,6 +225,23 @@ const CajaUsuario = (props) => {
           />
         </Card>
       </Container>
+      <ModalD
+        operacion="1"
+        show={showRegistrar}
+        onClose={() => setShowRegistrar(false)}
+        size="lg"
+        title="Registrar movimiento"
+        formId="formId"
+        aceptarTexto={"Modificar"}
+        cancelarTexto="Cancelar"
+      >
+        <CajaRegistrar
+          formId="formId"
+          handleClose={handleCloseRegistrar}
+          idmodulo={idModulo}
+          modifica={modifica}
+        />
+      </ModalD>
     </>
   );
 

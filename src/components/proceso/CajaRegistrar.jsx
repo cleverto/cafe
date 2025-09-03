@@ -4,13 +4,11 @@ import * as Yup from "yup";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import CajaForm from "./CajaForm";
-import { useLocation } from "react-router-dom";
 
 const CajaRegistrar = (props) => {
   const [listaConcepto, setListaConcepto] = useState([]);
   const [listaTipoCaja, setListaTipoCaja] = useState([]);
   const [listaMoneda, setListaMoneda] = useState([]);
-
 
   useEffect(() => {
     get_lista_concepto();
@@ -18,13 +16,13 @@ const CajaRegistrar = (props) => {
     get_lista_moneda();
     // eslint-disable-next-line
   }, []);
-
   useEffect(() => {
     if (props.idmodulo) {
       modulo(props.idmodulo);
     }
     // eslint-disable-next-line
   }, [props.idmodulo]);
+
   const get_lista_moneda = async () => {
     let _datos = JSON.stringify({
       modulo: "moneda",
@@ -46,6 +44,7 @@ const CajaRegistrar = (props) => {
     );
     setListaConcepto(res.data.items);
     formik.setFieldValue("id_concepto", res.data.items[0].id);
+    console.log("id_concepto.id");
   };
 
   const get_lista_tipo_caja = async () => {
@@ -60,8 +59,6 @@ const CajaRegistrar = (props) => {
     formik.setFieldValue("id_tipo_caja", res.data.items[0].id);
   };
 
-
-
   const modulo = async (id) => {
     let _datos = JSON.stringify({
       id: id,
@@ -69,13 +66,13 @@ const CajaRegistrar = (props) => {
     await Axios.post(window.globales.url + "/caja/modulo", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
+          console.log(res.data.items.id_concepto);
           formik.setFieldValue("operacion", "1");
           formik.setFieldValue("movimiento", res.data.items.movimiento);
           formik.setFieldValue("id_concepto", res.data.items.id_concepto);
           formik.setFieldValue("fecha", res.data.items.fecha);
           formik.setFieldValue("observaciones", res.data.items.observaciones);
           formik.setFieldValue("monto", res.data.items.monto);
-
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
@@ -92,7 +89,22 @@ const CajaRegistrar = (props) => {
       .then((res) => {
         if (res.data.rpta === "1") {
           props.handleClose();
-           props.get_lista();
+          if (data.operacion === "0") {
+            props.get_lista();
+          } else {
+            
+            
+            const obj = {
+              id_caja: res.data.modulo.id_caja,
+              referencia: res.data.modulo.concepto,
+              Quien: res.data.modulo.proveedor,
+              observaciones: res.data.modulo.observaciones,
+              simbolo: res.data.modulo.simbolo,
+              monto: res.data.modulo.monto,
+            };
+
+            props.modifica(obj);
+          }
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
         }
@@ -139,7 +151,6 @@ const CajaRegistrar = (props) => {
       listaConcepto={listaConcepto}
       listaTipoCaja={listaTipoCaja}
       listaMoneda={listaMoneda}
-
     />
   );
 };

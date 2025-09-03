@@ -81,10 +81,11 @@ const Proveedor = () => {
       },
       {
         id: 2,
-        name: "DNI",
-        selector: (row) => row.dni,
+        name: "Nro",
+        selector: (row) => row.nro,
         sortable: true,
-        width: "6rem",
+        width: "8rem",
+        center: true,
       },
       {
         id: 3,
@@ -158,7 +159,7 @@ const Proveedor = () => {
     <>
       <div className="d-flex justify-content-between mt-4 ">
         <div className="">
-          <h4>Proveedor</h4>
+          <h4>Proveedor / cliente</h4>
         </div>
         <div className="">
           <Button
@@ -214,7 +215,7 @@ const Proveedor = () => {
         show={show}
         onClose={() => setShow(false)}
         size="lg"
-        title="Registrar proveedors"
+        title="Registrar proveedor / cliente"
         formId="formId"
         aceptarTexto="Aceptar"
         cancelarTexto="Cancelar"

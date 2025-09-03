@@ -87,10 +87,10 @@ const CajaForm = (props) => {
             <Form.Group className="m-0">
               <Form.Label>Concepto</Form.Label>
               <Form.Select
-                value={props.values.concepto}
+                value={props.values.id_concepto}
                 onChange={props.handleChange}
-                name="concepto"
-                isValid={!!props.touched.concepto}
+                name="id_concepto"
+                isValid={!!props.touched.id_concepto}
               >
                 {props.listaConcepto.map((data, index) => (
                   <option key={index} value={data.id}>

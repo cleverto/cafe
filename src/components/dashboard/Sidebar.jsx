@@ -145,7 +145,7 @@ const Sidebar = ({ show, handle }) => {
                         to="/administracion/proveedor"
                         active={isActive("/administracion/proveedor")}
                       >
-                        Proveedor
+                        Proveedor / Cliente
                       </ListGroup.Item>
                       <ListGroup.Item
                         className="border-0"

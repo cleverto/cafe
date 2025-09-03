@@ -58,7 +58,7 @@ const Caja = () => {
           </Button>
           <Button
             onClick={() => {
-              setShowRegistrar(!show);
+              setShowRegistrar(!showRegistrar);
             }}
             className=" "
             variant="primary"
@@ -149,12 +149,14 @@ const Caja = () => {
             >
               <p className="text-dark mb-1">{item.usuario}</p>
               <p className="text-dark fw-bold fs-4 mb-0">
-                {item.simbolo} {item.saldo_apertura ?? 0}
+              <p className="text-dark fw-bold fs-4 mb-0">
+                {item.simbolo} {Number(item.saldo_apertura).toLocaleString("es-PE")  ?? 0}
               </p>
-            </div>
+              </p >
+            </div >
           ))}
-        </div>
-      </Container>
+        </div >
+      </Container >
 
       <ModalD
         operacion={idmodulo ? "1" : "0"}
@@ -192,11 +194,11 @@ const Caja = () => {
     </>
   );
 
-  return (
-    <>
-      <Dashboard componente={componente} />
-    </>
-  );
+return (
+  <>
+    <Dashboard componente={componente} />
+  </>
+);
 };
 
 export default Caja;

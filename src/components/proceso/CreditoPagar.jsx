@@ -150,12 +150,6 @@ const CreditoPagar = (props) => {
                 value={props.values.fecha}
                 onChange={props.handleChange}
                 name="fecha"
-                isInvalid={
-                  !!props.errors.fecha &
-                  props.touched.fecha
-                }
-                isValid={!!props.touched.fecha}
-
               />
             </Form.Group>
           </Col>
@@ -183,6 +177,7 @@ const CreditoPagar = (props) => {
                     !!props.errors.monto &
                     props.touched.monto
                   }
+                  
                   isValid={!!props.touched.monto}
 
                 />

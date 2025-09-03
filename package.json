@@ -2,7 +2,7 @@
   "name": "escalafon",
   "version": "0.1.0",
   "private": true,
-  "_homepage": "/admision/public/app",
+  "homepage": "https://smartrockola.com/my-app/cafe",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
