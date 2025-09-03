@@ -8,7 +8,6 @@ import {
 import ModalD from "../global/ModalD.jsx";
 import Dashboard from "../dashboard/Dashboard.jsx";
 import CajaRegistrar from "../proceso/CajaRegistrar.jsx";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import CajaUsuario from "./CajaUsuario.jsx";
 
@@ -22,8 +21,6 @@ const Caja = () => {
   const handleCloseRegistrar = () => setShowRegistrar(false);
   const [idmodulo, setIdmodulo] = useState("");
   const [idUsuario, setIdUsuario] = useState("");
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     get_lista();
@@ -49,14 +46,6 @@ const Caja = () => {
         </div>
         <div className="mt-2">
           <Button
-            className="  mx-1"
-            variant="outline-primary"
-            title="Buscar"
-            onClick={() => navigate("/proceso/caka/buscar")}
-          >
-            <i className="bi bi-search"></i>
-          </Button>
-          <Button
             onClick={() => {
               setShowRegistrar(!showRegistrar);
             }}
@@ -76,8 +65,8 @@ const Caja = () => {
           borderBottom: "1px solid #fff",
         }}
       />
-      <Container>
-        <div className="d-flex flex-wrap gap-3 p-4">
+      <div className="p-0">
+        <div className="d-flex flex-wrap gap-3">
           <div
             className="flex-fill bg-light rounded p-4 shadow-md"
             style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
@@ -114,7 +103,7 @@ const Caja = () => {
             <p className="text-dark fw-bold fs-4 mb-0 text-muted">$ {Number(datos.saldo_dolares).toLocaleString("es-PE")}</p>
           </div>
         </div>
-      </Container>
+      </div>
 
       <hr
         className="m"
@@ -124,8 +113,8 @@ const Caja = () => {
           borderBottom: "1px solid #fff",
         }}
       />
-      <Container>
-        <div className="d-flex flex-wrap gap-3 p-4">
+      <div>
+        <div className="d-flex flex-wrap gap-3 ">
           {datosUsuarios.map((item) => (
             <div
               key={item.id_usuario}
@@ -156,7 +145,7 @@ const Caja = () => {
             </div >
           ))}
         </div >
-      </Container >
+      </div >
 
       <ModalD
         operacion={idmodulo ? "1" : "0"}

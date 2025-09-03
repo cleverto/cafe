@@ -96,8 +96,9 @@ const CajaRegistrar = (props) => {
             
             const obj = {
               id_caja: res.data.modulo.id_caja,
-              referencia: res.data.modulo.concepto,
-              Quien: res.data.modulo.proveedor,
+              concepto: res.data.modulo.concepto,
+              referencia: res.data.modulo.referencia,
+              quien: res.data.modulo.proveedor,
               observaciones: res.data.modulo.observaciones,
               simbolo: res.data.modulo.simbolo,
               monto: res.data.modulo.monto,

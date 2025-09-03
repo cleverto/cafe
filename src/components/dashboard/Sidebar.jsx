@@ -212,8 +212,8 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/proceso/caja"
-                        active={isActive("/proceso/caja")}
+                        to="/proceso/almacen"
+                        active={isActive("/proceso/almacen")}
                       >
                         Almacén
                       </ListGroup.Item>
