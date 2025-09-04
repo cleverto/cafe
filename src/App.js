@@ -16,7 +16,12 @@ import CreditoPagar from "./components/proceso/CreditoPagar";
 import Caja from "./components/proceso/Caja";
 
 import AlmacenRegistrar from "./components/proceso/AlmacenRegistrar";
+import AlmacenBuscar from "./components/proceso/AlmacenBuscar";
 
+
+//reportes
+import ReporteComprasFiltro from "./components/reporte/ComprasFiltro";
+import ReporteCompras from "./components/reporte/Compras";
 
 
 
@@ -79,10 +84,15 @@ function App() {
           <Route path="/proceso/caja" element={<Caja />} />
           {/* Proceso almacen*/}
           <Route path="/proceso/almacen" element={<AlmacenRegistrar />} />
+          <Route path="/proceso/almacen/buscar" element={<AlmacenBuscar />} />
 
 
 
 
+          {/* Reporte */}
+
+          <Route path="/reporte/comprasbuscar" element={<ReporteComprasFiltro />} />
+          <Route path="/reporte/compras" element={<ReporteCompras />} />
 
           {/* Reporte */}
 

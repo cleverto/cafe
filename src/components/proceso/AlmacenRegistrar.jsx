@@ -72,7 +72,7 @@ const AlmacenRegistrar = (props) => {
     let _datos = JSON.stringify({
       id: id,
     });
-    const res = await Axios.post(window.globales.url + "/compra/lista", _datos);
+    const res = await Axios.post(window.globales.url + "/almacen/lista", _datos);
 
     setRowdata(res.data.items);
     formik.setFieldValue("operacion", "1");

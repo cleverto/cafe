@@ -39,30 +39,24 @@ const AlmacenGuardarRegistrar = (props) => {
       _datos
     );
     setListaTipoComprobante(res.data.items);
-    formik.setFieldValue("id_tipo_comprobante", "04");
+
+    formik.setFieldValue("id_tipo_comprobante", res.data.items[0].id);
   };
 
   const modulo = async (id) => {
     let _datos = JSON.stringify({
       id: id,
     });
-    await Axios.post(window.globales.url + "/compra/modulo", _datos)
+    await Axios.post(window.globales.url + "/almacen/modulo", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("operacion", "1");
-          formik.setFieldValue("id_moneda", res.data.items.id_moneda);
-          formik.setFieldValue("total", res.data.items.total);
-          formik.setFieldValue("sinbolo", res.data.items.sinbolo);
-          formik.setFieldValue("dni", res.data.items.dni);
-          formik.setFieldValue("id_proveedor", res.data.items.id_proveedor);
-          formik.setFieldValue("proveedor", res.data.items.proveedor);
           formik.setFieldValue("fecha", res.data.items.fecha);
           formik.setFieldValue(
             "id_tipo_comprobante",
             res.data.items.id_tipo_comprobante
           );
-          formik.setFieldValue("referencia", res.data.items.referencia);
-          formik.setFieldValue("total", res.data.total);
+          formik.setFieldValue("motivo", res.data.items.motivo);
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
@@ -100,8 +94,6 @@ const AlmacenGuardarRegistrar = (props) => {
     fecha: new Date().toISOString().slice(0, 10),
     motivo: "",
   };
-
-
 
   const formik = useFormik({
     initialValues,

@@ -13,13 +13,30 @@ const Componente = (props) => {
 
   return (
     <Container className=" ">
-      <Form noValidate
+      <Form
+        noValidate
         id="formId"
         onSubmit={props.handleSubmit}
-        autoComplete="off">
-
+        autoComplete="off"
+      >
         <Row className="">
-
+          <Col md="12" lg="12">
+            <Form.Group className="m-0">
+              <Form.Label>Categoria</Form.Label>
+              <Form.Select
+                value={props.values.id_categoria}
+                onChange={props.handleChange}
+                name="id_categoria"
+                isValid={!!props.touched.id_categoria}
+              >
+                {props.listaCategoria.map((data, index) => (
+                  <option key={index} value={data.id}>
+                    {data.descripcion}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
           <Form.Group as={Col} md="12" className="mb-2">
             <Form.Label>Producto</Form.Label>
             <Form.Control
@@ -42,9 +59,7 @@ const Componente = (props) => {
               {props.errors.producto}
             </Form.Control.Feedback>
           </Form.Group>
-
         </Row>
-
       </Form>
     </Container>
   );

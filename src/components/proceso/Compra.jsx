@@ -292,6 +292,14 @@ const Compra = (props) => {
               }}
               placeholder="Seleccione un producto..."
               isClearable
+              formatOptionLabel={(option) => (
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>{option.label}</span>
+                  <span style={{ fontWeight: "bold" }}>{option.stock}</span>
+                </div>
+              )}
               className={
                 props.errors.id_producto && props.touched.id_producto
                   ? "is-invalid"
@@ -300,15 +308,9 @@ const Compra = (props) => {
                   : ""
               }
             />
-
-            {props.errors.id_producto && props.touched.id_producto && (
-              <div className="invalid-feedback d-block">
-                {props.errors.id_producto}
-              </div>
-            )}
           </Col>
 
-          <Col md="2" lg="1">
+          <Col md="2" lg="2">
             <Form.Group>
               <Form.Label>Muestra</Form.Label>
               <Form.Control
@@ -332,7 +334,7 @@ const Compra = (props) => {
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
-          <Col md="2" lg="1">
+          <Col md="2" lg="2">
             <Form.Group>
               <Form.Label>Rto</Form.Label>
               <Form.Control
@@ -357,7 +359,7 @@ const Compra = (props) => {
             </Form.Group>
           </Col>
           {props.values.id_categoria === "2" && (
-            <Col md="2" lg="1">
+            <Col md="2" lg="2">
               <Form.Group>
                 <Form.Label>Dst</Form.Label>
                 <Form.Control
@@ -385,7 +387,7 @@ const Compra = (props) => {
 
           {props.values.id_categoria === "1" && (
             <>
-              <Col md="2" lg="1">
+              <Col md="2" lg="2">
                 <Form.Group>
                   <Form.Label>Sp</Form.Label>
                   <Form.Control
@@ -409,7 +411,7 @@ const Compra = (props) => {
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md="2" lg="1">
+              <Col md="2" lg="2">
                 <Form.Group>
                   <Form.Label>Bol</Form.Label>
                   <Form.Control
@@ -433,7 +435,7 @@ const Compra = (props) => {
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md="2" lg="1">
+              <Col md="2" lg="2">
                 <Form.Group>
                   <Form.Label>Cas</Form.Label>
                   <Form.Control
@@ -607,7 +609,7 @@ const Compra = (props) => {
               </Col>
             </>
           )}
-          <Col md="2" lg="1">
+          <Col md="2" lg="2">
             <Form.Group>
               <Form.Label>Hum</Form.Label>
               <Form.Control
@@ -631,7 +633,8 @@ const Compra = (props) => {
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
-
+        </Row>
+        <Row className="g-3 mt-1">
           <Col md="2" lg="2">
             <Form.Group>
               <Form.Label>Cant Kg</Form.Label>

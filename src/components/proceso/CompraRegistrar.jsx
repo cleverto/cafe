@@ -53,7 +53,7 @@ const CompraRegistrar = (props) => {
       let _datos = JSON.stringify({ modulo: "producto", campo: "producto" });
 
       const res = await Axios.post(
-        `${window.globales.url}/producto/lista`,
+        `${window.globales.url}/producto/lista_stock`,
         _datos
       );
 
@@ -62,6 +62,7 @@ const CompraRegistrar = (props) => {
         value: data.id_producto,
         label: data.producto,
         id_categoria: data.id_categoria,
+        stock: data.stock,
       }));
       setListaProducto(opciones);
     } catch (error) {

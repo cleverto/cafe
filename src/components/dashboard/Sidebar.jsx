@@ -100,7 +100,7 @@ const Sidebar = ({ show, handle }) => {
                     </Link>
                   </div>
                   <div className="p-1  flex-fill">
-                    <h6>Escalafón</h6>
+                    <h6>Sistema Colibri</h6>
                   </div>
                 </div>
               </div>
@@ -177,23 +177,14 @@ const Sidebar = ({ show, handle }) => {
                       >
                         Compra
                       </ListGroup.Item>
+   
                       <ListGroup.Item
                         className="border-0"
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/deposito"
-                        active={isActive("/deposito")}
-                      >
-                        Deposito
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/designacion"
-                        active={isActive("/designacion")}
+                        to="/proceso/venta"
+                        active={isActive("/proceso/venta")}
                       >
                         Venta
                       </ListGroup.Item>
@@ -232,8 +223,8 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/reporte/escalafonrario10"
-                        active={isActive("/reporte/escalafonrario10")}
+                        to="/reporte/comprasbuscar"
+                        active={isActive("/reporte/comprasbuscar")}
                       >
                         Compras
                       </ListGroup.Item>
@@ -255,15 +246,7 @@ const Sidebar = ({ show, handle }) => {
                       >
                         Compras y Ventas
                       </ListGroup.Item>
-                      <ListGroup.Item
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/reporte/macro"
-                        active={isActive("/reporte/014")}
-                      >
-                        Caja
-                      </ListGroup.Item>
+
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>

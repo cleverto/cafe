@@ -32,7 +32,7 @@ const CompraGuardarRegistrar = (props) => {
   const get_lista_tipo_comprobante = async (id) => {
     let _datos = JSON.stringify({
       modulo: "tipo_comprobante",
-       opcion: "compra",
+      opcion: "compra",
     });
     const res = await Axios.post(
       window.globales.url + "/administracion/lista",
@@ -53,7 +53,7 @@ const CompraGuardarRegistrar = (props) => {
           formik.setFieldValue("id_moneda", res.data.items.id_moneda);
           formik.setFieldValue("total", res.data.items.total);
           formik.setFieldValue("sinbolo", res.data.items.sinbolo);
-          formik.setFieldValue("dni", res.data.items.dni);
+          formik.setFieldValue("dni", res.data.items.nro);
           formik.setFieldValue("id_proveedor", res.data.items.id_proveedor);
           formik.setFieldValue("proveedor", res.data.items.proveedor);
           formik.setFieldValue("fecha", res.data.items.fecha);

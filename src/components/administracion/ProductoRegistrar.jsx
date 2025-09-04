@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import ProductoForm from "./ProductoForm";
 
 const ProductoRegistrar = (props) => {
-
+  const [listaCategoria, setListaCategoria] = useState([]);
 
   useEffect(() => {
     if (props.idmodulo) {
@@ -15,6 +15,29 @@ const ProductoRegistrar = (props) => {
     // eslint-disable-next-line
   }, [props.idmodulo]);
 
+  useEffect(() => {
+    get_lista_categoria();
+
+    // eslint-disable-next-line
+  }, []);
+
+  const get_lista_categoria = async () => {
+    try {
+      let _datos = JSON.stringify({
+        modulo: "categoria",
+      });
+      const res = await Axios.post(
+        window.globales.url + "/administracion/lista",
+        _datos
+      );
+
+      setListaCategoria(res.data.items);
+      formik.setFieldValue("id_categoria", res.data.items[0].id);
+    } catch (error) {
+      console.error("Error lista", error);
+      setListaCategoria([]);
+    }
+  };
 
   const modulo = async (id) => {
     let _datos = JSON.stringify({
@@ -25,7 +48,6 @@ const ProductoRegistrar = (props) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("operacion", "1");
           formik.setFieldValue("producto", res.data.items.producto);
-
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }
@@ -34,7 +56,6 @@ const ProductoRegistrar = (props) => {
         Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
       });
   };
-
 
   const guardar = async (data) => {
     let _datos = JSON.stringify(data);
@@ -66,13 +87,13 @@ const ProductoRegistrar = (props) => {
   const initialValues = {
     operacion: "0",
     idmodulo: props.idmodulo,
+    id_categoria: "",
     producto: "",
     foco: "0",
   };
 
   const validationSchema = Yup.object({
     producto: Yup.string().required("Requerido"),
-
   });
 
   const formik = useFormik({
@@ -84,18 +105,10 @@ const ProductoRegistrar = (props) => {
       if (formik.values.operacion === "0") {
         resetForm();
       }
-
-
     },
   });
 
-  return (
-
-    <ProductoForm
-      {...formik}
-    />
-
-  );
+  return <ProductoForm {...formik} listaCategoria={listaCategoria} />;
 };
 
 export default ProductoRegistrar;

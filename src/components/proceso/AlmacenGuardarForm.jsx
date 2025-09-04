@@ -76,12 +76,6 @@ const AlmacenGuardarForm = (props) => {
                     props.setFieldValue("motivo", val);
                   }
                 }}
-                onBlur={(e) => {
-                  const val = props.values.motivo;
-                  if (val) {
-                    props.setFieldValue("motivo", val.padStart(8, "0"));
-                  }
-                }}
                 name="motivo"
                 type="text"
                 maxLength="8"

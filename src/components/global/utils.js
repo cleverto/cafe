@@ -1,5 +1,5 @@
 export const abrirReporte = (url) => {
-    const width = 850// window.innerWidth * 0.5;
+    const width = 1050// window.innerWidth * 0.5;
     const height = 850 // window.innerHeight * 1;
   
     // Calcular posición para centrar la ventana

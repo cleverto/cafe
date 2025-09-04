@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import ModalOc from "../global/ModalOc";
 import CreditoPagarRegistrar from "./CreditoPagarRegistrar";
 
-const CompraBuscar = () => {
+const AlmacenBuscar = () => {
   const navigate = useNavigate();
 
   const [columns, setColumns] = useState([]);
@@ -43,53 +43,51 @@ const CompraBuscar = () => {
       {
         id: 0,
         name: "Id",
-        selector: (row) => row.id_compra,
+        selector: (row) => row.id_nota_almacen,
         sortable: true,
         reorder: true,
         omit: true,
       },
       {
         id: 1,
+        name: "Operación",
+        selector: (row) => row.operacion,
+        sortable: true,
+        reorder: true,
+        center: true,
+        width: "6rem",
+      },
+      {
+        id: 2,
         name: "Fecha",
         selector: (row) => row.fecha,
         sortable: true,
         reorder: true,
-        omit: true,
         center: true,
+        width: "8rem",
       },
       {
-        id: 2,
+        id: 3,
+        name: "Usuario",
+        selector: (row) => row.usuario,
+        sortable: true,
+        reorder: true,
+        center: true,
+        width: "8rem",
+      },
+
+      {
+        id: 4,
         name: "Nro",
         selector: (row) => row.nro_comprobante,
         sortable: true,
         width: "6rem",
       },
       {
-        id: 3,
-        name: "Referencia",
-        selector: (row) => row.referencia,
-        sortable: true,
-        width: "6rem",
-        right: true,
-      },
-      {
-        id: 4,
-        name: "Proveedor",
-        selector: (row) => row.proveedor,
-        sortable: true,
-      },
-      {
         id: 5,
-        name: "Total",
-        selector: (row) => row.total, // mantiene el dato original para ordenamiento
-        cell: (row) =>
-          Number(row.total).toLocaleString("es-PE", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }),
+        name: "Motivo",
+        selector: (row) => row.motivo,
         sortable: true,
-        width: "6rem",
-        right: true,
       },
       {
         id: 6,
@@ -113,23 +111,13 @@ const CompraBuscar = () => {
               <Dropdown.Menu>
                 <Dropdown.Item
                   onClick={(e) =>
-                    navigate("/proceso/compra?id=" + row.id_compra)
+                    navigate("/proceso/almacen?id=" + row.id_nota_almacen)
                   }
                 >
                   <i className="bi bi-pencil-fill me-2"></i>Modificar
                 </Dropdown.Item>
-                <Dropdown.Item
-                // onClick={(e) => eliminar(e, row.id)}
-                >
+                <Dropdown.Item onClick={(e) => eliminar(e, row.id_nota_almacen)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
-                </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={(e) => {
-                    setIdCredito(row.id_credito);
-                    setShowPagar(!showPagar);
-                  }}
-                >
-                  <i class="bi bi-cash me-2"></i> Pagar
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -137,6 +125,33 @@ const CompraBuscar = () => {
         ),
       },
     ]);
+  };
+
+  const eliminar = async (e, id) => {
+    let _datos = JSON.stringify({ id: id });
+    Swal.fire({
+      title: "¿Confirmar Eliminación?",
+      text: "¿Estás seguro de que deseas eliminar este registro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, continuar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Axios.post(window.globales.url + "/almacen/eliminar", _datos)
+          .then((res) => {
+            if (res.data.rpta === "1") {
+              setRowData((prevData) =>
+                prevData.filter((row) => row.id_nota_almacen !== id)
+              );
+            }
+          })
+          .catch((error) => {
+            Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      }
+    });
   };
 
   const initialValues = {
@@ -147,7 +162,7 @@ const CompraBuscar = () => {
   const buscar = async (data) => {
     let _datos = JSON.stringify(data);
 
-    await Axios.post(window.globales.url + "/compra/buscar", _datos)
+    await Axios.post(window.globales.url + "/almacen/buscar", _datos)
       .then((res) => {
         setRowData(res.data.items);
         setFilterData(res.data.items);
@@ -186,8 +201,9 @@ const CompraBuscar = () => {
       <Container className="mb-4 mt-3 " style={{ paddingBottom: "0px" }}>
         <div className="d-flex justify-content-between">
           <div className="">
-            <h5>Buscar compras</h5>
+            <h3 className="fw-bold mb-1">Buscar notas de almacén</h3>
           </div>
+
           <div>
             <Button variant="light" onClick={() => window.history.back()}>
               <i class="bi bi-backspace"></i> Regresar
@@ -233,33 +249,6 @@ const CompraBuscar = () => {
             </Col>
           </Row>
         </Form>
-        <Row className="g-3 mb-2">
-          <Col lg="12">
-            <Form.Group>
-              <Form.Control
-                required
-                value={values.proveedor}
-                onChange={(e) => {
-                  handleChange(e); // mantiene Formik
-
-                  const filtro = e.target.value.toLowerCase();
-
-                  // 👇 aquí usamos allData como respaldo original
-                  const filtrados = filterData.filter((item) =>
-                    item.proveedor.toLowerCase().includes(filtro)
-                  );
-
-                  setRowData(filtrados); // actualiza la tabla
-                }}
-                name="proveedor"
-                type="text"
-                maxLength="50"
-                placeholder="Buscar por el proveedor"
-                autoComplete="off"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
         <Card>
           <DataTable
             columns={columns}
@@ -279,17 +268,6 @@ const CompraBuscar = () => {
           />
         </Card>
       </Container>
-
-      <ModalOc
-        componente={
-          <CreditoPagarRegistrar id_credito={idCredito} modulo="compra" />
-        }
-        title="Realizar el pago"
-        posicion="end"
-        izquierda=""
-        show={showPagar}
-        handleClose={() => setShowPagar(false)}
-      />
     </>
   );
 
@@ -300,4 +278,4 @@ const CompraBuscar = () => {
   );
 };
 
-export default CompraBuscar;
+export default AlmacenBuscar;
