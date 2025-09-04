@@ -59,6 +59,7 @@ const CreditoPagarRegistrar = (props) => {
           formik.setFieldValue("id_proveedor", res.data.items.id_proveedor);
           formik.setFieldValue("proveedor", res.data.items.proveedor);
           formik.setFieldValue("total", res.data.items.total);
+          formik.setFieldValue("id_moneda", res.data.items.id_moneda);
           formik.setFieldValue("simbolo", res.data.items.simbolo);
           formik.setFieldValue("referencia", res.data.items.nro_comprobante);
           formik.setFieldValue("saldo", res.data.items.saldo);
@@ -115,7 +116,7 @@ const CreditoPagarRegistrar = (props) => {
         Axios.post(window.globales.url + "/credito/eliminar_detalle", _datos)
           .then((res) => {
             if (res.data.rpta === "1") {
-              setRowdata((prevData) => prevData.filter((row) => row.id !== id));
+              setRowdata((prevData) => prevData.filter((row) => row.id_detalle !== id));
             }
             formik.setFieldValue("saldo", res.data.saldo);
           })
@@ -129,8 +130,9 @@ const CreditoPagarRegistrar = (props) => {
   const initialValues = {
     idmodulo: props.id_credito,
     modulo: "",
-    id_empresa: "",
-    id_sucursal: "",
+    id_empresa: "1",
+    id_sucursal: "1",
+    id_moneda: "",
     id_tipo_caja: "",
     id_proveedor: "",
     tipo_caja: "",

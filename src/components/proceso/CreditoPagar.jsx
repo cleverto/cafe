@@ -27,7 +27,7 @@ const CreditoPagar = (props) => {
       {
         id: 0,
         name: "Id",
-        selector: (row) => row.id,
+        selector: (row) => row.id_detalle,
         sortable: true,
         reorder: true,
         omit: true
@@ -63,7 +63,7 @@ const CreditoPagar = (props) => {
           <>
             <Button
               variant="outline-light"
-              onClick={(e) => props.eliminar(e, row.id)}
+              onClick={(e) => props.eliminar(e, row.id_detalle)}
             >
               <i class="bi bi-archive text-danger"></i>
             </Button>
