@@ -146,6 +146,9 @@ const AlmacenRegistrar = (props) => {
   const initialValues = {
     operacion: idmodulo ? "1" : "0",
     idmodulo: idmodulo ? idmodulo : "",
+    id_empresa:"1",
+    id_sucursal:"1",
+    id_almacen:"1",
     id_detalle: "",
     id_producto: "",
     id_categoria: "",

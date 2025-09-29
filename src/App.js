@@ -11,6 +11,7 @@ import Proveedor from "./components/administracion/Proveedor";
 import CompraRegistrar from "./components/proceso/CompraRegistrar";
 import CompraBuscar from "./components/proceso/CompraBuscar";
 
+
 import CreditoPagar from "./components/proceso/CreditoPagar";
 
 import Caja from "./components/proceso/Caja";
@@ -18,6 +19,8 @@ import Caja from "./components/proceso/Caja";
 import AlmacenRegistrar from "./components/proceso/AlmacenRegistrar";
 import AlmacenBuscar from "./components/proceso/AlmacenBuscar";
 
+
+import SecadoRegistrar from "./components/proceso/SecadoRegistrar";
 
 //reportes
 import ReporteComprasFiltro from "./components/reporte/ComprasFiltro";
@@ -85,7 +88,9 @@ function App() {
           {/* Proceso almacen*/}
           <Route path="/proceso/almacen" element={<AlmacenRegistrar />} />
           <Route path="/proceso/almacen/buscar" element={<AlmacenBuscar />} />
-
+          {/* Proceso secado */}
+          <Route path="/proceso/secado" element={<SecadoRegistrar />} />
+        
 
 
 

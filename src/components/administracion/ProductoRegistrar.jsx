@@ -89,6 +89,7 @@ const ProductoRegistrar = (props) => {
     idmodulo: props.idmodulo,
     id_categoria: "",
     producto: "",
+    qq:"",
     foco: "0",
   };
 

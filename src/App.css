@@ -47,6 +47,11 @@ html, body, #root {
   overflow-x: hidden;
   transition: 0.5s;
 }
+@media (max-width: 1400px) {
+  .responsive-container {
+    max-width: 100% !important;
+  }
+}
 @media screen and (max-width: 991px) {
   .page{
     margin-left: 0px;

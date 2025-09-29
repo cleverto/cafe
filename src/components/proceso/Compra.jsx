@@ -59,8 +59,9 @@ const Compra = (props) => {
       {
         id: 2,
         name: "Producto",
+        ignoreRowClick: true,
         cell: (row) => (
-          <Container className="p-0 pt-1 pb-2">
+          <Container className="p-0 pt-1 pb-2" key={row.id_detalle}>
             <Row>
               <Col>
                 <strong>{row.producto}</strong>
@@ -189,6 +190,11 @@ const Compra = (props) => {
         sortable: true,
         width: "6rem",
         right: true,
+        cell: (row) =>
+          Number(row.total).toLocaleString("es-PE", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
       },
       {
         id: 4,
@@ -197,6 +203,11 @@ const Compra = (props) => {
         sortable: true,
         width: "6rem",
         right: true,
+        cell: (row) =>
+          Number(row.total).toLocaleString("es-PE", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
       },
       {
         id: 5,
@@ -205,6 +216,11 @@ const Compra = (props) => {
         sortable: true,
         width: "6rem",
         right: true,
+        cell: (row) =>
+          Number(row.total).toLocaleString("es-PE", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
       },
       {
         id: 6,
@@ -221,7 +237,7 @@ const Compra = (props) => {
                 props.eliminar(e, row.id_detalle);
               }}
             >
-              <i class="bi bi-archive text-danger"></i>
+              <i className="bi bi-archive text-danger"></i>
             </Button>
           </>
         ),
@@ -230,7 +246,7 @@ const Compra = (props) => {
   };
 
   return (
-    <Container className="mb-4 " style={{ paddingBottom: "80px" }}>
+    <Container className="mb-4 responsive-container" style={{ paddingBottom: "80px" }}>
       <div className="d-flex justify-content-between">
         <div className="pt-4">
           <h5>Compras</h5>
@@ -283,34 +299,33 @@ const Compra = (props) => {
                 ) || null
               }
               onChange={(option) => {
-                props.setFieldValue("id_producto", option ? option.value : "");
-                props.setFieldValue("producto", option ? option.label : "");
-                props.setFieldValue(
-                  "id_categoria",
-                  option ? option.id_categoria : ""
-                );
+                const opt = option || {};
+                props.setFieldValue("id_producto", opt.value ?? "");
+                props.setFieldValue("producto", opt.label ?? "");
+                props.setFieldValue("id_categoria", opt.id_categoria ?? "");
+                props.setFieldValue("cfg_tara", opt.tara ?? "");
+                props.setFieldValue("cfg_qq", opt.qq ?? "");
               }}
               placeholder="Seleccione un producto..."
               isClearable
               formatOptionLabel={(option) => (
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <span>{option.label}</span>
-                  <span style={{ fontWeight: "bold" }}>{option.stock}</span>
+                <div key={`${option.value}-opt`} style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span key={`${option.value}-label`}>{option.label}</span>
+                  <span key={`${option.value}-stock`} style={{ fontWeight: "bold" }}>{option.stock}</span>
                 </div>
               )}
+
               className={
                 props.errors.id_producto && props.touched.id_producto
                   ? "is-invalid"
                   : props.touched.id_producto
-                  ? "is-valid"
-                  : ""
+                    ? "is-valid"
+                    : ""
               }
             />
           </Col>
 
-          <Col md="2" lg="2">
+          <Col md="1" lg="1">
             <Form.Group>
               <Form.Label>Muestra</Form.Label>
               <Form.Control
@@ -331,6 +346,39 @@ const Compra = (props) => {
               />
               <Form.Control.Feedback type="invalid">
                 {props.errors.muestra}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          <Col md="1" lg="1">
+            <Form.Group>
+              <Form.Label>Sacos</Form.Label>
+              <Form.Control
+                required
+                className="no-spinner"
+                value={props.values.sacos}
+                onChange={(e) => {
+                  let value = e.target.value;
+                  props.setFieldValue("sacos", value);
+                  if (/^\d*\.?\d{0,2}$/.test(value)) {
+                    const tara = value * ((props.values.cfg_tara) / 100);
+                    props.setFieldValue("tara", (tara).toFixed(2));
+
+                  }
+                }}
+
+                onWheel={(e) => e.currentTarget.blur()}
+                name="sacos"
+                type="number"
+                inputMode="numeric"
+                maxLength="3"
+                isInvalid={
+                  !!props.errors.sacos &&
+                  props.touched.sacos &&
+                  props.values.sacos?.length === 0
+                }
+              />
+              <Form.Control.Feedback type="invalid">
+                {props.errors.sacos}
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
@@ -637,20 +685,34 @@ const Compra = (props) => {
         <Row className="g-3 mt-1">
           <Col md="2" lg="2">
             <Form.Group>
-              <Form.Label>Cant Kg</Form.Label>
+              <Form.Label>Kg bruto</Form.Label>
+              <Form.Control
+                required
+                value={props.values.kg_bruto}
+                onChange={(e) => props.calcular_pesos(e)}
+                onWheel={(e) => e.currentTarget.blur()}
+                name="kg_bruto"
+                type="text"
+                inputMode="decimal"
+                maxLength="6"
+                isInvalid={
+                  !!props.errors.kg_bruto &&
+                  props.touched.kg_bruto &&
+                  props.values.kg_bruto?.length === 0
+                }
+              />
+              <Form.Control.Feedback type="invalid">
+                {props.errors.kg_bruto}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          <Col md="2" lg="2">
+            <Form.Group>
+              <Form.Label>QQ neto</Form.Label>
               <Form.Control
                 required
                 value={props.values.cantidad}
-                onChange={(e) => {
-                  let value = e.target.value;
-                  if (/^\d*\.?\d{0,2}$/.test(value)) {
-                    props.setFieldValue("cantidad", value);
-                    props.setFieldValue(
-                      "total",
-                      (value * props.values.precio).toFixed(2)
-                    );
-                  }
-                }}
+                onChange={(e) => props.calcular_total_cantidad(e)}
                 onWheel={(e) => e.currentTarget.blur()}
                 name="cantidad"
                 type="text"
@@ -673,16 +735,7 @@ const Compra = (props) => {
               <Form.Control
                 required
                 value={props.values.precio}
-                onChange={(e) => {
-                  let value = e.target.value;
-                  if (/^\d*\.?\d{0,3}$/.test(value)) {
-                    props.setFieldValue("precio", value);
-                    props.setFieldValue(
-                      "total",
-                      (props.values.cantidad * value).toFixed(2)
-                    );
-                  }
-                }}
+                onChange={(e) => props.calcular_total_precio(e)}
                 onWheel={(e) => e.currentTarget.blur()}
                 name="precio"
                 type="text"
@@ -708,7 +761,7 @@ const Compra = (props) => {
                 onChange={(e) => {
                   let value = e.target.value;
                   if (/^\d*\.?\d{0,2}$/.test(value)) {
-                    props.setFieldValue("cantidad", value);
+                    props.setFieldValue("total", value);
                   }
                 }}
                 onWheel={(e) => e.currentTarget.blur()}
@@ -728,10 +781,30 @@ const Compra = (props) => {
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
+          <Col md="4" lg="4">
+            <div className="d-flex justify-content-end">
+              <div className="d-flex gap-2">
+                <div className="p-2 bg-light text-secondary border rounded-2 text-center">
+                  <div>Tara</div>
+                  <div className="fw-bold">{props.values.tara}</div>
+                </div>
+                <div className="p-2 bg-light text-secondary border rounded-2 text-center">
+                  <div>QQ bruto</div>
+                  <div className="fw-bold">{props.values.qq_bruto}</div>
+                </div>
+                <div className="p-2 bg-light text-secondary border rounded-2 text-center">
+                  <div>Kg neto</div>
+                  <div className="fw-bold">{props.values.kg_neto}</div>
+                </div>
+              </div>
+            </div>
+
+          </Col>
+
         </Row>
         <Row className="mt-4 mb-4">
           <Col md="12" lg="12">
-            <div class="d-grid">
+            <div className="d-grid">
               <Button className="btn-block " variant="secondary" type="submit">
                 <i className="bi bi-file-earmark-plus-fill me-2"></i>
                 Añadir producto

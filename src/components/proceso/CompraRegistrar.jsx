@@ -21,14 +21,14 @@ const CompraRegistrar = (props) => {
   }, []);
 
   useEffect(() => {
-   
-      if (!idmodulo) { 
-       console.log(idmodulo);
+
+    if (!idmodulo) {
+      console.log(idmodulo);
       //get_modulo(idmodulo);
       get_lista_temp("");
     } else {
       get_lista(idmodulo);
-      
+
     }
   }, [idmodulo]);
 
@@ -56,13 +56,15 @@ const CompraRegistrar = (props) => {
         `${window.globales.url}/producto/lista_stock`,
         _datos
       );
-
       // Transformamos los datos para que React-Select los entienda
       const opciones = res.data.items.map((data) => ({
         value: data.id_producto,
         label: data.producto,
         id_categoria: data.id_categoria,
         stock: data.stock,
+        qq: data.qq,
+        tara: data.tara,
+
       }));
       setListaProducto(opciones);
     } catch (error) {
@@ -81,46 +83,7 @@ const CompraRegistrar = (props) => {
     formik.setFieldValue("operacion", "1");
     setTotal(res.data.total);
   };
-  // const buscar_dni = (e) => {
-  //   const nuevoValor = e;
-  //   if (
-  //     nuevoValor &&
-  //     typeof nuevoValor === "string" &&
-  //     nuevoValor.length === 8
-  //   ) {
-  //     formik.setFieldValue("swdni", true);
 
-  //     get_dni_externo(nuevoValor);
-  //   }
-  // };
-
-  // const get_modulo = async (id) => {
-  //   let _datos = JSON.stringify({
-  //     id: id,
-  //   });
-  //   await Axios.post(window.globales.url + "/proveedor/modulo", _datos)
-  //     .then((res) => {
-  //       if (res.data.rpta === "1") {
-  //         formik.setFieldValue("operacion", "1");
-  //         formik.setFieldValue("dni", res.data.items.dni);
-  //         formik.setFieldValue("proveedor", res.data.items.proveedor);
-  //         formik.setFieldValue("direccion", res.data.items.direccion);
-  //         formik.setFieldValue("telefono", res.data.items.telefono);
-  //         formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-  //         formik.setFieldValue("ubigeo", res.data.items.ubigeo);
-  //         const opciones = [
-  //           { value: res.data.items.id_ubigeo, label: res.data.items.ubigeo },
-  //         ];
-  //         formik.setFieldValue("id_ubigeo", res.data.items.id_ubigeo);
-  //         formik.setFieldValue("ubigeo", res.data.items.ubigeo);
-  //       } else {
-  //         Swal.fire({ text: res.data.msg, icon: "warning" });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
-  //     });
-  // };
   const guardar = async (data) => {
     // const ide = `${localStorage.getItem("idusuario")}-${Date.now()}`;
     // data.id_detalle = ide;
@@ -196,6 +159,47 @@ const CompraRegistrar = (props) => {
     });
   };
 
+
+  const calcular_pesos = (e) => {
+    let value = e.target.value;
+    if (/^\d*\.?\d{0,2}$/.test(value)) {
+      formik.setFieldValue("kg_bruto", value);
+      const total = (value * formik.values.precio).toFixed(2);
+      formik.setFieldValue(
+        "total", total
+      );
+
+      const kg_neto = (value - formik.values.tara).toFixed(2);
+      const qq_bruto = (value / formik.values.cfg_qq).toFixed(2);
+      const qq_neto = (kg_neto / formik.values.cfg_qq).toFixed(2);
+
+      formik.setFieldValue("qq_bruto", qq_bruto);
+      formik.setFieldValue("kg_neto", kg_neto);
+      formik.setFieldValue("cantidad", qq_neto);
+    }
+  };
+  const calcular_total_cantidad = (e) => {
+    let value = e.target.value;
+    if (/^\d*\.?\d{0,2}$/.test(value)) {
+      formik.setFieldValue("cantidad", value);
+      formik.setFieldValue(
+        "total",
+        (value * formik.values.precio).toFixed(2)
+      );
+    }
+  };
+  const calcular_total_precio = (e) => {
+    let value = e.target.value;
+    if (/^\d*\.?\d{0,3}$/.test(value)) {
+      formik.setFieldValue("precio", value);
+      formik.setFieldValue(
+        "total",
+        (formik.values.cantidad * value).toFixed(2)
+      );
+    }
+  };
+
+
   const limpiarRowdata = () => {
     setRowdata([]);
     setTotal("0.00");
@@ -208,7 +212,10 @@ const CompraRegistrar = (props) => {
     id_detalle: "",
     id_producto: "",
     id_categoria: "",
+    cfg_tara: "0",
+    cfg_qq: "0",
     producto: "",
+    sacos: "0",
     muestra: "300",
     rendimiento: "0",
     segunda: "0",
@@ -222,7 +229,10 @@ const CompraRegistrar = (props) => {
     ripio: "0",
     impureza: "0",
     defectos: "0",
-    taza: "0",
+    tara: "0",
+    kg_bruto: "0",
+    kg_neto: "0",
+    qq_bruto: "0",
     cantidad: "0",
     precio: "0",
     total: "0",
@@ -273,6 +283,9 @@ const CompraRegistrar = (props) => {
           total={total}
           eliminar={eliminar}
           limpiarRowdata={limpiarRowdata}
+          calcular_pesos={calcular_pesos}
+          calcular_total_cantidad={calcular_total_cantidad}
+          calcular_total_precio={calcular_total_precio}
         />
       }
     />
@@ -280,3 +293,4 @@ const CompraRegistrar = (props) => {
 };
 
 export default CompraRegistrar;
+

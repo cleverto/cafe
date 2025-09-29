@@ -102,8 +102,10 @@ const CreditoPagarRegistrar = (props) => {
         return false;
       });
   };
-  const eliminar = (e, id) => {
-    let _datos = JSON.stringify({ id: id, idmodulo: props.id_credito });
+  const eliminar = (e, id, id_credito) => {
+
+   
+    let _datos = JSON.stringify({ id: id, idmodulo: id_credito });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
       text: "¿Estás seguro de que deseas eliminar este registro?",

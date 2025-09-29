@@ -63,7 +63,7 @@ const CreditoPagar = (props) => {
           <>
             <Button
               variant="outline-light"
-              onClick={(e) => props.eliminar(e, row.id_detalle)}
+              onClick={(e) => props.eliminar(e, row.id_detalle, row.id_credito)}
             >
               <i class="bi bi-archive text-danger"></i>
             </Button>

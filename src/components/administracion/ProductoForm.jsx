@@ -59,6 +59,32 @@ const Componente = (props) => {
               {props.errors.producto}
             </Form.Control.Feedback>
           </Form.Group>
+          <Form.Group as={Col} md="12" className="mb-2">
+            <Form.Label>Valor de QQ</Form.Label>
+            <Form.Control
+              required
+              value={props.values.qq}
+              onChange={(e) => {
+                let value = e.target.value;
+                if (/^\d*\.?\d{0,2}$/.test(value)) {
+                  props.setFieldValue("qq", value);
+                }
+              }}
+              name="qq"
+              type="text"
+              placeholder="0.00"
+              maxlength="5"
+              isInvalid={
+                !!props.errors.qq &&
+                props.touched.qq &&
+                props.values.qq?.length === 0
+              }
+              isValid={!!props.touched.qq}
+            />
+            <Form.Control.Feedback type="invalid">
+              {props.errors.qq}
+            </Form.Control.Feedback>
+          </Form.Group>
         </Row>
       </Form>
     </Container>

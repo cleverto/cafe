@@ -21,7 +21,7 @@ export const Dashboard = (props) => {
       <Sidebar show={show} handle={handle} />
       <main className={show ? "page" : "page2"}>
         <NavBar show={show} handle={handle} />
-        <Container style={{ paddingTop: "100px" }} className="vh-100 ">
+        <Container style={{ paddingTop: "100px" }}  className="vh-100 responsive-container">
           {props.componente}
         </Container>
       </main>

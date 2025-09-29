@@ -177,7 +177,16 @@ const Sidebar = ({ show, handle }) => {
                       >
                         Compra
                       </ListGroup.Item>
-   
+                      <ListGroup.Item
+                        className="border-0"
+                        action
+                        style={{ paddingLeft: "45px" }}
+                        as={Link}
+                        to="/proceso/secado"
+                        active={isActive("/proceso/secado")}
+                      >
+                        Secado
+                      </ListGroup.Item>
                       <ListGroup.Item
                         className="border-0"
                         action
@@ -208,6 +217,7 @@ const Sidebar = ({ show, handle }) => {
                       >
                         Almacén
                       </ListGroup.Item>
+
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>
