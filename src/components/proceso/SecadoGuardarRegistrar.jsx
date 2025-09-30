@@ -39,7 +39,7 @@ const SecadoGuardarRegistrar = (props) => {
       _datos
     );
     setListaTipoComprobante(res.data.items);
-    formik.setFieldValue("id_tipo_comprobante", "04");
+    formik.setFieldValue("id_tipo_comprobante", res.data.items[0].id);
   };
 
   const modulo = async (id) => {
@@ -82,8 +82,8 @@ const SecadoGuardarRegistrar = (props) => {
     await Axios.post(window.globales.url + "/secado/guardar", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
-          formik.setFieldValue("idmodulo", res.data.id);
-          props.handleClose();
+          window.location.reload();
+
         } else {
           Swal.fire({ text: res.data.msg, icon: "error" });
         }

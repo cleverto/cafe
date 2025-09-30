@@ -2,17 +2,18 @@ import { useEffect, useState } from "react";
 import { Form, Col, Container, Button, Card } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import ModalD from "../global/ModalD";
+import { useNavigate } from "react-router-dom";
 
 import SecadoGuardarRegistrar from "./SecadoGuardarRegistrar";
 const Secado = (props) => {
+  const navigate = useNavigate();
   const [buscar, setBuscar] = useState("");
-  const [totalActivos, setTotalActivos] = useState(0.00);
+  const [totalActivos, setTotalActivos] = useState(0.0);
   const [totalQQ, setTotalQQ] = useState(0);
   const [show, setShow] = useState(false);
   const [idmodulo, setIdmodulo] = useState("");
   const handleClose = () => setShow(false);
   const [columns, setColumns] = useState([]);
-
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
@@ -27,8 +28,6 @@ const Secado = (props) => {
     }
   }, [props.rowData]);
 
-
-
   const handleToggleActivo = (row) => {
     const newData = props.rowData.map((item) =>
       String(item.id_compra) === String(row.id_compra)
@@ -38,23 +37,24 @@ const Secado = (props) => {
 
     props.updateRowData(newData);
 
-    setTotalActivos(newData
-      .filter((item) => item.activo === "1")
-      .reduce((acc, item) => acc + Number(item.total || 0), 0));
-    setTotalQQ(newData
-      .filter((item) => item.activo === "1")
-      .reduce((acc, item) => acc + Number(item.cantidad || 0), 0));
-
+    setTotalActivos(
+      newData
+        .filter((item) => item.activo === "1")
+        .reduce((acc, item) => acc + Number(item.total || 0), 0)
+    );
+    setTotalQQ(
+      newData
+        .filter((item) => item.activo === "1")
+        .reduce((acc, item) => acc + Number(item.cantidad || 0), 0)
+    );
   };
   const customStyles = {
     rows: {
       style: {
-        minHeight: '32px',
-      }
+        minHeight: "32px",
+      },
     },
-
   };
-
 
   const filteredData = props.rowData.filter((item) => {
     const values = Object.values(item).join(" ").toLowerCase();
@@ -68,7 +68,6 @@ const Secado = (props) => {
   //   // eslint-disable-next-line
   // }, [idmodulo]);
   // en el componente Secado
-
 
   const get_columns = () => {
     setColumns([
@@ -112,26 +111,28 @@ const Secado = (props) => {
         sortable: true,
         width: "6rem",
         omit: true,
-        cell: (row) =>
+        cell: (row) => (
           <div style={{ textAlign: "right", width: "100%" }}>
             {Number(row.total).toLocaleString("es-PE", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </div>
+        ),
       },
       {
         name: "Total",
         selector: (row) => row.total,
         sortable: true,
         width: "6rem",
-        cell: (row) =>
+        cell: (row) => (
           <div style={{ textAlign: "right", width: "100%" }}>
             {Number(row.total).toLocaleString("es-PE", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </div>
+        ),
       },
       {
         name: "",
@@ -146,16 +147,27 @@ const Secado = (props) => {
       },
     ]);
   };
-
-
+  
 
   return (
-    <Container className="mb-4 responsive-container" style={{ paddingBottom: "80px" }}>
+    <Container
+      className="mb-4 responsive-container"
+      style={{ paddingBottom: "80px" }}
+    >
       <div className="d-flex justify-content-between">
         <div className="pt-4">
           <h5>Secado</h5>
         </div>
+
         <div className="pt-3 mb-3">
+          <Button
+            className="  mx-1"
+            variant="outline-primary"
+            title="Buscar"
+            onClick={() => navigate("/proceso/secado/buscar")}
+          >
+            <i className="bi bi-search"></i>
+          </Button>
           <Button
             className=""
             variant={idmodulo ? "danger" : "primary"}
@@ -167,7 +179,6 @@ const Secado = (props) => {
         </div>
       </div>
       <hr className="mt-0 mb-4" />
-
 
       <div className="d-flex justify-content-end mt-2 mb-2">
         <Form.Group as={Col} md="12">
@@ -187,12 +198,14 @@ const Secado = (props) => {
         </div>
         <div className="text-end">
           <div className="fw-bold text-primary fs-6">
-            QQ <span className="ms-1">
+            QQ{" "}
+            <span className="ms-1">
               {Number(totalQQ).toLocaleString("es-PE")}
             </span>
           </div>
           <div className="fw-bold text-success fs-5">
-            S/. <span className="ms-1">
+            S/.{" "}
+            <span className="ms-1">
               {Number(totalActivos).toLocaleString("es-PE", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -201,7 +214,6 @@ const Secado = (props) => {
           </div>
         </div>
       </div>
-
 
       <Card>
         <DataTable
@@ -217,7 +229,6 @@ const Secado = (props) => {
         <div>
           <h6 className="text-muted mb-1">Compras para enviar a secar</h6>
         </div>
-
       </div>
 
       <Card className="">
@@ -250,7 +261,6 @@ const Secado = (props) => {
           rowData={props.rowData}
         />
       </ModalD>
-
     </Container>
   );
 };

@@ -217,7 +217,6 @@ const Sidebar = ({ show, handle }) => {
                       >
                         Almacén
                       </ListGroup.Item>
-
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>
@@ -229,6 +228,15 @@ const Sidebar = ({ show, handle }) => {
                   </Accordion.Header>
                   <Accordion.Body className="p-0">
                     <ListGroup className="list-group-flush">
+                      <ListGroup.Item
+                        action
+                        style={{ paddingLeft: "45px" }}
+                        as={Link}
+                        to="/reporte/almacenbuscar"
+                        active={isActive("/reporte/almacenbuscar")}
+                      >
+                        Almacen
+                      </ListGroup.Item>
                       <ListGroup.Item
                         action
                         style={{ paddingLeft: "45px" }}
@@ -256,7 +264,6 @@ const Sidebar = ({ show, handle }) => {
                       >
                         Compras y Ventas
                       </ListGroup.Item>
-
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>

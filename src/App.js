@@ -7,10 +7,8 @@ import Home from "./components/dashboard/Home";
 import Producto from "./components/administracion/Producto";
 import Proveedor from "./components/administracion/Proveedor";
 
-
 import CompraRegistrar from "./components/proceso/CompraRegistrar";
 import CompraBuscar from "./components/proceso/CompraBuscar";
-
 
 import CreditoPagar from "./components/proceso/CreditoPagar";
 
@@ -19,13 +17,14 @@ import Caja from "./components/proceso/Caja";
 import AlmacenRegistrar from "./components/proceso/AlmacenRegistrar";
 import AlmacenBuscar from "./components/proceso/AlmacenBuscar";
 
-
 import SecadoRegistrar from "./components/proceso/SecadoRegistrar";
+import SecadoBuscar from "./components/proceso/SecadoBuscar";
 
 //reportes
 import ReporteComprasFiltro from "./components/reporte/ComprasFiltro";
 import ReporteCompras from "./components/reporte/Compras";
-
+import ReporteAlmacenFiltro from "./components/reporte/AlmacenFiltro";
+import ReporteAlmacen from "./components/reporte/Almacen";
 
 
 
@@ -59,9 +58,6 @@ import RotacionRegistrar from "./components/trabajador/RotacionRegistrar";
 
 import Adm from "./components/administracion/Adm";
 
-
-
-
 import CambiarContrasena from "./components/configuracion/CambiarConstrasena";
 import Usuario from "./components/configuracion/Usuario";
 
@@ -90,14 +86,22 @@ function App() {
           <Route path="/proceso/almacen/buscar" element={<AlmacenBuscar />} />
           {/* Proceso secado */}
           <Route path="/proceso/secado" element={<SecadoRegistrar />} />
-        
-
-
+          <Route path="/proceso/secado/buscar" element={<SecadoBuscar />} />
 
           {/* Reporte */}
 
-          <Route path="/reporte/comprasbuscar" element={<ReporteComprasFiltro />} />
+          <Route
+            path="/reporte/comprasbuscar"
+            element={<ReporteComprasFiltro />}
+          />
+          
+          <Route
+            path="/reporte/almacenbuscar"
+            element={<ReporteAlmacenFiltro />}
+          />
+<Route path="/reporte/almacen" element={<ReporteAlmacen />} />
           <Route path="/reporte/compras" element={<ReporteCompras />} />
+          
 
           {/* Reporte */}
 
@@ -163,10 +167,6 @@ function App() {
           <Route path="/rotacion" element={<Rotacion />} />
           <Route path="/rotacion/nuevo" element={<RotacionRegistrar />} />
           <Route path="/rotacion/editar" element={<RotacionRegistrar />} />
-
-
-
-
 
           <Route path="/cambiar" element={<CambiarContrasena />} />
           <Route path="/configuracion/usuario" element={<Usuario />} />

@@ -8,7 +8,6 @@ import Secado from "./Secado";
 
 const SecadoRegistrar = (props) => {
   const [idmodulo, setIdmodulo] = useState("");
-  const [listaProducto, setListaProducto] = useState([]);
   const [rowData, setRowData] = useState([]);
   const [total, setTotal] = useState("0");
 
