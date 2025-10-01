@@ -258,7 +258,6 @@ const SecadoBuscar = () => {
                   value={values.desde}
                   onChange={(e) => {
                     handleChange(e);
-                    setFieldValue("hasta", e.target.value);
                   }}
                   name="desde"
                   type="date"

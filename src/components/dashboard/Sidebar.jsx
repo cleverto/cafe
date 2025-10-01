@@ -250,6 +250,15 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
+                        to="/reporte/compras-secado"
+                        active={isActive("/reporte/compras-secado")}
+                      >
+                        Compras secado
+                      </ListGroup.Item>
+                      <ListGroup.Item
+                        action
+                        style={{ paddingLeft: "45px" }}
+                        as={Link}
                         to="/reporte/carrera"
                         active={isActive("/reporte/013")}
                       >

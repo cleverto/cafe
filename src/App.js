@@ -25,8 +25,8 @@ import ReporteComprasFiltro from "./components/reporte/ComprasFiltro";
 import ReporteCompras from "./components/reporte/Compras";
 import ReporteAlmacenFiltro from "./components/reporte/AlmacenFiltro";
 import ReporteAlmacen from "./components/reporte/Almacen";
-
-
+import ReporteComprasSecadoFiltro from "./components/reporte/ComprasSecadoFiltro";
+import ReporteComprasSecado from "./components/reporte/ComprasSecado";
 
 import Trabajador from "./components/trabajador/Trabajador";
 
@@ -94,14 +94,21 @@ function App() {
             path="/reporte/comprasbuscar"
             element={<ReporteComprasFiltro />}
           />
-          
+
           <Route
             path="/reporte/almacenbuscar"
             element={<ReporteAlmacenFiltro />}
           />
-<Route path="/reporte/almacen" element={<ReporteAlmacen />} />
+          <Route
+            path="/reporte/compras-secado"
+            element={<ReporteComprasSecadoFiltro />}
+          />
+          <Route path="/reporte/almacen" element={<ReporteAlmacen />} />
           <Route path="/reporte/compras" element={<ReporteCompras />} />
-          
+          <Route
+            path="/reporte/compras-secado"
+            element={<ReporteComprasSecado />}
+          />
 
           {/* Reporte */}
 
