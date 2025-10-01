@@ -100,13 +100,13 @@ function App() {
             element={<ReporteAlmacenFiltro />}
           />
           <Route
-            path="/reporte/compras-secado"
+            path="/reporte/compras_secado_buscar"
             element={<ReporteComprasSecadoFiltro />}
           />
           <Route path="/reporte/almacen" element={<ReporteAlmacen />} />
           <Route path="/reporte/compras" element={<ReporteCompras />} />
           <Route
-            path="/reporte/compras-secado"
+            path="/reporte/compras_secado"
             element={<ReporteComprasSecado />}
           />
 

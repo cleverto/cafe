@@ -12,7 +12,7 @@ const ComprasSecado = () => {
   const desde = searchParams.get("desde");
   const hasta = searchParams.get("hasta");
 
-  const url = `${window.globales.url}/reporte/compras-secado?desde=${desde}&hasta=${hasta}`;
+  const url = `${window.globales.url}/reporte/compras_secado?desde=${desde}&hasta=${hasta}`;
 
   const [contenido, setContenido] = useState("");
 
