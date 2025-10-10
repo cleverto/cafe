@@ -18,11 +18,14 @@ import DataTable from "react-data-table-component";
 import Dashboard from "../dashboard/Dashboard";
 import { useNavigate } from "react-router-dom";
 
+
 const SecadoBuscar = () => {
   const navigate = useNavigate();
 
   const [columns, setColumns] = useState([]);
   const [rowdata, setRowData] = useState([]);
+
+
 
   useEffect(() => {
     get_columns();
@@ -186,6 +189,12 @@ const SecadoBuscar = () => {
                 <Dropdown.Item onClick={(e) => eliminar(e, row.id_secado)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={(e) =>
+                  navigate("/proceso/secado/retorno?id=" + row.id_secado)
+                }>
+                  <i className="bi bi bi-trash-fill me-2"></i>Retorno
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </>
@@ -237,7 +246,7 @@ const SecadoBuscar = () => {
 
   const componente = (
     <>
-      <Container className="mb-4 mt-3 " style={{ paddingBottom: "0px" }}>
+      <Container className="mb-4 mt-3 responsive-container" style={{ paddingBottom: "0px" }}>
         <div className="d-flex justify-content-between">
           <div className="">
             <h5>Buscar secado</h5>
@@ -303,6 +312,7 @@ const SecadoBuscar = () => {
             }}
           />
         </Card>
+
       </Container>
     </>
   );
@@ -310,6 +320,8 @@ const SecadoBuscar = () => {
   return (
     <>
       <Dashboard componente={componente} />
+
+      
     </>
   );
 };

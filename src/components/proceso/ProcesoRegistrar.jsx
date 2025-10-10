@@ -4,12 +4,13 @@ import * as Yup from "yup";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import Dashboard from "../dashboard/Dashboard";
-import Secado from "./Secado";
+import Proceso from "./Proceso";
 
-const SecadoRegistrar = (props) => {
+const ProcesoRegistrar = (props) => {
   const [idmodulo, setIdmodulo] = useState("");
   const [rowData, setRowData] = useState([]);
   const [total, setTotal] = useState("0");
+
 
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const SecadoRegistrar = (props) => {
     let _datos = JSON.stringify({
       id: id,
     });
-    const res = await Axios.post(window.globales.url + "/compra/lista_sin_secar", _datos);
+    const res = await Axios.post(window.globales.url + "/proceso/lista", _datos);
 
     setRowData(res.data.items);
     formik.setFieldValue("operacion", "1");
@@ -31,6 +32,7 @@ const SecadoRegistrar = (props) => {
   };
 
   const guardar = async (data) => {
+
     let _datos = JSON.stringify(data);
 
     await Axios.post(window.globales.url + "/compra/guardar_producto", _datos)
@@ -70,6 +72,7 @@ const SecadoRegistrar = (props) => {
       });
   };
 
+
   const updateRowData = (data) => {
     console.log(data);
     setRowData(data);
@@ -81,27 +84,10 @@ const SecadoRegistrar = (props) => {
     id_detalle: "",
     id_producto: "",
     id_categoria: "",
-    cfg_tara: "0",
-    cfg_qq: "0",
     producto: "",
-    sacos: "0",
-    muestra: "300",
     rendimiento: "0",
-    segunda: "0",
-    bola: "0",
     cascara: "0",
     humedad: "0",
-    impureza: "0",
-    descarte: "0",
-    pasilla: "0",
-    negro: "0",
-    ripio: "0",
-    impureza: "0",
-    defectos: "0",
-    tara: "0",
-    kg_bruto: "0",
-    kg_neto: "0",
-    qq_bruto: "0",
     cantidad: "0",
     precio: "0",
     total: "0",
@@ -144,7 +130,7 @@ const SecadoRegistrar = (props) => {
   return (
     <Dashboard
       componente={
-        <Secado
+        <Proceso
           {...formik}
           rowData={rowData}
           updateRowData={updateRowData}
@@ -154,5 +140,5 @@ const SecadoRegistrar = (props) => {
   );
 };
 
-export default SecadoRegistrar;
+export default ProcesoRegistrar;
 

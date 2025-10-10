@@ -28,17 +28,30 @@ const Sidebar = ({ show, handle }) => {
   // const baseRoute = isAdmisionBaseUrl ? "/admision" : "";
 
   const getActiveAccordion = () => {
-    if (location.pathname.includes("administracion")) {
+    if (location.pathname.includes("producto")) {
       return "0";
     }
-    if (location.pathname.includes("trabajador")) {
+        if (location.pathname.includes("proveedor")) {
+      return "0";
+    }
+        if (location.pathname.includes("cliente")) {
+      return "0";
+    }
+    if (location.pathname.includes("compra")) {
       return "1";
     }
-    if (location.pathname.includes("designacion")) {
+    if (location.pathname.includes("secado")) {
       return "1";
     }
 
-    if (location.pathname.includes("rotacion")) {
+    if (location.pathname.includes("procesar")) {
+      return "1";
+    }
+    if (location.pathname.includes("venta")) {
+      return "1";
+    } if (location.pathname.includes("caja")) {
+      return "1";
+    } if (location.pathname.includes("almacen")) {
       return "1";
     }
     if (location.pathname.includes("asistencia")) {
@@ -192,7 +205,17 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/proceso/venta"
+                        to="/proceso/procesar"
+                        active={isActive("/proceso/procesar")}
+                      >
+                        Procesar
+                      </ListGroup.Item>
+                      <ListGroup.Item
+                        className="border-0"
+                        action
+                        style={{ paddingLeft: "45px" }}
+                        as={Link}
+                        to="/proceso/proceso"
                         active={isActive("/proceso/venta")}
                       >
                         Venta
