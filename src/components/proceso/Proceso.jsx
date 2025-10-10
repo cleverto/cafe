@@ -3,13 +3,12 @@ import { Form, Col, Container, Button, Card } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import ModalD from "../global/ModalD";
 import { useNavigate } from "react-router-dom";
+import ProcesoGuardarRegistrar from "./ProcesoGuardarRegistrar";
 
-import SecadoGuardarRegistrar from "./SecadoGuardarRegistrar";
 const Proceso = (props) => {
   const navigate = useNavigate();
   const [buscar, setBuscar] = useState("");
-  const [totalActivos, setTotalActivos] = useState(0.0);
-  const [totalQQ, setTotalQQ] = useState(0);
+
   const [show, setShow] = useState(false);
   const [idmodulo, setIdmodulo] = useState("");
   const handleClose = () => setShow(false);
@@ -28,34 +27,6 @@ const Proceso = (props) => {
     }
   }, [props.rowData]);
 
-  const handleToggleActivo = (row) => {
-    const newData = props.rowData.map((item) =>
-      String(item.id_compra) === String(row.id_compra)
-        ? { ...item, activo: item.activo === "1" ? "0" : "1" }
-        : item
-    );
-
-    props.updateRowData(newData);
-
-    setTotalActivos(
-      newData
-        .filter((item) => item.activo === "1")
-        .reduce((acc, item) => acc + Number(item.total || 0), 0)
-    );
-    setTotalQQ(
-      newData
-        .filter((item) => item.activo === "1")
-        .reduce((acc, item) => acc + Number(item.cantidad || 0), 0)
-    );
-  };
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "32px",
-      },
-    },
-  };
-
   const filteredData = props.rowData.filter((item) => {
     const values = Object.values(item).join(" ").toLowerCase();
     return values.includes(buscar.toLowerCase());
@@ -68,6 +39,14 @@ const Proceso = (props) => {
   //   // eslint-disable-next-line
   // }, [idmodulo]);
   // en el componente Secado
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "32px",
+      },
+    },
+  };
 
   const get_columns = () => {
     setColumns([
@@ -113,8 +92,7 @@ const Proceso = (props) => {
             </div>
           );
         },
-      }
-      ,
+      },
       {
         name: "Fecha",
         selector: (row) => row.fecha,
@@ -211,13 +189,12 @@ const Proceso = (props) => {
           <input
             type="checkbox"
             checked={row.activo === "1"}
-            onChange={() => handleToggleActivo(row)}
+            onChange={() => props.handleToggleActivo(row)}
           />
         ),
       },
     ]);
   };
-
 
   return (
     <Container
@@ -270,13 +247,13 @@ const Proceso = (props) => {
           <div className="fw-bold text-primary fs-6">
             QQ{" "}
             <span className="ms-1">
-              {Number(totalQQ).toLocaleString("es-PE")}
+              {Number(props.totalQQ).toLocaleString("es-PE")}
             </span>
           </div>
           <div className="fw-bold text-success fs-5">
             S/.{" "}
             <span className="ms-1">
-              {Number(totalActivos).toLocaleString("es-PE", {
+              {Number(props.totalActivos).toLocaleString("es-PE", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}
@@ -322,12 +299,12 @@ const Proceso = (props) => {
         aceptarTexto={idmodulo ? "Modificar" : "Guardar"}
         cancelarTexto="Cancelar"
       >
-        <SecadoGuardarRegistrar
+        <ProcesoGuardarRegistrar
           formId="formIdModulo"
           idmodulo={idmodulo}
           handleClose={handleClose}
-          totalActivos={totalActivos}
-          totalQQ={totalQQ}
+          totalActivos={props.totalActivos}
+          totalQQ={props.totalQQ}
           rowData={props.rowData}
         />
       </ModalD>
