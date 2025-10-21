@@ -4,9 +4,9 @@ import * as Yup from "yup";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import Dashboard from "../dashboard/Dashboard";
-import SecadoRetorno from "./SecadoRetorno";
+import ProcesoRetorno from "./ProcesoRetorno";
 
-const SecadoRetornoRegistrar = (props) => {
+const ProcesoRetornoRegistrar = (props) => {
   const [idmodulo, setIdmodulo] = useState("");
   const [listaProducto, setListaProducto] = useState([]);
   const [rowdata, setRowdata] = useState([]);
@@ -67,13 +67,15 @@ const SecadoRetornoRegistrar = (props) => {
     setRowdata(res.data.items);
     setTotal(res.data.total);
   };
-  const guardarLista = async () => {
+  const guardar_all = async (fecha,) => {
 
     let _datos = JSON.stringify({
-      id:formik.values.idmodulo,
-      fecha:formik.values.fecha,
+      fecha: formik.values.fecha,
       rowdata: rowdata,
     });
+
+    console.log(_datos);
+    return;
 
     await Axios.post(window.globales.url + "/secado/guardar_retorno", _datos)
       .then((res) => {
@@ -93,36 +95,34 @@ const SecadoRetornoRegistrar = (props) => {
     // data.id_detalle = ide;
     // data.id_usuario = localStorage.getItem("idusuario");
 
-    let _datos = JSON.stringify(data);
+    //let _datos = JSON.stringify(data);
 
-    await Axios.post(window.globales.url + "/compra/guardar_producto", _datos)
-      .then((res) => {
-        if (res.data.rpta === "1") {
-          const obj = {
-            id_detalle: res.data.id,
-            idmodulo: idmodulo,
-            id_producto: data.id_producto,
-            id_categoria: data.id_categoria,
-            rendimiento: data.rendimiento,
-            cascara: data.cascara,
-            humedad: data.humedad,
-            cantidad: data.cantidad,
-            precio: data.precio,
-            total: data.total,
-          };
-          setRowdata((prevData) => [obj, ...prevData]);
-          setTotal(res.data.total);
-        } else {
-          Swal.fire({ text: res.data.msg, icon: "error" });
-        }
-      })
-      .catch((error) => {
-        Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
-      });
+    const obj = {
+      id_detalle: Date.now() + Math.floor(Math.random() * 1000),
+      id_producto: data.id_producto,
+      producto: data.producto,
+      id_categoria: data.id_categoria,
+      rendimiento: data.rendimiento,
+      cascara: data.cascara,
+      humedad: data.humedad,
+      cantidad: data.cantidad,
+      precio: data.precio,
+      total: data.total,
+    };
+    setRowdata((prevData) => [obj, ...prevData]);
+    //setTotal(res.data.total);
   };
   const eliminar = (e, id) => {
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
     const idParam = params.get("id");
+
+
+    setRowdata((prevData) =>
+      prevData.filter((row) => row.id_detalle !== id)
+    );
+
+    return;
+
 
     let _datos = JSON.stringify({ id: id, idmodulo: idParam });
     Swal.fire({
@@ -171,26 +171,26 @@ const SecadoRetornoRegistrar = (props) => {
   //     formik.setFieldValue("cantidad", qq_neto);
   //   }
   // };
-  // const calcular_total_cantidad = (e) => {
-  //   let value = e.target.value;
-  //   if (/^\d*\.?\d{0,2}$/.test(value)) {
-  //     formik.setFieldValue("cantidad", value);
-  //     formik.setFieldValue(
-  //       "total",
-  //       (value * formik.values.precio).toFixed(2)
-  //     );
-  //   }
-  // };
-  // const calcular_total_precio = (e) => {
-  //   let value = e.target.value;
-  //   if (/^\d*\.?\d{0,3}$/.test(value)) {
-  //     formik.setFieldValue("precio", value);
-  //     formik.setFieldValue(
-  //       "total",
-  //       (formik.values.cantidad * value).toFixed(2)
-  //     );
-  //   }
-  // };
+  const calcular_total_cantidad = (e) => {
+    let value = e.target.value;
+    if (/^\d*\.?\d{0,2}$/.test(value)) {
+      formik.setFieldValue("cantidad", value);
+      formik.setFieldValue(
+        "total",
+        (value * formik.values.precio).toFixed(2)
+      );
+    }
+  };
+  const calcular_total_precio = (e) => {
+    let value = e.target.value;
+    if (/^\d*\.?\d{0,3}$/.test(value)) {
+      formik.setFieldValue("precio", value);
+      formik.setFieldValue(
+        "total",
+        (formik.values.cantidad * value).toFixed(2)
+      );
+    }
+  };
 
   const setData = (data) => {
     setRowdata(data);
@@ -203,22 +203,17 @@ const SecadoRetornoRegistrar = (props) => {
   const initialValues = {
     operacion: idmodulo ? "1" : "0",
     idmodulo: idmodulo ? idmodulo : "",
-    tipo_documento:"R",
-    fecha: new Date().toISOString().slice(0, 10),
+    rendimiento: "0",
+    cascara: "0",
+    humedad: "0",
+    cantidad: "0",
+    precio: "0",
+    total: "0",
   };
 
   const validationSchema = Yup.object({
     id_producto: Yup.string().required("Requerido"),
-    muestra: Yup.string().required("Requerido"),
     rendimiento: Yup.string().required("Requerido"),
-    segunda: Yup.string().required("Requerido"),
-    bola: Yup.string().required("Requerido"),
-    cascara: Yup.string().when("id_categoria", (id_categoria, schema) => {
-      return id_categoria === "1"
-        ? schema.required("Requerido")
-        : schema.notRequired();
-    }),
-
     humedad: Yup.string().required("Requerido"),
     cantidad: Yup.string()
       .matches(/^\d+(\.\d{1,2})?$/, "Máximo dos decimales")
@@ -235,9 +230,8 @@ const SecadoRetornoRegistrar = (props) => {
     initialValues,
     validationSchema,
     enableReinitialize: true,
-    onSubmit: (values, { resetForm }) => {
-      console.log(rowdata);
-      // guardar(values);
+    onSubmit: (values) => {
+      guardar(values);
       // resetForm();
     },
   });
@@ -245,21 +239,24 @@ const SecadoRetornoRegistrar = (props) => {
   return (
     <Dashboard
       componente={
-        <SecadoRetorno
+        <ProcesoRetorno
           {...formik}
           idmmodulo={idmodulo}
           listaProducto={listaProducto}
           rowdata={rowdata}
           setData={setData}
           total={total}
-          guardarLista={guardarLista}
+          guardar={guardar}
+          guardar_all={guardar_all}
           eliminar={eliminar}
           limpiarRowdata={limpiarRowdata}
+          calcular_total_cantidad={calcular_total_cantidad}
+          calcular_total_precio={calcular_total_precio}
         />
       }
     />
   );
 };
 
-export default SecadoRetornoRegistrar;
+export default ProcesoRetornoRegistrar;
 

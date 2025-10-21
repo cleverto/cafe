@@ -20,7 +20,8 @@ import logo from "../../assets/imagen/logo64.png";
 const Sidebar = ({ show, handle }) => {
   const location = useLocation();
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname.includes(path);
+
   // const [listaMenu, setListaMenu] = useState([]);
   // const [listaMenuOpcion, setListaMenuOpcion] = useState([]);
 
@@ -31,10 +32,10 @@ const Sidebar = ({ show, handle }) => {
     if (location.pathname.includes("producto")) {
       return "0";
     }
-        if (location.pathname.includes("proveedor")) {
+    if (location.pathname.includes("proveedor")) {
       return "0";
     }
-        if (location.pathname.includes("cliente")) {
+    if (location.pathname.includes("cliente")) {
       return "0";
     }
     if (location.pathname.includes("compra")) {

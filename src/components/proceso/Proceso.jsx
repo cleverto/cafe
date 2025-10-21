@@ -86,11 +86,15 @@ const Proceso = (props) => {
                 backgroundColor: estilo.background,
                 color: estilo.color,
                 textTransform: "capitalize",
+                whiteSpace: "nowrap", // evita salto de línea
               }}
             >
               {row.modulo}
+              {row.modulo === "Secado" && row.operacion === "S" && ` (${row.operacion})`}
             </div>
           );
+
+
         },
       },
       {
@@ -132,20 +136,28 @@ const Proceso = (props) => {
         selector: (row) => row.proveedor,
         sortable: true,
         reorder: true,
+        wrap: true, // permite que el DataTable maneje la altura, pero limitamos visualmente
         cell: (row) => (
           <div
             title={row.proveedor}
             style={{
-              width: "100%",
-              whiteSpace: "nowrap",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 1,  // 🔑 solo una línea visible
               overflow: "hidden",
               textOverflow: "ellipsis",
+              minWidth: 0,
+              whiteSpace: "normal", // necesario con line-clamp
+              flex: "1 1 0",        // evita que la celda crezca por el contenido
             }}
           >
             {row.proveedor}
           </div>
         ),
       },
+
+
+
       {
         name: "QQ",
         selector: (row) => row.cantidad,
@@ -190,9 +202,12 @@ const Proceso = (props) => {
             type="checkbox"
             checked={row.activo === "1"}
             onChange={() => props.handleToggleActivo(row)}
+            disabled={row.operacion === "S"} // 🔒 Desactiva el check si la operación es "S"
+            style={{ cursor: row.operacion === "S" ? "not-allowed" : "pointer" }}
           />
         ),
-      },
+      }
+
     ]);
   };
 
@@ -211,7 +226,7 @@ const Proceso = (props) => {
             className="  mx-1"
             variant="outline-primary"
             title="Buscar"
-            onClick={() => navigate("/proceso/secado/buscar")}
+            onClick={() => navigate("/proceso/procesar/buscar")}
           >
             <i className="bi bi-search"></i>
           </Button>
@@ -303,6 +318,7 @@ const Proceso = (props) => {
           formId="formIdModulo"
           idmodulo={idmodulo}
           handleClose={handleClose}
+          updateLista={props.updateLista}
           totalActivos={props.totalActivos}
           totalQQ={props.totalQQ}
           rowData={props.rowData}

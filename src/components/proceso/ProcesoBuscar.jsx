@@ -19,7 +19,7 @@ import Dashboard from "../dashboard/Dashboard";
 import { useNavigate } from "react-router-dom";
 
 
-const SecadoBuscar = () => {
+const ProcesoBuscar = () => {
   const navigate = useNavigate();
 
   const [columns, setColumns] = useState([]);
@@ -37,7 +37,7 @@ const SecadoBuscar = () => {
   }, []);
 
   const eliminar = async (e, id) => {
-    console.log(id);
+
     let _datos = JSON.stringify({ id: id });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
@@ -48,11 +48,11 @@ const SecadoBuscar = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Axios.post(window.globales.url + "/secado/eliminar", _datos)
+        Axios.post(window.globales.url + "/proceso/eliminar", _datos)
           .then((res) => {
             if (res.data.rpta === "1") {
               setRowData((prevData) =>
-                prevData.filter((row) => row.id_secado !== id)
+                prevData.filter((row) => row.id_proceso !== id)
               );
             }
           })
@@ -68,7 +68,7 @@ const SecadoBuscar = () => {
     setColumns([
       {
         name: "Id",
-        selector: (row) => row.id_secado,
+        selector: (row) => row.id_proceso,
         sortable: true,
         reorder: true,
         omit: true,
@@ -87,7 +87,7 @@ const SecadoBuscar = () => {
         sortable: true,
         reorder: true,
         center: "true",
-        width: "7rem",
+        width: "8rem",
       },
       {
         name: "Nro Comprobante",
@@ -172,19 +172,12 @@ const SecadoBuscar = () => {
                 </span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item
-                  onClick={(e) =>
-                    navigate("/proceso/secado?id=" + row.id_secado)
-                  }
-                >
-                  <i className="bi bi-pencil-fill me-2"></i>Modificar
-                </Dropdown.Item>
-                <Dropdown.Item onClick={(e) => eliminar(e, row.id_secado)}>
+                <Dropdown.Item onClick={(e) => eliminar(e, row.id_proceso)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={(e) =>
-                  navigate("/proceso/secado/retorno?id=" + row.id_secado)
+                  navigate("/proceso/procesar/retorno?id=" + row.id_proceso)
                 }>
                   <i className="bi bi bi-trash-fill me-2"></i>Retorno
                 </Dropdown.Item>
@@ -197,14 +190,14 @@ const SecadoBuscar = () => {
   };
 
   const initialValues = {
-    desde: new Date().toISOString().slice(0, 10),
-    hasta: new Date().toISOString().slice(0, 10),
+    desde: new Date().toLocaleDateString('en-CA'),
+    hasta: new Date().toLocaleDateString('en-CA'),
   };
 
   const buscar = async (data) => {
     let _datos = JSON.stringify(data);
 
-    await Axios.post(window.globales.url + "/secado/buscar", _datos)
+    await Axios.post(window.globales.url + "/proceso/buscar", _datos)
       .then((res) => {
         setRowData(res.data.items);
       })
@@ -242,7 +235,7 @@ const SecadoBuscar = () => {
       <Container className="mb-4 mt-3 responsive-container" style={{ paddingBottom: "0px" }}>
         <div className="d-flex justify-content-between">
           <div className="">
-            <h5>Buscar secado</h5>
+            <h5>Buscar proceso</h5>
           </div>
           <div>
             <Button variant="light" onClick={() => window.history.back()}>
@@ -282,7 +275,7 @@ const SecadoBuscar = () => {
             <Col xs="12" md="2" lg="2">
               <div className="mt-2">
                 <Button className="mt-4 " variant="primary" type="submit">
-                  Bsucar
+                  Buscar
                 </Button>
               </div>
             </Col>
@@ -296,14 +289,14 @@ const SecadoBuscar = () => {
             persistTableHead
             responsive
             customStyles={{
-              rows: {
+              table: {
                 style: {
-                  minHeight: "32px",
+                  minHeight: "200px",
+                  overflow: "auto",
                 },
               },
             }}
           />
-
         </Card>
 
       </Container>
@@ -319,4 +312,4 @@ const SecadoBuscar = () => {
   );
 };
 
-export default SecadoBuscar;
+export default ProcesoBuscar;

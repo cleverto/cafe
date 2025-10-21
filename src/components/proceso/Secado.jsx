@@ -147,7 +147,7 @@ const Secado = (props) => {
       },
     ]);
   };
-  
+
 
   return (
     <Container

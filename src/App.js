@@ -22,6 +22,8 @@ import SecadoBuscar from "./components/proceso/SecadoBuscar";
 import SecadoRetornoRegistrar from "./components/proceso/SecadoRetornoRegistrar";
 
 import ProcesoRegistrar from "./components/proceso/ProcesoRegistrar";
+import ProcesoBuscar from "./components/proceso/ProcesoBuscar";
+import ProcesoRetornoRegistrar from "./components/proceso/ProcesoRetornoRegistrar";
 
 //reportes
 import ReporteComprasFiltro from "./components/reporte/ComprasFiltro";
@@ -66,7 +68,8 @@ function App() {
           <Route path="/proceso/secado/retorno" element={<SecadoRetornoRegistrar />} />
 
           <Route path="/proceso/procesar" element={<ProcesoRegistrar />} />
-
+          <Route path="/proceso/procesar/buscar" element={<ProcesoBuscar />} />
+          <Route path="/proceso/procesar/retorno" element={<ProcesoRetornoRegistrar />} />
 
           {/* Reporte */}
 
@@ -90,7 +93,7 @@ function App() {
             element={<ReporteComprasSecado />}
           />
 
-   
+
 
           <Route path="/cambiar" element={<CambiarContrasena />} />
           <Route path="/configuracion/usuario" element={<Usuario />} />

@@ -33,9 +33,6 @@ const ProcesoRegistrar = (props) => {
   };
 
 
-
-
-  
   const handleToggleActivo = (row) => {
     const newData = rowData.map((item) =>
       String(item.id_compra) === String(row.id_compra)
@@ -56,13 +53,9 @@ const ProcesoRegistrar = (props) => {
         .reduce((acc, item) => acc + Number(item.cantidad || 0), 0)
     );
   };
-
-
-
-
-
-
-
+  const updateLista = (data) => {
+    get_lista(idmodulo);
+  };
   const updateRowData = (data) => {
     setRowData(data);
   };
@@ -89,6 +82,7 @@ const ProcesoRegistrar = (props) => {
           {...formik}
           rowData={rowData}
           updateRowData={updateRowData}
+          updateLista={updateLista}
           handleToggleActivo={handleToggleActivo}
           total={total}
           totalQQ={totalQQ}
