@@ -396,10 +396,6 @@ const ProcesoRetorno = (props) => {
           dense
         />
       </Card>
-
-
-
-
     </Container>
   );
 };

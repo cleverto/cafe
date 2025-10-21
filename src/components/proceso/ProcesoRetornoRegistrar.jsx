@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import Dashboard from "../dashboard/Dashboard";
 import ProcesoRetorno from "./ProcesoRetorno";
 
-const ProcesoRetornoRegistrar = (props) => {
+const ProcesoRetornoRegistrar = () => {
   const [idmodulo, setIdmodulo] = useState("");
   const [listaProducto, setListaProducto] = useState([]);
   const [rowdata, setRowdata] = useState([]);
@@ -67,17 +67,17 @@ const ProcesoRetornoRegistrar = (props) => {
     setRowdata(res.data.items);
     setTotal(res.data.total);
   };
-  const guardar_all = async (fecha,) => {
+  const guardar_all = async (fecha) => {
+
 
     let _datos = JSON.stringify({
-      fecha: formik.values.fecha,
+      id: idmodulo,
+      fecha: fecha,
       rowdata: rowdata,
     });
 
-    console.log(_datos);
-    return;
 
-    await Axios.post(window.globales.url + "/secado/guardar_retorno", _datos)
+    await Axios.post(window.globales.url + "/proceso/guardar_retorno", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
           window.history.back();
