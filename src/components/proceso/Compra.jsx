@@ -191,7 +191,7 @@ const Compra = (props) => {
         width: "6rem",
         right: true,
         cell: (row) =>
-          Number(row.total).toLocaleString("es-PE", {
+          Number(row.cantidad).toLocaleString("es-PE", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           }),

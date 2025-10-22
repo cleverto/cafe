@@ -10,7 +10,7 @@ const SecadoRetorno = (props) => {
   const [idmodulo, setIdmodulo] = useState("");
   const [id_credito, setIdCredito] = useState("");
   const [columns, setColumns] = useState([]);
-  const [mostrarForm, setMostrarForm] = useState(false);
+  //const [mostrarForm, setMostrarForm] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
@@ -256,6 +256,7 @@ const SecadoRetorno = (props) => {
         </div>
       </div>
       <hr className="mt-2 mb-4" />
+      {/* 
       <Button
         variant="light"
         className="d-inline-flex align-items-center rounded-pill px-3 py-2 shadow-sm border-0 mb-3"
@@ -473,7 +474,7 @@ const SecadoRetorno = (props) => {
             </Col>
           </Row>
         </Form>
-      )}
+      )} */}
 
       <Card>
         <DataTable

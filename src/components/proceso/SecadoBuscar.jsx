@@ -74,12 +74,12 @@ const SecadoBuscar = () => {
         omit: true,
       },
       {
-        name: "Operación",
+        name: "Oper.",
         selector: (row) => row.operacion,
         sortable: true,
         reorder: true,
         center: "true",
-        width: "7rem",
+        width: "5rem",
       },
       {
         name: "Fecha",
@@ -161,9 +161,9 @@ const SecadoBuscar = () => {
         allowOverflow: true,
         cell: (row) => (
           <>
-            <Dropdown className="hide-split-after ">
+            <Dropdown className="hide-split-after " >
               <Dropdown.Toggle
-                className="rounded-circle"
+                className="rounded-circle border-0"
                 size="sm"
                 variant="outline-secondary"
               >
@@ -186,7 +186,7 @@ const SecadoBuscar = () => {
                 <Dropdown.Item onClick={(e) =>
                   navigate("/proceso/secado/retorno?id=" + row.id_secado)
                 }>
-                  <i className="bi bi bi-trash-fill me-2"></i>Retorno
+                  <i class="bi bi-arrow-left-circle-fill me-2"></i>Retorno
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -296,6 +296,12 @@ const SecadoBuscar = () => {
             persistTableHead
             responsive
             customStyles={{
+              table: {
+                style: {
+                  minHeight: "200px",
+                  overflow: "auto",
+                },
+              },
               rows: {
                 style: {
                   minHeight: "32px",
