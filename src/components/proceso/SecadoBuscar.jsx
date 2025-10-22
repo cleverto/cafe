@@ -18,14 +18,11 @@ import DataTable from "react-data-table-component";
 import Dashboard from "../dashboard/Dashboard";
 import { useNavigate } from "react-router-dom";
 
-
 const SecadoBuscar = () => {
   const navigate = useNavigate();
 
   const [columns, setColumns] = useState([]);
   const [rowdata, setRowData] = useState([]);
-
-
 
   useEffect(() => {
     get_columns();
@@ -36,9 +33,8 @@ const SecadoBuscar = () => {
     // eslint-disable-next-line
   }, []);
 
-  const eliminar = async (e, id) => {
-    console.log(id);
-    let _datos = JSON.stringify({ id: id });
+  const eliminar = async (e, operacion, id) => {
+    let _datos = JSON.stringify({ id: id, operacion: operacion });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
       text: "¿Estás seguro de que deseas eliminar este registro?",
@@ -125,12 +121,12 @@ const SecadoBuscar = () => {
               style={{
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 1,  // 🔑 solo una línea visible
+                WebkitLineClamp: 1, // 🔑 solo una línea visible
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 minWidth: 0,
                 whiteSpace: "normal", // necesario con line-clamp
-                flex: "1 1 0",        // evita que la celda crezca por el contenido
+                flex: "1 1 0", // evita que la celda crezca por el contenido
               }}
             >
               {row.proveedores}
@@ -161,7 +157,7 @@ const SecadoBuscar = () => {
         allowOverflow: true,
         cell: (row) => (
           <>
-            <Dropdown className="hide-split-after " >
+            <Dropdown className="hide-split-after ">
               <Dropdown.Toggle
                 className="rounded-circle border-0"
                 size="sm"
@@ -173,20 +169,21 @@ const SecadoBuscar = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item
-                  onClick={(e) =>
-                    navigate("/proceso/secado?id=" + row.id_secado)
-                  }
+                  onClick={(e) => eliminar(e, row.operacion, row.id_secado)}
                 >
-                  <i className="bi bi-pencil-fill me-2"></i>Modificar
-                </Dropdown.Item>
-                <Dropdown.Item onClick={(e) => eliminar(e, row.id_secado)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={(e) =>
-                  navigate("/proceso/secado/retorno?id=" + row.id_secado)
-                }>
-                  <i class="bi bi-arrow-left-circle-fill me-2"></i>Retorno
+                <Dropdown.Item
+                  disabled={row.operacion !== "S"}
+                  onClick={() => {
+                    if (row.operacion === "S") {
+                      navigate("/proceso/secado/retorno?id=" + row.id_secado);
+                    }
+                  }}
+                >
+                  <i className="bi bi-arrow-left-circle-fill me-2"></i>
+                  Retorno
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -239,7 +236,10 @@ const SecadoBuscar = () => {
 
   const componente = (
     <>
-      <Container className="mb-4 mt-3 responsive-container" style={{ paddingBottom: "0px" }}>
+      <Container
+        className="mb-4 mt-3 responsive-container"
+        style={{ paddingBottom: "0px" }}
+      >
         <div className="d-flex justify-content-between">
           <div className="">
             <h5>Buscar secado</h5>
@@ -282,7 +282,7 @@ const SecadoBuscar = () => {
             <Col xs="12" md="2" lg="2">
               <div className="mt-2">
                 <Button className="mt-4 " variant="primary" type="submit">
-                  Bsucar
+                  Buscar
                 </Button>
               </div>
             </Col>
@@ -309,9 +309,7 @@ const SecadoBuscar = () => {
               },
             }}
           />
-
         </Card>
-
       </Container>
     </>
   );
@@ -319,8 +317,6 @@ const SecadoBuscar = () => {
   return (
     <>
       <Dashboard componente={componente} />
-
-
     </>
   );
 };
