@@ -33,7 +33,7 @@ const SecadoBuscar = () => {
     // eslint-disable-next-line
   }, []);
 
-  const eliminar = async (e, operacion, id) => {
+  const eliminar = async (e, id, operacion) => {
     let _datos = JSON.stringify({ id: id, operacion: operacion });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
@@ -169,7 +169,7 @@ const SecadoBuscar = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item
-                  onClick={(e) => eliminar(e, row.operacion, row.id_secado)}
+                  onClick={(e) => eliminar(e, row.id_secado, row.operacion)}
                 >
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>

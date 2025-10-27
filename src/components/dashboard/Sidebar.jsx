@@ -216,7 +216,7 @@ const Sidebar = ({ show, handle }) => {
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/proceso/proceso"
+                        to="/proceso/venta"
                         active={isActive("/proceso/venta")}
                       >
                         Venta

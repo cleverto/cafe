@@ -7,6 +7,7 @@ import {
   Row,
   Col,
   Dropdown,
+  Badge,
 } from "react-bootstrap";
 
 import { useFormik } from "formik";
@@ -18,7 +19,7 @@ import Dashboard from "../dashboard/Dashboard";
 import { useNavigate } from "react-router-dom";
 
 
-const ProcesoBuscar = () => {
+const VentaBuscar = () => {
   const navigate = useNavigate();
 
   const [columns, setColumns] = useState([]);
@@ -38,7 +39,6 @@ const ProcesoBuscar = () => {
   const eliminar = async (e, id, operacion) => {
 
     let _datos = JSON.stringify({ id: id, operacion: operacion });
-
     Swal.fire({
       title: "¿Confirmar Eliminación?",
       text: "¿Estás seguro de que deseas eliminar este registro?",
@@ -52,7 +52,7 @@ const ProcesoBuscar = () => {
           .then((res) => {
             if (res.data.rpta === "1") {
               setRowData((prevData) =>
-                prevData.filter((row) => row.id_proceso !== id)
+                prevData.filter((row) => row.id_Venta !== id)
               );
             }
           })
@@ -68,7 +68,7 @@ const ProcesoBuscar = () => {
     setColumns([
       {
         name: "Id",
-        selector: (row) => row.id_proceso,
+        selector: (row) => row.id_Venta,
         sortable: true,
         reorder: true,
         omit: true,
@@ -172,12 +172,12 @@ const ProcesoBuscar = () => {
                 </span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={(e) => eliminar(e, row.id_proceso, row.operacion)}>
+                <Dropdown.Item onClick={(e) => eliminar(e, row.id_Venta, row.operacion)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={(e) =>
-                  navigate("/proceso/procesar/retorno?id=" + row.id_proceso)
+                  navigate("/proceso/procesar/retorno?id=" + row.id_Venta)
                 }>
                   <i className="bi bi bi-trash-fill me-2"></i>Retorno
                 </Dropdown.Item>
@@ -317,4 +317,4 @@ const ProcesoBuscar = () => {
   );
 };
 
-export default ProcesoBuscar;
+export default VentaBuscar;

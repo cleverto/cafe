@@ -10,6 +10,7 @@ const ProcesoRetornoRegistrar = () => {
   const [idmodulo, setIdmodulo] = useState("");
   const [listaProducto, setListaProducto] = useState([]);
   const [rowdata, setRowdata] = useState([]);
+  const [rowDataSalida, setRowDataSalida] = useState([]);
   const [total, setTotal] = useState("0");
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const ProcesoRetornoRegistrar = () => {
 
     if (idmodulo) {
       get_lista(idmodulo);
+      get_lista_salida(idmodulo);
     }
   }, [idmodulo]);
 
@@ -67,9 +69,16 @@ const ProcesoRetornoRegistrar = () => {
     setRowdata(res.data.items);
     setTotal(res.data.total);
   };
+
+  const get_lista_salida = async (id) => {
+    let _datos = JSON.stringify({
+      id: id,
+    });
+    const res = await Axios.post(window.globales.url + "/proceso/lista_detalle_salida", _datos);
+
+    setRowDataSalida(res.data.items);
+  };
   const guardar_all = async (fecha) => {
-
-
     let _datos = JSON.stringify({
       id: idmodulo,
       fecha: fecha,
@@ -244,6 +253,7 @@ const ProcesoRetornoRegistrar = () => {
           idmmodulo={idmodulo}
           listaProducto={listaProducto}
           rowdata={rowdata}
+          rowDataSalida={rowDataSalida}
           setData={setData}
           total={total}
           guardar={guardar}

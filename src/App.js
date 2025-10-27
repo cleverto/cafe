@@ -14,17 +14,20 @@ import CreditoPagar from "./components/proceso/CreditoPagar";
 
 import Caja from "./components/proceso/Caja";
 
+//Almacen
 import AlmacenRegistrar from "./components/proceso/AlmacenRegistrar";
 import AlmacenBuscar from "./components/proceso/AlmacenBuscar";
-
+//Secado
 import SecadoRegistrar from "./components/proceso/SecadoRegistrar";
 import SecadoBuscar from "./components/proceso/SecadoBuscar";
 import SecadoRetornoRegistrar from "./components/proceso/SecadoRetornoRegistrar";
-
+//Proceso
 import ProcesoRegistrar from "./components/proceso/ProcesoRegistrar";
 import ProcesoBuscar from "./components/proceso/ProcesoBuscar";
 import ProcesoRetornoRegistrar from "./components/proceso/ProcesoRetornoRegistrar";
-
+//Venta
+import VentaRegistrar from "./components/proceso/VentaRegistrar";
+import VentaBuscar from "./components/proceso/VentaBuscar";
 //reportes
 import ReporteComprasFiltro from "./components/reporte/ComprasFiltro";
 import ReporteCompras from "./components/reporte/Compras";
@@ -66,10 +69,13 @@ function App() {
           <Route path="/proceso/secado" element={<SecadoRegistrar />} />
           <Route path="/proceso/secado/buscar" element={<SecadoBuscar />} />
           <Route path="/proceso/secado/retorno" element={<SecadoRetornoRegistrar />} />
-
+          {/* Proceso procesar */}
           <Route path="/proceso/procesar" element={<ProcesoRegistrar />} />
           <Route path="/proceso/procesar/buscar" element={<ProcesoBuscar />} />
           <Route path="/proceso/procesar/retorno" element={<ProcesoRetornoRegistrar />} />
+          {/* Proceso venta */}
+          <Route path="/proceso/venta" element={<VentaRegistrar />} />
+          <Route path="/proceso/venta/buscar" element={<VentaBuscar />} />      
 
           {/* Reporte */}
 

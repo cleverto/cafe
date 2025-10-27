@@ -157,7 +157,7 @@ const ProcesoRetorno = (props) => {
             <Form.Group className="m-0">
               <Form.Control
                 value={fecha}
-                onChange={(e) => {                  
+                onChange={(e) => {
                   setFecha(e.target.value);
                 }}
                 name="fecha"
@@ -177,6 +177,57 @@ const ProcesoRetorno = (props) => {
           </div>
         </div>
       </div>
+      <hr className="mt-2 mb-4" />
+      <Card className="shadow-sm border-0 mb-4">
+        <div className="table-responsive">
+          <table className="table table-hover align-middle text-center m-0">
+            <thead className="bg-primary text-white">
+              <tr>
+                <th>Producto</th>
+                <th>Rendimiento</th>
+                <th>Cáscara</th>
+                <th>Humedad</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody className="small">
+              {props.rowDataSalida.map((item) => (
+                <tr key={item.id_detalle}>
+                  <td className="fw-semibold text-start ps-3">{item.producto}</td>
+                  <td>{Number(item.rendimiento).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                  <td>{Number(item.cascara).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                  <td>{Number(item.humedad).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                  <td>{Number(item.cantidad).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                  <td>{Number(item.precio).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                  <td>{Number(item.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                </tr>
+              ))}
+
+              {/* Totales */}
+              {(() => {
+                const totalCantidad = props.rowDataSalida.reduce((sum, i) => sum + Number(i.cantidad || 0), 0);
+                const totalMonto = props.rowDataSalida.reduce((sum, i) => sum + Number(i.total || 0), 0);
+                const precioPromedio = totalCantidad ? Math.round((totalMonto / totalCantidad) * 100) / 100 : 0;
+
+                return (
+                  <tr className="fw-bold bg-light border-top">
+                    <td colSpan="4" className="text-end pe-2">
+                      Totales:
+                    </td>
+                    <td>{totalCantidad.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                    <td>{precioPromedio.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                    <td>{totalMonto.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                  </tr>
+                );
+              })()}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+
       <hr className="mt-2 mb-4" />
 
       <Form

@@ -3,9 +3,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Axios from "axios";
 import Swal from "sweetalert2";
-import ProcesoGuardarForm from "./ProcesoGuardarForm";
+import VentaGuardarForm from "./VentaGuardarForm";
 
-const ProcesoGuardarRegistrar = (props) => {
+const SecadoGuardarRegistrar = (props) => {
 
 
 
@@ -16,7 +16,7 @@ const ProcesoGuardarRegistrar = (props) => {
     });
 
 
-    await Axios.post(window.globales.url + "/proceso/guardar", _datos)
+    await Axios.post(window.globales.url + "/venta/guardar", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
           props.updateLista();
@@ -34,8 +34,8 @@ const ProcesoGuardarRegistrar = (props) => {
     operacion: "S",
     idmodulo: props.idmodulo,
     fecha: new Date().toISOString().slice(0, 10),
-    qq: props.totalQQ,
-    total: props.totalActivos,
+    qq: props.totalQQ,    
+    id_tipo_identidad:"1",
   };
 
   const validationSchema = Yup.object({
@@ -52,7 +52,7 @@ const ProcesoGuardarRegistrar = (props) => {
   });
 
   return (
-    <ProcesoGuardarForm
+    <VentaGuardarForm
       {...formik}
       totalActivos={props.totalActivos}
       totalQQ={props.totalQQ}
@@ -60,4 +60,4 @@ const ProcesoGuardarRegistrar = (props) => {
   );
 };
 
-export default ProcesoGuardarRegistrar;
+export default SecadoGuardarRegistrar;

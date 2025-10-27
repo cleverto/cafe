@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Form, Row, Col, Container } from "react-bootstrap";
 
-const SecadoGuardarForm = (props) => {
+const ProcesoGuardarForm = (props) => {
   const inputRef = useRef(null);
 
   return (
@@ -74,4 +74,4 @@ const SecadoGuardarForm = (props) => {
   );
 };
 
-export default SecadoGuardarForm;
+export default ProcesoGuardarForm;

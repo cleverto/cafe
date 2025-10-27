@@ -3,9 +3,9 @@ import { Form, Col, Container, Button, Card } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import ModalD from "../global/ModalD";
 import { useNavigate } from "react-router-dom";
-import ProcesoGuardarRegistrar from "./ProcesoGuardarRegistrar";
+import VentaGuardarRegistrar from "./VentaGuardarRegistrar";
 
-const Proceso = (props) => {
+const Venta = (props) => {
   const navigate = useNavigate();
   const [buscar, setBuscar] = useState("");
 
@@ -180,20 +180,7 @@ const Proceso = (props) => {
           </div>
         ),
       },
-      {
-        name: "Total",
-        selector: (row) => row.total,
-        sortable: true,
-        width: "6rem",
-        cell: (row) => (
-          <div style={{ textAlign: "right", width: "100%" }}>
-            {Number(row.total).toLocaleString("es-PE", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </div>
-        ),
-      },
+
       {
         name: "",
         width: "4rem",
@@ -218,7 +205,7 @@ const Proceso = (props) => {
     >
       <div className="d-flex justify-content-between">
         <div className="pt-4">
-          <h5>Procesar</h5>
+          <h5>Venta</h5>
         </div>
 
         <div className="pt-3 mb-3">
@@ -226,7 +213,7 @@ const Proceso = (props) => {
             className="  mx-1"
             variant="outline-primary"
             title="Buscar"
-            onClick={() => navigate("/proceso/procesar/buscar")}
+            onClick={() => navigate("/venta/procesar/buscar")}
           >
             <i className="bi bi-search"></i>
           </Button>
@@ -256,22 +243,13 @@ const Proceso = (props) => {
       </div>
       <div className="d-flex justify-content-between align-items-center border rounded p-3 shadow-sm bg-white">
         <div>
-          <h6 className="text-muted mb-1">Compras + Secados</h6>
+          <h6 className="text-muted mb-1">Compras + Secados + Procesar</h6>
         </div>
         <div className="text-end">
           <div className="fw-bold text-primary fs-6">
             QQ{" "}
             <span className="ms-1">
               {Number(props.totalQQ).toLocaleString("es-PE")}
-            </span>
-          </div>
-          <div className="fw-bold text-success fs-5">
-            S/.{" "}
-            <span className="ms-1">
-              {Number(props.totalActivos).toLocaleString("es-PE", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
             </span>
           </div>
         </div>
@@ -321,12 +299,12 @@ const Proceso = (props) => {
         show={show}
         onClose={() => setShow(false)}
         size="lg"
-        title="Guardar proceso"
+        title="Guardar venta"
         formId="formIdModulo"
         aceptarTexto={idmodulo ? "Modificar" : "Guardar"}
         cancelarTexto="Cancelar"
       >
-        <ProcesoGuardarRegistrar
+        <VentaGuardarRegistrar
           formId="formIdModulo"
           idmodulo={idmodulo}
           handleClose={handleClose}
@@ -340,4 +318,4 @@ const Proceso = (props) => {
   );
 };
 
-export default Proceso;
+export default Venta;
