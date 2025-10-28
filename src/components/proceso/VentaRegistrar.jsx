@@ -12,13 +12,11 @@ const VentaRegistrar = () => {
   const [totalActivos, setTotalActivos] = useState(0.0);
   const [totalQQ, setTotalQQ] = useState(0);
 
-
   useEffect(() => {
     get_lista(idmodulo);
 
     // eslint-disable-next-line
   }, []);
-
 
   const get_lista = async (id) => {
     let _datos = JSON.stringify({
@@ -30,7 +28,6 @@ const VentaRegistrar = () => {
     formik.setFieldValue("operacion", "1");
     setTotal(res.data.total);
   };
-
 
   const handleToggleActivo = (row) => {
     const newData = rowData.map((item) =>
@@ -58,11 +55,9 @@ const VentaRegistrar = () => {
   const updateRowData = (data) => {
     setRowData(data);
   };
-  const initialValues = {
-  };
-  const validationSchema = Yup.object({
 
-  });
+  const initialValues = {};
+  const validationSchema = Yup.object({});
 
   const formik = useFormik({
     initialValues,
@@ -93,4 +88,3 @@ const VentaRegistrar = () => {
 };
 
 export default VentaRegistrar;
-

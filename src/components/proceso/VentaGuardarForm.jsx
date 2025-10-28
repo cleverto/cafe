@@ -1,8 +1,86 @@
-import { useRef } from "react";
-import { Form, Row, Col, Container, Button, Spinner, InputGroup } from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
+import {
+  Form,
+  Row,
+  Col,
+  Container,
+  Button,
+  Spinner,
+  InputGroup,
+  Card,
+} from "react-bootstrap";
+import DataTable from "react-data-table-component";
 
 const VentaGuardarForm = (props) => {
   const inputRef = useRef(null);
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    if (props.rowData) {
+      get_columns();
+    }
+  }, [props.rowData]);
+
+  const get_columns = () => {
+    setColumns([
+      {
+        name: "Id",
+        selector: (row) => row.id_producto,
+        sortable: true,
+        reorder: true,
+        width: "6rem",
+      },
+      {
+        name: "Producto",
+        selector: (row) => row.producto,
+        sortable: true,
+        reorder: true,
+        wrap: true,
+      },
+
+      {
+        name: "Cantidad",
+        selector: (row) => row.cantidad,
+        sortable: true,
+        reorder: true,
+        width: "6rem",
+      },
+      {
+        name: "Precio",
+        selector: (row) => row.precio,
+        sortable: true,
+        reorder: true,
+        width: "6rem",
+        cell: (row) => (
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            value={row.precio || ""}
+            onChange={(e) =>
+              props.handlePrecioChange(row, parseFloat(e.target.value) || 0)
+            }
+            style={{
+              width: "100%",
+              textAlign: "right",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              padding: "2px 4px",
+              fontSize: "0.9rem",
+            }}
+            className=" text-end no-spinner"
+          />
+        ),
+      },
+      {
+        name: "Total",
+        selector: (row) => row.total,
+        sortable: true,
+        reorder: true,
+        width: "6rem",
+      },
+    ]);
+  };
 
   return (
     <Container className="mb-4 ">
@@ -66,8 +144,6 @@ const VentaGuardarForm = (props) => {
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
-
-
         </Row>
         <Row className="g-3 mt-1">
           <Col md="3" lg="3">
@@ -81,14 +157,13 @@ const VentaGuardarForm = (props) => {
                 <option key="1" value="1">
                   DNI
                 </option>
-                <option key="6" value="6" >
+                <option key="6" value="6">
                   RUC
                 </option>
               </Form.Select>
             </Form.Group>
           </Col>
           <Col md="9" lg="9">
-
             <Form.Group>
               <Form.Label>Nro</Form.Label>
               <InputGroup>
@@ -98,8 +173,6 @@ const VentaGuardarForm = (props) => {
                   onChange={(e) => {
                     props.setFieldValue("proveedor", "");
                     props.handleChange(e);
-
-
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -111,7 +184,13 @@ const VentaGuardarForm = (props) => {
                   name="dni"
                   type="text"
                   placeholder="Buscar por nro"
-                  maxLength={props.values.id_tipo_identidad === "1" ? 8 : props.values.id_tipo_identidad === "6" ? 11 : ''}
+                  maxLength={
+                    props.values.id_tipo_identidad === "1"
+                      ? 8
+                      : props.values.id_tipo_identidad === "6"
+                      ? 11
+                      : ""
+                  }
                 />
 
                 <Button
@@ -141,7 +220,6 @@ const VentaGuardarForm = (props) => {
                 </Button>
               </InputGroup>
             </Form.Group>
-
           </Col>
         </Row>
         <Row className="g-1">
@@ -154,8 +232,7 @@ const VentaGuardarForm = (props) => {
                 name="proveedor"
                 type="text"
                 isInvalid={
-                  !!props.errors.id_proveedor &
-                  props.touched.id_proveedor
+                  !!props.errors.id_proveedor & props.touched.id_proveedor
                 }
                 isValid={!!props.touched.id_proveedor}
               />
@@ -169,16 +246,36 @@ const VentaGuardarForm = (props) => {
                 value={props.values.direccion || ""}
                 name="direccion"
                 type="text"
-                isInvalid={
-                  !!props.errors.direccion &
-                  props.touched.direccion
-                }
+                isInvalid={!!props.errors.direccion & props.touched.direccion}
                 isValid={!!props.touched.direccion}
               />
             </Form.Group>
           </Col>
         </Row>
       </Form>
+
+      <div className="mt-4">
+        <DataTable
+          columns={columns}
+          data={props.rowData.filter((row) => row.activo === "1")}
+          noDataComponent={<span>No hay información por mostrar</span>}
+          persistTableHead
+          responsive
+          customStyles={{
+            table: {
+              style: {
+                minHeight: "200px",
+                overflow: "auto",
+              },
+            },
+            rows: {
+              style: {
+                minHeight: "32px",
+              },
+            },
+          }}
+        />
+      </div>
     </Container>
   );
 };
