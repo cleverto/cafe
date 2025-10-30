@@ -311,7 +311,7 @@ const Venta = (props) => {
           updateLista={props.updateLista}
           totalActivos={props.totalActivos}
           totalQQ={props.totalQQ}
-          rowData={props.rowData}
+          rowData={props.rowData.filter((row) => row.activo === "1")}
         />
       </ModalD>
     </Container>

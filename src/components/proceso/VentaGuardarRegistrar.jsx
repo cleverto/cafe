@@ -6,37 +6,71 @@ import Swal from "sweetalert2";
 import VentaGuardarForm from "./VentaGuardarForm";
 
 const VentaGuardarRegistrar = (props) => {
-  const [rowData, setRowData] = useState([]);
+  const [rowData, setRowData] = useState(props.rowData);
+  const [rowDetalle, setRowDetalle] = useState([]);
   const [total, setTotal] = useState("0");
   const [totalQQ, setTotalQQ] = useState(0);
+
+  useEffect(() => {
+    get_lista(rowData);
+
+    // eslint-disable-next-line
+  }, []);
+  const get_lista = async (rowData) => {
+    let _datos = JSON.stringify({
+      rowData: rowData,
+    });
+    const res = await Axios.post(
+      window.globales.url + "/venta/lista_detalle_guardar",
+      _datos
+    );
+
+    setRowDetalle(res.data.items);
+  };
 
   const guardar = async (data) => {
     let _datos = JSON.stringify({
       form: data,
-      compras: props.rowData.filter((row) => row.activo === "1"),
+      compras: rowDetalle,
     });
 
     await Axios.post(window.globales.url + "/venta/guardar", _datos)
       .then((res) => {
-        if (res.data.rpta === "1") {
-          props.updateLista();
-          props.handleClose();
-        } else {
-          Swal.fire({ text: res.data.msg, icon: "error" });
-        }
+        // if (res.data.rpta === "1") {
+        //   props.updateLista();
+        //   props.handleClose();
+        // } else {
+        //   Swal.fire({ text: res.data.msg, icon: "error" });
+        // }
       })
       .catch((error) => {
         Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
       });
   };
   const handlePrecioChange = (row, nuevoPrecio) => {
-    // aquí actualizas el precio en tu estado principal
-    const nuevasFilas = rowData.map((r) =>
-      r.id_compra === row.id_compra
-        ? { ...r, precio: nuevoPrecio, total: r.cantidad * nuevoPrecio }
+    const nuevasFilas = rowDetalle.map((r) =>
+      r.modulo === row.modulo &&
+      r.id_detalle === row.id_detalle &&
+      r.id_producto === row.id_producto
+        ? {
+            ...r,
+            precio: nuevoPrecio,
+            total: (r.cantidad * nuevoPrecio).toLocaleString("es-PE", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }),
+          }
         : r
     );
-    setRowData(nuevasFilas);
+
+    setRowDetalle(nuevasFilas);
+
+    setTotal(
+      nuevasFilas.reduce((acc, item) => {
+        const totalNumerico = Number(String(item.total || 0).replace(/,/g, ""));
+        return acc + totalNumerico;
+      }, 0)
+    );
   };
 
   const buscar_dni = (e) => {
@@ -83,32 +117,14 @@ const VentaGuardarRegistrar = (props) => {
       formik.setFieldValue("swdni", false);
     });
   };
-  const handleToggleActivo = (row) => {
-    const newData = rowData.map((item) =>
-      String(item.id_compra) === String(row.id_compra)
-        ? { ...item, activo: item.activo === "1" ? "0" : "1" }
-        : item
-    );
-
-    setRowData(newData);
-
-    setTotal(
-      newData
-        .filter((item) => item.activo === "1")
-        .reduce((acc, item) => acc + Number(item.total || 0), 0)
-    );
-    setTotalQQ(
-      newData
-        .filter((item) => item.activo === "1")
-        .reduce((acc, item) => acc + Number(item.cantidad || 0), 0)
-    );
-  };
 
   const initialValues = {
     operacion: "S",
-    idmodulo: props.idmodulo,
+    idmodulo: props.idmodulo ?? "", 
     fecha: new Date().toISOString().slice(0, 10),
+        id_proveedor: "",
     qq: props.totalQQ,
+    total: total,
     id_tipo_identidad: "1",
   };
   const validationSchema = Yup.object({});
@@ -127,9 +143,9 @@ const VentaGuardarRegistrar = (props) => {
       {...formik}
       buscar_dni={buscar_dni}
       rowData={props.rowData}
+      rowDetalle={rowDetalle}
       totalQQ={props.totalQQ}
-      total={props.total}
-      handleToggleActivo={handleToggleActivo}
+      total={total}
       handlePrecioChange={handlePrecioChange}
     />
   );
