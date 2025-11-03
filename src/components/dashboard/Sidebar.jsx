@@ -50,9 +50,11 @@ const Sidebar = ({ show, handle }) => {
     }
     if (location.pathname.includes("venta")) {
       return "1";
-    } if (location.pathname.includes("caja")) {
+    }
+    if (location.pathname.includes("caja")) {
       return "1";
-    } if (location.pathname.includes("almacen")) {
+    }
+    if (location.pathname.includes("almacen")) {
       return "1";
     }
     if (location.pathname.includes("asistencia")) {
@@ -252,6 +254,15 @@ const Sidebar = ({ show, handle }) => {
                   </Accordion.Header>
                   <Accordion.Body className="p-0">
                     <ListGroup className="list-group-flush">
+                      <ListGroup.Item
+                        action
+                        style={{ paddingLeft: "45px" }}
+                        as={Link}
+                        to="/reporte/trazabilidad"
+                        active={isActive("/reporte/trazabilidad")}
+                      >
+                        Trazabilidad
+                      </ListGroup.Item>
                       <ListGroup.Item
                         action
                         style={{ paddingLeft: "45px" }}

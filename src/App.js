@@ -35,12 +35,10 @@ import ReporteAlmacenFiltro from "./components/reporte/AlmacenFiltro";
 import ReporteAlmacen from "./components/reporte/Almacen";
 import ReporteComprasSecadoFiltro from "./components/reporte/ComprasSecadoFiltro";
 import ReporteComprasSecado from "./components/reporte/ComprasSecado";
-
-
+import ReporteTrazabilidad from "./components/reporte/Trazabilidad";
 
 import CambiarContrasena from "./components/configuracion/CambiarConstrasena";
 import Usuario from "./components/configuracion/Usuario";
-
 
 function App() {
   return (
@@ -68,14 +66,20 @@ function App() {
           {/* Proceso secado */}
           <Route path="/proceso/secado" element={<SecadoRegistrar />} />
           <Route path="/proceso/secado/buscar" element={<SecadoBuscar />} />
-          <Route path="/proceso/secado/retorno" element={<SecadoRetornoRegistrar />} />
+          <Route
+            path="/proceso/secado/retorno"
+            element={<SecadoRetornoRegistrar />}
+          />
           {/* Proceso procesar */}
           <Route path="/proceso/procesar" element={<ProcesoRegistrar />} />
           <Route path="/proceso/procesar/buscar" element={<ProcesoBuscar />} />
-          <Route path="/proceso/procesar/retorno" element={<ProcesoRetornoRegistrar />} />
+          <Route
+            path="/proceso/procesar/retorno"
+            element={<ProcesoRetornoRegistrar />}
+          />
           {/* Proceso venta */}
           <Route path="/proceso/venta" element={<VentaRegistrar />} />
-          <Route path="/proceso/venta/buscar" element={<VentaBuscar />} />      
+          <Route path="/proceso/venta/buscar" element={<VentaBuscar />} />
 
           {/* Reporte */}
 
@@ -98,8 +102,10 @@ function App() {
             path="/reporte/compras_secado"
             element={<ReporteComprasSecado />}
           />
-
-
+          <Route
+            path="/reporte/trazabilidad"
+            element={<ReporteTrazabilidad />}
+          />
 
           <Route path="/cambiar" element={<CambiarContrasena />} />
           <Route path="/configuracion/usuario" element={<Usuario />} />
