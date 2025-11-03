@@ -12,9 +12,7 @@ import {
 import DataTable from "react-data-table-component";
 
 const VentaGuardarForm = (props) => {
-  const inputRef = useRef(null);
   const [columns, setColumns] = useState([]);
-  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (props.rowData) {
@@ -233,7 +231,7 @@ const VentaGuardarForm = (props) => {
               <Form.Label>Nro</Form.Label>
               <InputGroup>
                 <Form.Control
-                  ref={inputRef}
+                 
                   value={props.values.dni}
                   onChange={(e) => {
                     props.setFieldValue("proveedor", "");
@@ -295,10 +293,8 @@ const VentaGuardarForm = (props) => {
                   value={props.values.proveedor || ""}
                   name="proveedor"
                   type="text"
-                  isInvalid={
-                    !!props.errors.id_proveedor & props.touched.id_proveedor
-                  }
-                  isValid={!!props.touched.id_proveedor}
+                  isInvalid={!!props.errors.proveedor && props.touched.proveedor}
+                  isValid={!!props.touched.proveedor}
                 />
               </Form.Group>
             </Col>

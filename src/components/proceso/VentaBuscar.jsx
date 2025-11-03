@@ -36,9 +36,9 @@ const VentaBuscar = () => {
     // eslint-disable-next-line
   }, []);
 
-  const eliminar = async (e, id, operacion) => {
+  const eliminar = async (e, id) => {
 
-    let _datos = JSON.stringify({ id: id, operacion: operacion });
+    let _datos = JSON.stringify({ id: id});
     Swal.fire({
       title: "¿Confirmar Eliminación?",
       text: "¿Estás seguro de que deseas eliminar este registro?",
@@ -48,11 +48,11 @@ const VentaBuscar = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Axios.post(window.globales.url + "/proceso/eliminar", _datos)
+        Axios.post(window.globales.url + "/venta/eliminar", _datos)
           .then((res) => {
             if (res.data.rpta === "1") {
               setRowData((prevData) =>
-                prevData.filter((row) => row.id_Venta !== id)
+                prevData.filter((row) => row.id_venta !== id)
               );
             }
           })
@@ -72,14 +72,6 @@ const VentaBuscar = () => {
         sortable: true,
         reorder: true,
         omit: true,
-      },
-      {
-        name: "Operación",
-        selector: (row) => row.operacion,
-        sortable: true,
-        reorder: true,
-        center: "true",
-        width: "7rem",
       },
       {
         name: "Fecha",
@@ -172,14 +164,8 @@ const VentaBuscar = () => {
                 </span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={(e) => eliminar(e, row.id_Venta, row.operacion)}>
+                <Dropdown.Item onClick={(e) => eliminar(e, row.id_venta, row.operacion)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={(e) =>
-                  navigate("/proceso/procesar/retorno?id=" + row.id_Venta)
-                }>
-                  <i className="bi bi bi-trash-fill me-2"></i>Retorno
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -197,7 +183,7 @@ const VentaBuscar = () => {
   const buscar = async (data) => {
     let _datos = JSON.stringify(data);
 
-    await Axios.post(window.globales.url + "/proceso/buscar", _datos)
+    await Axios.post(window.globales.url + "/venta/buscar", _datos)
       .then((res) => {
         setRowData(res.data.items);
       })
@@ -235,7 +221,7 @@ const VentaBuscar = () => {
       <Container className="mb-4 mt-3 responsive-container" style={{ paddingBottom: "0px" }}>
         <div className="d-flex justify-content-between">
           <div className="">
-            <h5>Buscar proceso</h5>
+            <h5>Buscar venta</h5>
           </div>
           <div>
             <Button variant="light" onClick={() => window.history.back()}>

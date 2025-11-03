@@ -213,7 +213,7 @@ const Venta = (props) => {
             className="  mx-1"
             variant="outline-primary"
             title="Buscar"
-            onClick={() => navigate("/venta/procesar/buscar")}
+            onClick={() => navigate("/proceso/venta/buscar")}
           >
             <i className="bi bi-search"></i>
           </Button>
