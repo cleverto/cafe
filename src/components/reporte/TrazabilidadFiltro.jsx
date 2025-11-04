@@ -5,12 +5,10 @@ import * as Yup from "yup";
 import Axios from "axios";
 import Select from "react-select";
 import Dashboard from "../dashboard/Dashboard.jsx";
-import { abrirReporte } from "../global/utils.js";
 
 const TrazabilidadFiltro = () => {
   const [listaProducto, setListaProducto] = useState([]);
-
-  const [contenido, setContenido] = useState("");
+  const [contenido, setContenido] = useState(""); // aquí mantenemos HTML
 
   const initialValues = {
     idproducto: "",
@@ -20,30 +18,28 @@ const TrazabilidadFiltro = () => {
 
   useEffect(() => {
     get_lista_producto();
-
     // eslint-disable-next-line
   }, []);
 
   const get_lista_producto = async () => {
     try {
-      let _datos = JSON.stringify({ modulo: "producto", campo: "producto" });
-
+      const _datos = JSON.stringify({ modulo: "producto", campo: "producto" });
       const res = await Axios.post(
         `${window.globales.url}/producto/lista_stock`,
         _datos
       );
-      // Transformamos los datos para que React-Select los entienda
+
       const opciones = [
-        { value: "TODOS", label: "TODOS" },
+        { value: "TODOS", label: "TODOS", stock: 0 },
         ...res.data.items.map((data) => ({
           value: data.id_producto,
           label: data.producto,
+          stock: data.stock || 0,
         })),
       ];
 
       setListaProducto(opciones);
 
-      // Si hay al menos un producto, selecciona el primero
       if (opciones.length > 0) {
         setFieldValue("idproducto", opciones[0].value);
       }
@@ -54,18 +50,20 @@ const TrazabilidadFiltro = () => {
   };
 
   const buscar = async () => {
-    const url = `${window.globales.url}/reporte/trazabilidad?producto=${values.idproducto}&desde=${values.desde}&hasta=${values.hasta}&h=0`;
-    console.log(url);
-    Axios.post(url).then((res) => {
-      setContenido(res.data);
-    });
+    try {
+      const url = `${window.globales.url}/reporte/trazabilidad?producto=${values.idproducto}&desde=${values.desde}&hasta=${values.hasta}&h=0`;
+      const res = await Axios.post(url);
+      setContenido(res.data); // mantenemos HTML tal cual
+    } catch (error) {
+      console.error("Error al buscar trazabilidad", error);
+      setContenido("");
+    }
   };
 
   const validationSchema = Yup.object({
     desde: Yup.date()
       .required("Debe ingresar la fecha de inicio")
       .typeError("Fecha inválida"),
-
     hasta: Yup.date()
       .required("Debe ingresar la fecha final")
       .typeError("Fecha inválida")
@@ -77,24 +75,22 @@ const TrazabilidadFiltro = () => {
 
   const { values, errors, touched, setFieldValue, handleChange, handleSubmit } =
     useFormik({
-      initialValues: initialValues,
-      validationSchema: validationSchema,
+      initialValues,
+      validationSchema,
       enableReinitialize: true,
-      onSubmit: (values) => {
-        buscar(values);
+      onSubmit: () => {
+        buscar();
       },
     });
 
   const componente = (
     <>
-      <Container className="mb-4 mt-3 " style={{ paddingBottom: "0px" }}>
+      <Container className="mb-4 mt-3" style={{ paddingBottom: "0px" }}>
         <div className="d-flex justify-content-between">
-          <div className="">
-            <h5>Reporte de trazabilidad</h5>
-          </div>
-          <div></div>
+          <h5>Reporte de trazabilidad</h5>
         </div>
         <hr className="mb-4 mt-2" />
+
         <Form noValidate onSubmit={handleSubmit} autoComplete="off">
           <Row className="g-3 mb-4">
             <Col md="12" lg="12">
@@ -105,42 +101,38 @@ const TrazabilidadFiltro = () => {
                     (opt) => opt.value === values.idproducto
                   ) || null
                 }
-                onChange={(option) => {
-                  const opt = option || {};
-                  setFieldValue("idproducto", opt.value);
-                }}
+                onChange={(option) =>
+                  setFieldValue("idproducto", option?.value || "")
+                }
                 placeholder="Seleccione un producto..."
                 isClearable
                 formatOptionLabel={(option) => (
                   <div
-                    key={`${option.value}-opt`}
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <span key={`${option.value}-label`}>{option.label}</span>
-                    <span
-                      key={`${option.value}-stock`}
-                      style={{ fontWeight: "bold" }}
-                    >
-                      {option.stock}
-                    </span>
+                    <span>{option.label}</span>
+                    <span style={{ fontWeight: "bold" }}>{option.stock}</span>
                   </div>
                 )}
               />
             </Col>
+
             <Col xs="12" md="2" lg="2">
               <Form.Group className="m-0">
                 <Form.Label>Desde</Form.Label>
                 <Form.Control
                   value={values.desde}
-                  onChange={(e) => {
-                    handleChange(e);
-                  }}
+                  onChange={handleChange}
                   name="desde"
                   type="date"
-                  isInvalid={!!errors.desde & touched.desde}
+                  isInvalid={!!errors.desde && touched.desde}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.desde}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
+
             <Col xs="12" md="2" lg="2">
               <Form.Group className="m-0">
                 <Form.Label>Hasta</Form.Label>
@@ -149,13 +141,17 @@ const TrazabilidadFiltro = () => {
                   onChange={handleChange}
                   name="hasta"
                   type="date"
-                  isInvalid={!!errors.hasta & touched.hasta}
+                  isInvalid={!!errors.hasta && touched.hasta}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.hasta}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
+
             <Col xs="12" md="2" lg="2">
               <div className="mt-2">
-                <Button className="mt-4 " variant="primary" type="submit">
+                <Button className="mt-4" variant="primary" type="submit">
                   Buscar
                 </Button>
               </div>
@@ -163,17 +159,16 @@ const TrazabilidadFiltro = () => {
           </Row>
         </Form>
       </Container>
-      <Container>
-        <div dangerouslySetInnerHTML={{ __html: contenido }} />
+
+      <Container className="cont">
+        <div style={{ overflowX: "auto" }}>
+          <div dangerouslySetInnerHTML={{ __html: contenido }} />
+        </div>
       </Container>
     </>
   );
 
-  return (
-    <>
-      <Dashboard componente={componente} />
-    </>
-  );
+  return <Dashboard componente={componente} />;
 };
 
 export default TrazabilidadFiltro;
