@@ -124,7 +124,7 @@ const SecadoGuardarRegistrar = (props) => {
   const initialValues = {
     operacion: "0",
     idmodulo: props.idmodulo,
-    id_tipo_comprobante: "",    
+    id_tipo_comprobante: "92",    
     fecha: new Date().toISOString().slice(0, 10),    
     qq: props.totalQQ,    
     total: props.totalActivos,

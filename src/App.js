@@ -35,7 +35,7 @@ import ReporteAlmacenFiltro from "./components/reporte/AlmacenFiltro";
 import ReporteAlmacen from "./components/reporte/Almacen";
 import ReporteComprasSecadoFiltro from "./components/reporte/ComprasSecadoFiltro";
 import ReporteComprasSecado from "./components/reporte/ComprasSecado";
-import ReporteTrazabilidad from "./components/reporte/Trazabilidad";
+import ReporteTrazabilidadFiltro from "./components/reporte/TrazabilidadFiltro";
 
 import CambiarContrasena from "./components/configuracion/CambiarConstrasena";
 import Usuario from "./components/configuracion/Usuario";
@@ -104,7 +104,7 @@ function App() {
           />
           <Route
             path="/reporte/trazabilidad"
-            element={<ReporteTrazabilidad />}
+            element={<ReporteTrazabilidadFiltro />}
           />
 
           <Route path="/cambiar" element={<CambiarContrasena />} />
