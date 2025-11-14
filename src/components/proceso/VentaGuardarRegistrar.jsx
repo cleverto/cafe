@@ -9,7 +9,7 @@ import { useCallback } from "react";
 const VentaGuardarRegistrar = (props) => {
   const [rowData, setRowData] = useState(props.rowData);
   const [rowDetalle, setRowDetalle] = useState([]);
-  const [total, setTotal] = useState("0");
+  //const [total, setTotal] = useState("0");
   const [totalQQ, setTotalQQ] = useState(0);
 
   const initialValues = {
@@ -21,10 +21,19 @@ const VentaGuardarRegistrar = (props) => {
     direccion: "",
     referencia:"",
     qq: props.totalQQ,
-    total: total,
+    total: "0",
     id_tipo_identidad: "1",
   };
-  const validationSchema = Yup.object({});
+
+  
+   const validationSchema = Yup.object({
+      id_proveedor: Yup.string().required("Requerido"),
+      referencia: Yup.string()
+        .required("Requerido")
+        .matches(/^\d*$/, "Solo se permiten números")
+        .max(8, "Debe tener máximo 8 dígitos"),
+    });
+    
 
   const formik = useFormik({
     initialValues,
@@ -53,6 +62,7 @@ const VentaGuardarRegistrar = (props) => {
   };
 
   const guardar = async (data) => {
+
     let _datos = JSON.stringify({
       form: data,
       compras: rowDetalle,
@@ -89,12 +99,14 @@ const VentaGuardarRegistrar = (props) => {
 
     setRowDetalle(nuevasFilas);
 
-    setTotal(
+    const total=
       nuevasFilas.reduce((acc, item) => {
         const totalNumerico = Number(String(item.total || 0).replace(/,/g, ""));
         return acc + totalNumerico;
-      }, 0)
-    );
+      }, 0);
+
+      formik.setFieldValue("total", total);
+    
   };
 
   
@@ -154,7 +166,7 @@ const VentaGuardarRegistrar = (props) => {
       rowData={props.rowData}
       rowDetalle={rowDetalle}
       totalQQ={props.totalQQ}
-      total={total}
+      
       handlePrecioChange={handlePrecioChange}
       
     />

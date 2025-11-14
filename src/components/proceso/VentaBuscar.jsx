@@ -17,6 +17,8 @@ import * as Yup from "yup";
 import DataTable from "react-data-table-component";
 import Dashboard from "../dashboard/Dashboard";
 import { useNavigate } from "react-router-dom";
+import CreditoPagarRegistrar from "./CreditoPagarRegistrar";
+import ModalOc from "../global/ModalOc";
 
 
 const VentaBuscar = () => {
@@ -25,6 +27,9 @@ const VentaBuscar = () => {
   const [columns, setColumns] = useState([]);
   const [rowdata, setRowData] = useState([]);
 
+
+  const [idCredito, setIdCredito] = useState(false);
+  const [showPagar, setShowPagar] = useState(false);
 
 
   useEffect(() => {
@@ -38,7 +43,7 @@ const VentaBuscar = () => {
 
   const eliminar = async (e, id) => {
 
-    let _datos = JSON.stringify({ id: id});
+    let _datos = JSON.stringify({ id: id });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
       text: "¿Estás seguro de que deseas eliminar este registro?",
@@ -167,6 +172,12 @@ const VentaBuscar = () => {
                 <Dropdown.Item onClick={(e) => eliminar(e, row.id_venta, row.operacion)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
+                <Dropdown.Item onClick={(e) => {
+                  setIdCredito(row.id_credito);
+                  setShowPagar(!showPagar);
+                }}>
+                  <i class="bi bi-cash me-2"></i>Pagar
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </>
@@ -274,7 +285,7 @@ const VentaBuscar = () => {
             noDataComponent={<span>No hay información por mostrar</span>}
             persistTableHead
             responsive
-                        customStyles={{
+            customStyles={{
               table: {
                 style: {
                   minHeight: "200px",
@@ -291,6 +302,16 @@ const VentaBuscar = () => {
         </Card>
 
       </Container>
+      <ModalOc
+        componente={
+          <CreditoPagarRegistrar id_credito={idCredito} modulo="venta" />
+        }
+        title="Realizar el pago"
+        posicion="end"
+        izquierda=""
+        show={showPagar}
+        handleClose={() => setShowPagar(false)}
+      />
     </>
   );
 

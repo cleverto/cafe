@@ -147,7 +147,7 @@ const VentaGuardarForm = (props) => {
                   <div>
                     S/.{" "}
                     <span className="ms-1">
-                      {props.total.toLocaleString("es-PE")}
+                      {props.values.total.toLocaleString("es-PE")}
                     </span>
                   </div>
                 </div>
