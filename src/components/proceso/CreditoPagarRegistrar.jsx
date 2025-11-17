@@ -12,7 +12,7 @@ const CreditoPagarRegistrar = (props) => {
   useEffect(() => {
     if (props.id_credito) {
       modulo(props.id_credito);
-      get_lista(props.id_credito);
+     get_lista(props.id_credito);
     }
     // eslint-disable-next-line
   }, [props.id_credito]);

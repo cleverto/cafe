@@ -11,7 +11,7 @@ import CajaRegistrar from "./CajaRegistrar";
 import ModalD from "../global/ModalD";
 
 const CajaUsuario = (props) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [idModulo, setIdModulo] = useState("");
   const [columns, setColumns] = useState([]);
@@ -27,7 +27,7 @@ const CajaUsuario = (props) => {
     }
 
     // eslint-disable-next-line
-  }, []);
+  }, [props.id_usuario]);
 
   const get_columns = () => {
     setColumns([
@@ -64,7 +64,6 @@ const CajaUsuario = (props) => {
         sortable: true,
         width: "8rem",
       },
-
       {
         id: 4,
         name: "Quien",

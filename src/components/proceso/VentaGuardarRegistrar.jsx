@@ -19,21 +19,21 @@ const VentaGuardarRegistrar = (props) => {
     id_proveedor: "",
     proveedor: "",
     direccion: "",
-    referencia:"",
+    referencia: "",
     qq: props.totalQQ,
     total: "0",
     id_tipo_identidad: "1",
   };
 
-  
-   const validationSchema = Yup.object({
-      id_proveedor: Yup.string().required("Requerido"),
-      referencia: Yup.string()
-        .required("Requerido")
-        .matches(/^\d*$/, "Solo se permiten números")
-        .max(8, "Debe tener máximo 8 dígitos"),
-    });
-    
+
+  const validationSchema = Yup.object({
+    id_proveedor: Yup.string().required("Requerido"),
+    referencia: Yup.string()
+      .required("Requerido")
+      .matches(/^\d*$/, "Solo se permiten números")
+      .max(8, "Debe tener máximo 8 dígitos"),
+  });
+
 
   const formik = useFormik({
     initialValues,
@@ -71,6 +71,8 @@ const VentaGuardarRegistrar = (props) => {
     await Axios.post(window.globales.url + "/venta/guardar", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
+          props.showPagar();
+          props.id_credito(res.data.id_credito);
           props.updateLista();
           props.handleClose();
         } else {
@@ -99,17 +101,17 @@ const VentaGuardarRegistrar = (props) => {
 
     setRowDetalle(nuevasFilas);
 
-    const total=
+    const total =
       nuevasFilas.reduce((acc, item) => {
         const totalNumerico = Number(String(item.total || 0).replace(/,/g, ""));
         return acc + totalNumerico;
       }, 0);
 
-      formik.setFieldValue("total", total);
-    
+    formik.setFieldValue("total", total);
+
   };
 
-  
+
 
   const buscar_dni = useCallback(
     (e) => {
@@ -166,9 +168,9 @@ const VentaGuardarRegistrar = (props) => {
       rowData={props.rowData}
       rowDetalle={rowDetalle}
       totalQQ={props.totalQQ}
-      
       handlePrecioChange={handlePrecioChange}
-      
+
+
     />
   );
 };

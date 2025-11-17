@@ -25,7 +25,7 @@ const CreditoPagar = (props) => {
   const get_columns = () => {
     setColumns([
       {
-        id: 0,
+       
         name: "Id",
         selector: (row) => row.id_detalle,
         sortable: true,
@@ -33,7 +33,7 @@ const CreditoPagar = (props) => {
         omit: true
       },
       {
-        id: 1,
+   
         name: "Fecha",
         cell: (row) => (
           <div>
@@ -45,15 +45,15 @@ const CreditoPagar = (props) => {
         reorder: true,
       },
       {
-        id: 2,
+ 
         name: "Monto",
         selector: (row) => row.monto,
         sortable: true,
         width: "6rem",
-        right: true,
+        right: "true",
       },
       {
-        id: 3,
+
         name: " ",
         button: true,
         width: "5rem",

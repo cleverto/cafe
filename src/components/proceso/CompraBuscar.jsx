@@ -119,7 +119,7 @@ const CompraBuscar = () => {
                   <i className="bi bi-pencil-fill me-2"></i>Modificar
                 </Dropdown.Item>
                 <Dropdown.Item
-                // onClick={(e) => eliminar(e, row.id)}
+                onClick={(e) => eliminar(e, row.id_compra)}
                 >
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
@@ -138,7 +138,33 @@ const CompraBuscar = () => {
       },
     ]);
   };
+  const eliminar = async (e, id) => {
 
+    let _datos = JSON.stringify({ id: id });
+    Swal.fire({
+      title: "¿Confirmar Eliminación?",
+      text: "¿Estás seguro de que deseas eliminar este registro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, continuar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Axios.post(window.globales.url + "/compra/eliminar", _datos)
+          .then((res) => {
+            if (res.data.rpta === "1") {
+              setRowData((prevData) =>
+                prevData.filter((row) => row.id_compra !== id)
+              );
+            }
+          })
+          .catch((error) => {
+            Swal.fire({ text: "Algo pasó! " + error, icon: "error" });
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      }
+    });
+  };
   const initialValues = {
     desde: new Date().toISOString().slice(0, 10),
     hasta: new Date().toISOString().slice(0, 10),

@@ -21,8 +21,7 @@ const Compra = (props) => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
-    const idParam = params.get("id");
-
+    const idParam = params.get("id") || "";
     setIdmodulo(idParam);
   }, []);
 
@@ -41,7 +40,6 @@ const Compra = (props) => {
   const get_columns = () => {
     setColumns([
       {
-        id: 0,
         name: "Id",
         selector: (row) => row.id_detalle,
         sortable: true,
@@ -49,7 +47,6 @@ const Compra = (props) => {
         omit: true,
       },
       {
-        id: 1,
         name: "Id_producto",
         selector: (row) => row.id_producto,
         sortable: true,
@@ -57,7 +54,6 @@ const Compra = (props) => {
         omit: true,
       },
       {
-        id: 2,
         name: "Producto",
         ignoreRowClick: true,
         cell: (row) => (
@@ -171,7 +167,7 @@ const Compra = (props) => {
               <Col xs={12} md={4} lg={1}>
                 <div className="p-1 bg-light text-secondary border rounded-2 ">
                   <div className="d-flex justify-content-between">
-                    <span>Hum</span>
+                    <span >Hum</span>
                     <span>{row.humedad}</span>
                   </div>
                 </div>
@@ -181,15 +177,15 @@ const Compra = (props) => {
         ),
         sortable: true,
         grow: 3,
-        wrap: true,
+       
       },
       {
-        id: 3,
+
         name: "Cant",
         selector: (row) => row.cantidad,
         sortable: true,
         width: "6rem",
-        right: true,
+        right:"true",
         cell: (row) =>
           Number(row.cantidad).toLocaleString("es-PE", {
             minimumFractionDigits: 2,
@@ -197,12 +193,12 @@ const Compra = (props) => {
           }),
       },
       {
-        id: 4,
+  
         name: "Precio",
         selector: (row) => row.precio,
         sortable: true,
         width: "6rem",
-        right: true,
+        right: "true",
         cell: (row) =>
           Number(row.total).toLocaleString("es-PE", {
             minimumFractionDigits: 2,
@@ -210,12 +206,12 @@ const Compra = (props) => {
           }),
       },
       {
-        id: 5,
+  
         name: "Total",
         selector: (row) => row.total,
         sortable: true,
         width: "6rem",
-        right: true,
+        right:"true",
         cell: (row) =>
           Number(row.total).toLocaleString("es-PE", {
             minimumFractionDigits: 2,
@@ -223,12 +219,11 @@ const Compra = (props) => {
           }),
       },
       {
-        id: 6,
+ 
         name: " ",
         button: true,
         width: "5rem",
         ignoreRowClick: true,
-        allowOverflow: true,
         cell: (row) => (
           <>
             <Button
@@ -330,6 +325,7 @@ const Compra = (props) => {
               <Form.Label>Muestra</Form.Label>
               <Form.Control
                 required
+                size="sm"
                 className="no-spinner"
                 value={props.values.muestra}
                 onChange={props.handleChange}
@@ -354,6 +350,7 @@ const Compra = (props) => {
               <Form.Label>Sacos</Form.Label>
               <Form.Control
                 required
+                size="sm"
                 className="no-spinner"
                 value={props.values.sacos}
                 onChange={(e) => {
@@ -387,6 +384,7 @@ const Compra = (props) => {
               <Form.Label>Rto</Form.Label>
               <Form.Control
                 required
+                size="sm"
                 className="no-spinner"
                 value={props.values.rendimiento}
                 onChange={props.handleChange}
@@ -412,6 +410,7 @@ const Compra = (props) => {
                 <Form.Label>Dst</Form.Label>
                 <Form.Control
                   required
+                  size="sm"
                   className="no-spinner"
                   value={props.values.descarte}
                   onChange={props.handleChange}
@@ -440,6 +439,7 @@ const Compra = (props) => {
                   <Form.Label>Sp</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.segunda}
                     onChange={props.handleChange}
@@ -464,6 +464,7 @@ const Compra = (props) => {
                   <Form.Label>Bol</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.bola}
                     onChange={props.handleChange}
@@ -488,6 +489,7 @@ const Compra = (props) => {
                   <Form.Label>Cas</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.cascara}
                     onChange={props.handleChange}
@@ -516,6 +518,7 @@ const Compra = (props) => {
                   <Form.Label>Pll</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.pasilla}
                     onChange={props.handleChange}
@@ -540,6 +543,7 @@ const Compra = (props) => {
                   <Form.Label>N/M</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.negro}
                     onChange={props.handleChange}
@@ -564,6 +568,7 @@ const Compra = (props) => {
                   <Form.Label>BM</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.ripio}
                     onChange={props.handleChange}
@@ -588,6 +593,7 @@ const Compra = (props) => {
                   <Form.Label>Imp</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.impureza}
                     onChange={props.handleChange}
@@ -612,6 +618,7 @@ const Compra = (props) => {
                   <Form.Label>Def</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.defectos}
                     onChange={props.handleChange}
@@ -636,6 +643,7 @@ const Compra = (props) => {
                   <Form.Label>Pt</Form.Label>
                   <Form.Control
                     required
+                    size="sm"
                     className="no-spinner"
                     value={props.values.taza}
                     onChange={props.handleChange}
@@ -662,6 +670,7 @@ const Compra = (props) => {
               <Form.Label>Hum</Form.Label>
               <Form.Control
                 required
+                size="sm"
                 className="no-spinner"
                 value={props.values.humedad}
                 onChange={props.handleChange}
@@ -688,6 +697,7 @@ const Compra = (props) => {
               <Form.Label>Kg bruto</Form.Label>
               <Form.Control
                 required
+                size="sm"
                 value={props.values.kg_bruto}
                 onChange={(e) => props.calcular_pesos(e)}
                 onWheel={(e) => e.currentTarget.blur()}
@@ -711,6 +721,7 @@ const Compra = (props) => {
               <Form.Label>QQ neto</Form.Label>
               <Form.Control
                 required
+                size="sm"
                 value={props.values.cantidad}
                 onChange={(e) => props.calcular_total_cantidad(e)}
                 onWheel={(e) => e.currentTarget.blur()}
@@ -734,6 +745,7 @@ const Compra = (props) => {
               <Form.Label>Precio</Form.Label>
               <Form.Control
                 required
+                size="sm"
                 value={props.values.precio}
                 onChange={(e) => props.calcular_total_precio(e)}
                 onWheel={(e) => e.currentTarget.blur()}
@@ -757,6 +769,7 @@ const Compra = (props) => {
               <Form.Label>Total</Form.Label>
               <Form.Control
                 required
+                size="sm"
                 value={props.values.total}
                 onChange={(e) => {
                   let value = e.target.value;
@@ -833,7 +846,8 @@ const Compra = (props) => {
             <h6 className="text-muted mb-1">Total</h6>
             <h3 className="fw-bold text-success">
               {" "}
-              S/ {Number(props.total).toFixed(2)}
+
+              S/ {Number(props.total).toLocaleString("es-PE")} 
             </h3>
           </Card.Body>
         </Card>

@@ -4,15 +4,19 @@ import DataTable from "react-data-table-component";
 import ModalD from "../global/ModalD";
 import { useNavigate } from "react-router-dom";
 import VentaGuardarRegistrar from "./VentaGuardarRegistrar";
+import ModalOc from "../global/ModalOc";
+import CreditoPagarRegistrar from "./CreditoPagarRegistrar";
 
 const Venta = (props) => {
   const navigate = useNavigate();
   const [buscar, setBuscar] = useState("");
-
+  const [showPagar, setShowPagar] = useState(false);
   const [show, setShow] = useState(false);
   const [idmodulo, setIdmodulo] = useState("");
   const handleClose = () => setShow(false);
   const [columns, setColumns] = useState([]);
+  const [id_credito, setIdCredito] = useState("");
+
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.hash.split("?")[1]);
@@ -31,6 +35,9 @@ const Venta = (props) => {
     const values = Object.values(item).join(" ").toLowerCase();
     return values.includes(buscar.toLowerCase());
   });
+
+
+
 
   // useEffect(() => {
   //   if (idmodulo) {
@@ -247,7 +254,7 @@ const Venta = (props) => {
         </div>
         <div className="text-end">
           <div className="fw-bold text-primary fs-6">
-            QQ{" "}
+            QQ
             <span className="ms-1">
               {Number(props.totalQQ).toLocaleString("es-PE")}
             </span>
@@ -312,8 +319,21 @@ const Venta = (props) => {
           totalActivos={props.totalActivos}
           totalQQ={props.totalQQ}
           rowData={props.rowData.filter((row) => row.activo === "1")}
+           showPagar={(e) => setShowPagar(!showPagar)}
+          id_credito={(e) => setIdCredito(e)}
         />
       </ModalD>
+
+      <ModalOc
+        componente={
+          <CreditoPagarRegistrar id_credito={id_credito} modulo="venta" />
+        }
+        title="Realizar el pago"
+        posicion="end"
+        izquierda=""
+        show={showPagar}
+        handleClose={() => setShowPagar(false)}
+      />
     </Container>
   );
 };

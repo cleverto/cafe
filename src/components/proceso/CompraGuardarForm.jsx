@@ -62,7 +62,7 @@ const CompraGuardarForm = (props) => {
                     </Form.Group>
                   </div>
                   <div></div>
-                  <div>{`${props.values.simbolo} ${props.values.total}`}</div>
+                  <div>{`${props.values.simbolo} ${Number(props.values.total).toLocaleString("es-PE")}`}</div>
                 </div>
               </div>
             </div>
