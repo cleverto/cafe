@@ -15,6 +15,7 @@ const VentaGuardarRegistrar = (props) => {
   const initialValues = {
     operacion: "S",
     idmodulo: props.idmodulo ?? "",
+    modulo:"venta",
     fecha: new Date().toISOString().slice(0, 10),
     id_proveedor: "",
     proveedor: "",

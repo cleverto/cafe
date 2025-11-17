@@ -9,6 +9,7 @@ import { abrirReporte } from "../global/utils.js";
 
 const AlmacenFiltro = () => {
   const [listaProducto, setListaProducto] = useState([]);
+  const [contenido, setContenido] = useState(""); // aquí mantenemos HTML
 
   const initialValues = {
     idproducto: "",
@@ -22,7 +23,7 @@ const AlmacenFiltro = () => {
     // eslint-disable-next-line
   }, []);
 
-   const get_lista_producto = async () => {
+  const get_lista_producto = async () => {
     try {
       let _datos = JSON.stringify({ modulo: "producto", campo: "producto" });
 
@@ -31,18 +32,17 @@ const AlmacenFiltro = () => {
         _datos
       );
       // Transformamos los datos para que React-Select los entienda
-const opciones = res.data.items.map((data) => ({
-  value: data.id_producto,
-  label: data.producto,
-}));
+      const opciones = res.data.items.map((data) => ({
+        value: data.id_producto,
+        label: data.producto,
+      }));
 
-setListaProducto(opciones);
+      setListaProducto(opciones);
 
-// Si hay al menos un producto, selecciona el primero
-if (opciones.length > 0) {
-  setFieldValue("idproducto", opciones[0].value);
-}
-
+      // Si hay al menos un producto, selecciona el primero
+      if (opciones.length > 0) {
+        setFieldValue("idproducto", opciones[0].value);
+      }
     } catch (error) {
       console.error("Error lista producto", error);
       setListaProducto([]);
@@ -50,9 +50,15 @@ if (opciones.length > 0) {
   };
 
   const buscar = async () => {
-    abrirReporte(
-      `#/reporte/almacen?id=${values.idproducto}&desde=${values.desde}&hasta=${values.hasta}`
-    );
+    try {
+      const url =`${window.globales.url}/reporte/almacen?id=${values.idproducto}&desde=${values.desde}&hasta=${values.hasta}&h=0`;
+
+      const res = await Axios.post(url);
+      setContenido(res.data);
+    } catch (error) {
+      console.error("Error al buscar trazabilidad", error);
+      setContenido("");
+    }
   };
 
   const validationSchema = Yup.object({
@@ -151,12 +157,17 @@ if (opciones.length > 0) {
             <Col xs="12" md="2" lg="2">
               <div className="mt-2">
                 <Button className="mt-4 " variant="primary" type="submit">
-                  Bsucar
+                  Buscar
                 </Button>
               </div>
             </Col>
           </Row>
         </Form>
+      </Container>
+      <Container className="cont">
+        <div style={{ overflowX: "auto" }}>
+          <div dangerouslySetInnerHTML={{ __html: contenido }} />
+        </div>
       </Container>
     </>
   );

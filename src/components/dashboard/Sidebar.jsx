@@ -29,38 +29,45 @@ const Sidebar = ({ show, handle }) => {
   // const baseRoute = isAdmisionBaseUrl ? "/admision" : "";
 
   const getActiveAccordion = () => {
-    if (location.pathname.includes("producto")) {
-      return "0";
-    }
-    if (location.pathname.includes("proveedor")) {
-      return "0";
-    }
-    if (location.pathname.includes("cliente")) {
-      return "0";
-    }
-    if (location.pathname.includes("compra")) {
-      return "1";
-    }
-    if (location.pathname.includes("secado")) {
-      return "1";
-    }
+    console.log(location.pathname);
+    // if (location.pathname.includes("reporte")) {
+    //   return "3";
+    // }
+    // if (location.pathname.includes("proveedor")) {
+    //   return "0";
+    // }
+    // if (location.pathname.includes("cliente")) {
+    //   return "0";
+    // }
+    // if (location.pathname.includes("compra")) {
+    //   return "1";
+    // }
+    // if (location.pathname.includes("secado")) {
+    //   return "1";
+    // }
 
-    if (location.pathname.includes("procesar")) {
+    // if (location.pathname.includes("procesar")) {
+    //   return "1";
+    // }
+    // if (location.pathname.includes("venta")) {
+    //   return "1";
+    // }
+    // if (location.pathname.includes("caja")) {
+    //   return "1";
+    // }
+    // if (location.pathname.includes("almacen")) {
+    //   return "1";
+    // }
+    // if (location.pathname.includes("asistencia")) {
+    //   return "2";
+    // }
+    if (location.pathname.toLowerCase().includes("administración")) {
+      return "0";
+    }
+    if (location.pathname.toLowerCase().includes("proceso")) {
       return "1";
     }
-    if (location.pathname.includes("venta")) {
-      return "1";
-    }
-    if (location.pathname.includes("caja")) {
-      return "1";
-    }
-    if (location.pathname.includes("almacen")) {
-      return "1";
-    }
-    if (location.pathname.includes("asistencia")) {
-      return "2";
-    }
-    if (location.pathname.includes("reportes")) {
+    if (location.pathname.toLowerCase().includes("reporte")) {
       return "3";
     }
     return null;
@@ -281,7 +288,7 @@ const Sidebar = ({ show, handle }) => {
                       >
                         Compras
                       </ListGroup.Item>
-                      <ListGroup.Item
+                      {/* <ListGroup.Item
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
@@ -289,17 +296,17 @@ const Sidebar = ({ show, handle }) => {
                         active={isActive("/reporte/compras_secado_buscar")}
                       >
                         Compras secado
-                      </ListGroup.Item>
+                      </ListGroup.Item> */}
                       <ListGroup.Item
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
-                        to="/reporte/carrera"
-                        active={isActive("/reporte/013")}
+                        to="/reporte/ventasbuscar"
+                        active={isActive("/ventasbuscar")}
                       >
                         Ventas
                       </ListGroup.Item>
-                      <ListGroup.Item
+                      {/* <ListGroup.Item
                         action
                         style={{ paddingLeft: "45px" }}
                         as={Link}
@@ -307,7 +314,7 @@ const Sidebar = ({ show, handle }) => {
                         active={isActive("/reporte/013")}
                       >
                         Compras y Ventas
-                      </ListGroup.Item>
+                      </ListGroup.Item> */}
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>

@@ -216,6 +216,7 @@ const VentaGuardarForm = (props) => {
               <Form.Select
                 value={props.values.id_tipo_identidad}
                 onChange={props.handleChange}
+                name="id_tipo_identidad"
               >
                 <option key="1" value="1">
                   DNI

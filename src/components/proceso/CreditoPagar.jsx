@@ -15,7 +15,6 @@ import DataTable from "react-data-table-component";
 const CreditoPagar = (props) => {
   const [columns, setColumns] = useState([]);
 
-
   useEffect(() => {
     get_columns();
 
@@ -25,19 +24,19 @@ const CreditoPagar = (props) => {
   const get_columns = () => {
     setColumns([
       {
-       
         name: "Id",
         selector: (row) => row.id_detalle,
         sortable: true,
         reorder: true,
-        omit: true
+        omit: true,
       },
       {
-   
         name: "Fecha",
         cell: (row) => (
           <div>
-            <div><strong>{row.fecha}</strong></div>
+            <div>
+              <strong>{row.fecha}</strong>
+            </div>
             <Badge bg="success">{row.tipo_caja}</Badge>
           </div>
         ),
@@ -45,7 +44,6 @@ const CreditoPagar = (props) => {
         reorder: true,
       },
       {
- 
         name: "Monto",
         selector: (row) => row.monto,
         sortable: true,
@@ -53,7 +51,6 @@ const CreditoPagar = (props) => {
         right: "true",
       },
       {
-
         name: " ",
         button: true,
         width: "5rem",
@@ -67,7 +64,6 @@ const CreditoPagar = (props) => {
             >
               <i class="bi bi-archive text-danger"></i>
             </Button>
-
           </>
         ),
       },
@@ -76,40 +72,43 @@ const CreditoPagar = (props) => {
 
   const componente = (
     <>
-
-
       {/* Datos del proveedor */}
-      <Alert variant={"secondary"} key={"info"} >
+      <Alert variant={"secondary"} key={"info"}>
         <Row>
-          <Col lg={4} >Beneficiario</Col>
-          <Col>  <strong>{props.values.proveedor}</strong></Col>
-
+          <Col lg={4}>Beneficiario</Col>
+          <Col>
+            {" "}
+            <strong>{props.values.proveedor}</strong>
+          </Col>
         </Row>
         <Row>
           <Col lg={4}>Total</Col>
 
           <Col>
             <strong>
-              {props.values.simbolo} {" "}
-              {(Number(props.values.total) || 0).toFixed(2)}
+              {props.values.simbolo}{" "}
+              {Number(props.values.total || 0).toLocaleString("es-PE", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </strong>
           </Col>
         </Row>
         <Row>
           <Col lg={4}>Pendiente</Col>
-
           <Col>
             <strong>
-              <Badge bg="danger">
-                {props.values.simbolo} {" "}
-                {(Number(props.values.saldo) || 0).toFixed(2)}
-              </Badge>
+              <span className="text-primary">
+                {props.values.simbolo}{" "}
+                {Number(props.values.saldo || 0).toLocaleString("es-PE", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </strong>
           </Col>
         </Row>
-
       </Alert>
-
 
       <Card className="border-0">
         <Form.Label>Medio de Pago</Form.Label>
@@ -129,11 +128,9 @@ const CreditoPagar = (props) => {
             >
               {data.descripcion}
             </ListGroup.Item>
-
           ))}
         </ListGroup>
       </Card>
-
 
       <Form
         noValidate
@@ -171,15 +168,9 @@ const CreditoPagar = (props) => {
                       props.setFieldValue("monto", val);
                     }
                   }}
-
                   name="monto"
-                  isInvalid={
-                    !!props.errors.monto &
-                    props.touched.monto
-                  }
-                  
+                  isInvalid={!!props.errors.monto & props.touched.monto}
                   isValid={!!props.touched.monto}
-
                 />
               </InputGroup>
               <Form.Control.Feedback type="invalid">
@@ -204,16 +195,10 @@ const CreditoPagar = (props) => {
           responsive
         />
       </Card>
-
-
     </>
   );
 
-  return (
-    <>
-      {componente}
-    </>
-  );
+  return <>{componente}</>;
 };
 
 export default CreditoPagar;

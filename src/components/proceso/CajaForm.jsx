@@ -119,15 +119,13 @@ const CajaForm = (props) => {
           <Col md="12" lg="12">
             <Form.Group className=" m-0">
               <Form.Label>Observaciones</Form.Label>
-
               <Form.Control
                 required
                 value={props.values.observaciones}
                 onChange={props.handleChange}
-                name="celular"
+                name="observaciones"
                 type="text"
                 maxLength="50"
-                style={{ textTransform: "uppercase" }}
                 isInvalid={
                   !!props.errors.observaciones & props.touched.observaciones
                 }

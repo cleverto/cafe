@@ -3,10 +3,9 @@ import { Button, Container, Form, Row, Col } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Axios from "axios";
-import Dashboard from "../dashboard/Dashboard";
-import { abrirReporte } from "../global/utils.js";
+import Dashboard from "../dashboard/Dashboard.jsx";
 
-const ComprasFiltro = () => {
+const VentasFiltro = () => {
   const [contenido, setContenido] = useState(""); // aquí mantenemos HTML
 
   const initialValues = {
@@ -16,7 +15,7 @@ const ComprasFiltro = () => {
 
   const buscar = async () => {
     try {
-      const url = `${window.globales.url}/reporte/compras?desde=${values.desde}&hasta=${values.hasta}&h=0`;
+      const url = `${window.globales.url}/reporte/ventas?desde=${values.desde}&hasta=${values.hasta}&h=0`;
 
       const res = await Axios.post(url);
       setContenido(res.data);
@@ -55,7 +54,7 @@ const ComprasFiltro = () => {
       <Container className="mb-4 mt-3 " style={{ paddingBottom: "0px" }}>
         <div className="d-flex justify-content-between">
           <div className="">
-            <h5>Reporte de compras</h5>
+            <h5>Reporte de ventas</h5>
           </div>
           <div></div>
         </div>
@@ -114,4 +113,4 @@ const ComprasFiltro = () => {
   );
 };
 
-export default ComprasFiltro;
+export default VentasFiltro;

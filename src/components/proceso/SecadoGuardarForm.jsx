@@ -72,7 +72,7 @@ const SecadoGuardarForm = (props) => {
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
-          <Col md="12" lg="12">
+          {/* <Col md="12" lg="12">
             <Form.Group>
               <Form.Label>Comprobante</Form.Label>
               <Form.Select
@@ -92,7 +92,7 @@ const SecadoGuardarForm = (props) => {
                 ))}
               </Form.Select>
             </Form.Group>
-          </Col>
+          </Col> */}
           {/* Moneda */}
         </Row>
       </Form>

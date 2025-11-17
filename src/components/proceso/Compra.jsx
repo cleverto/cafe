@@ -167,7 +167,7 @@ const Compra = (props) => {
               <Col xs={12} md={4} lg={1}>
                 <div className="p-1 bg-light text-secondary border rounded-2 ">
                   <div className="d-flex justify-content-between">
-                    <span >Hum</span>
+                    <span>Hum</span>
                     <span>{row.humedad}</span>
                   </div>
                 </div>
@@ -177,15 +177,13 @@ const Compra = (props) => {
         ),
         sortable: true,
         grow: 3,
-       
       },
       {
-
         name: "Cant",
         selector: (row) => row.cantidad,
         sortable: true,
         width: "6rem",
-        right:"true",
+        right: "true",
         cell: (row) =>
           Number(row.cantidad).toLocaleString("es-PE", {
             minimumFractionDigits: 2,
@@ -193,7 +191,6 @@ const Compra = (props) => {
           }),
       },
       {
-  
         name: "Precio",
         selector: (row) => row.precio,
         sortable: true,
@@ -206,12 +203,11 @@ const Compra = (props) => {
           }),
       },
       {
-  
         name: "Total",
         selector: (row) => row.total,
         sortable: true,
         width: "6rem",
-        right:"true",
+        right: "true",
         cell: (row) =>
           Number(row.total).toLocaleString("es-PE", {
             minimumFractionDigits: 2,
@@ -219,7 +215,6 @@ const Compra = (props) => {
           }),
       },
       {
- 
         name: " ",
         button: true,
         width: "5rem",
@@ -241,7 +236,10 @@ const Compra = (props) => {
   };
 
   return (
-    <Container className="mb-4 responsive-container" style={{ paddingBottom: "80px" }}>
+    <Container
+      className="mb-4 responsive-container"
+      style={{ paddingBottom: "80px" }}
+    >
       <div className="d-flex justify-content-between">
         <div className="pt-4">
           <h5>Compras</h5>
@@ -304,18 +302,25 @@ const Compra = (props) => {
               placeholder="Seleccione un producto..."
               isClearable
               formatOptionLabel={(option) => (
-                <div key={`${option.value}-opt`} style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  key={`${option.value}-opt`}
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span key={`${option.value}-label`}>{option.label}</span>
-                  <span key={`${option.value}-stock`} style={{ fontWeight: "bold" }}>{option.stock}</span>
+                  <span
+                    key={`${option.value}-stock`}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    {option.stock}
+                  </span>
                 </div>
               )}
-
               className={
                 props.errors.id_producto && props.touched.id_producto
                   ? "is-invalid"
                   : props.touched.id_producto
-                    ? "is-valid"
-                    : ""
+                  ? "is-valid"
+                  : ""
               }
             />
           </Col>
@@ -357,12 +362,10 @@ const Compra = (props) => {
                   let value = e.target.value;
                   props.setFieldValue("sacos", value);
                   if (/^\d*\.?\d{0,2}$/.test(value)) {
-                    const tara = value * ((props.values.cfg_tara) / 100);
-                    props.setFieldValue("tara", (tara).toFixed(2));
-
+                    const tara = value * (props.values.cfg_tara / 100);
+                    props.setFieldValue("tara", tara.toFixed(2));
                   }
                 }}
-
                 onWheel={(e) => e.currentTarget.blur()}
                 name="sacos"
                 type="number"
@@ -481,31 +484,6 @@ const Compra = (props) => {
                   />
                   <Form.Control.Feedback type="invalid">
                     {props.errors.bola}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-              <Col md="2" lg="2">
-                <Form.Group>
-                  <Form.Label>Cas</Form.Label>
-                  <Form.Control
-                    required
-                    size="sm"
-                    className="no-spinner"
-                    value={props.values.cascara}
-                    onChange={props.handleChange}
-                    onWheel={(e) => e.currentTarget.blur()}
-                    name="cascara"
-                    type="number"
-                    inputMode="numeric"
-                    maxLength="3"
-                    isInvalid={
-                      !!props.errors.cascara &&
-                      props.touched.cascara &&
-                      props.values.cascara?.length === 0
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {props.errors.cascara}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -667,6 +645,31 @@ const Compra = (props) => {
           )}
           <Col md="2" lg="2">
             <Form.Group>
+              <Form.Label>Cas</Form.Label>
+              <Form.Control
+                required
+                size="sm"
+                className="no-spinner"
+                value={props.values.cascara}
+                onChange={props.handleChange}
+                onWheel={(e) => e.currentTarget.blur()}
+                name="cascara"
+                type="number"
+                inputMode="numeric"
+                maxLength="3"
+                isInvalid={
+                  !!props.errors.cascara &&
+                  props.touched.cascara &&
+                  props.values.cascara?.length === 0
+                }
+              />
+              <Form.Control.Feedback type="invalid">
+                {props.errors.cascara}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          <Col md="2" lg="2">
+            <Form.Group>
               <Form.Label>Hum</Form.Label>
               <Form.Control
                 required
@@ -811,9 +814,7 @@ const Compra = (props) => {
                 </div>
               </div>
             </div>
-
           </Col>
-
         </Row>
         <Row className="mt-4 mb-4">
           <Col md="12" lg="12">
@@ -846,8 +847,7 @@ const Compra = (props) => {
             <h6 className="text-muted mb-1">Total</h6>
             <h3 className="fw-bold text-success">
               {" "}
-
-              S/ {Number(props.total).toLocaleString("es-PE")} 
+              S/ {Number(props.total).toLocaleString("es-PE")}
             </h3>
           </Card.Body>
         </Card>

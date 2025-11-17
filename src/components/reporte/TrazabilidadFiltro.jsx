@@ -14,6 +14,7 @@ const TrazabilidadFiltro = () => {
     idproducto: "",
     desde: new Date().toISOString().slice(0, 10),
     hasta: new Date().toISOString().slice(0, 10),
+    filtro: "consolidado",
   };
 
   useEffect(() => {
@@ -51,9 +52,18 @@ const TrazabilidadFiltro = () => {
 
   const buscar = async () => {
     try {
-      const url = `${window.globales.url}/reporte/trazabilidad?producto=${values.idproducto}&desde=${values.desde}&hasta=${values.hasta}&h=0`;
+      const isDetallado = values.filtro === "detallado";
+
+      const url =
+        `${window.globales.url}/reporte/` +
+        `${isDetallado ? "trazabilidad?" : "trazabilidad_consolidado?"}` +
+         `producto=${values.idproducto}` +
+        `&desde=${values.desde}` +
+        `&hasta=${values.hasta}` +
+        `&h=0`;
+
       const res = await Axios.post(url);
-      setContenido(res.data); // mantenemos HTML tal cual
+      setContenido(res.data); 
     } catch (error) {
       console.error("Error al buscar trazabilidad", error);
       setContenido("");
@@ -150,10 +160,29 @@ const TrazabilidadFiltro = () => {
             </Col>
 
             <Col xs="12" md="2" lg="2">
-              <div className="mt-2">
-                <Button className="mt-4" variant="primary" type="submit">
-                  Buscar
-                </Button>
+              <div className="d-flex">
+                <div className="mt-2">
+                  <Button
+                    className="mt-4"
+                    variant="primary"
+                    type="submit"
+                    value="consolidado"
+                    onClick={(e) => setFieldValue("filtro", "consolidado")}
+                  >
+                    Consolidado
+                  </Button>
+                </div>
+                <div className="mt-2 mx-2">
+                  <Button
+                    className="mt-4"
+                    variant="primary"
+                    type="submit"
+                    value="detallado"
+                    onClick={(e) => setFieldValue("filtro", "detallado")}
+                  >
+                    Detallado
+                  </Button>
+                </div>
               </div>
             </Col>
           </Row>

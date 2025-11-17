@@ -96,7 +96,7 @@ const Caja = () => {
               style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
             >
               <p className="text-dark mb-1 fw-medium">Salidas</p>
-              <p className="text-dark fw-bold fs-4 mb-0">S/ {Number(datos.egresos_dolares ?? 0).toLocaleString("es-PE")}</p>
+              <p className="text-dark fw-bold fs-4 mb-0">S/ {Number(datos.egresos ?? 0).toLocaleString("es-PE")}</p>
               <p className="text-dark  fs-4 mb-0 text-muted">$ {Number(datos.egresos_dolares ?? 0).toLocaleString("es-PE")}</p>
             </div>
 

@@ -12,7 +12,7 @@ const CreditoPagarRegistrar = (props) => {
   useEffect(() => {
     if (props.id_credito) {
       modulo(props.id_credito);
-     get_lista(props.id_credito);
+      get_lista(props.id_credito);
     }
     // eslint-disable-next-line
   }, [props.id_credito]);
@@ -73,13 +73,17 @@ const CreditoPagarRegistrar = (props) => {
   };
 
   const guardar = async (data) => {
-    let _datos = JSON.stringify(data);
+    let _datos = JSON.stringify({
+      ...data,
+      modulo: props.modulo,      
+    });
 
     await Axios.post(window.globales.url + "/credito/guardar_detalle", _datos)
       .then((res) => {
         if (res.data.rpta === "1") {
           const obj = {
-            id: res.data.id,
+            id_detalle: res.data.id,
+            id_credito: props.id_credito,
             fecha: data.fecha,
             tipo_caja: data.tipo_caja,
             monto: data.monto,
@@ -103,8 +107,6 @@ const CreditoPagarRegistrar = (props) => {
       });
   };
   const eliminar = (e, id, id_credito) => {
-
-   
     let _datos = JSON.stringify({ id: id, idmodulo: id_credito });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
@@ -118,7 +120,9 @@ const CreditoPagarRegistrar = (props) => {
         Axios.post(window.globales.url + "/credito/eliminar_detalle", _datos)
           .then((res) => {
             if (res.data.rpta === "1") {
-              setRowdata((prevData) => prevData.filter((row) => row.id_detalle !== id));
+              setRowdata((prevData) =>
+                prevData.filter((row) => row.id_detalle !== id)
+              );
             }
             formik.setFieldValue("saldo", res.data.saldo);
           })

@@ -155,7 +155,7 @@ const CompraGuardarForm = (props) => {
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
-          <Col md="12" lg="12">
+          {/* <Col md="12" lg="12">
             <Form.Group>
               <Form.Label>Comprobante</Form.Label>
               <Form.Select
@@ -175,7 +175,7 @@ const CompraGuardarForm = (props) => {
                 ))}
               </Form.Select>
             </Form.Group>
-          </Col>
+          </Col> */}
 
           {/* Nro de referencia */}
           <Col md="12" lg="12">

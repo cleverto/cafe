@@ -17,7 +17,7 @@ const SecadoGuardarRegistrar = (props) => {
   }, [props.idmodulo]);
 
   useEffect(() => {
-    get_lista_tipo_comprobante();
+    //get_lista_tipo_comprobante();
 
     // eslint-disable-next-line
   }, []);
@@ -29,18 +29,18 @@ const SecadoGuardarRegistrar = (props) => {
   //   // eslint-disable-next-line
   // }, [props.idmodulo]);
 
-  const get_lista_tipo_comprobante = async (id) => {
-    let _datos = JSON.stringify({
-      modulo: "tipo_comprobante",
-      opcion: "secado",
-    });
-    const res = await Axios.post(
-      window.globales.url + "/administracion/lista",
-      _datos
-    );
-    setListaTipoComprobante(res.data.items);
-    formik.setFieldValue("id_tipo_comprobante", res.data.items[0].id);
-  };
+  // const get_lista_tipo_comprobante = async (id) => {
+  //   let _datos = JSON.stringify({
+  //     modulo: "tipo_comprobante",
+  //     opcion: "secado",
+  //   });
+  //   const res = await Axios.post(
+  //     window.globales.url + "/administracion/lista",
+  //     _datos
+  //   );
+  //   setListaTipoComprobante(res.data.items);
+  //   formik.setFieldValue("id_tipo_comprobante", res.data.items[0].id);
+  // };
 
   const modulo = async (id) => {
     let _datos = JSON.stringify({

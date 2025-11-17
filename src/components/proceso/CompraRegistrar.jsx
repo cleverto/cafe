@@ -208,6 +208,7 @@ const CompraRegistrar = (props) => {
   const initialValues = {
     operacion: idmodulo ? "1" : "0",
     idmodulo: idmodulo ? idmodulo : "",
+    modulo:"",
     id_credito: "",
     id_detalle: "",
     id_producto: "",

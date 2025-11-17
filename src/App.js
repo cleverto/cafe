@@ -30,6 +30,7 @@ import VentaRegistrar from "./components/proceso/VentaRegistrar";
 import VentaBuscar from "./components/proceso/VentaBuscar";
 //reportes
 import ReporteComprasFiltro from "./components/reporte/ComprasFiltro";
+import ReporteVentasFiltro from "./components/reporte/VentasFiltro";
 import ReporteCompras from "./components/reporte/Compras";
 import ReporteAlmacenFiltro from "./components/reporte/AlmacenFiltro";
 import ReporteAlmacen from "./components/reporte/Almacen";
@@ -48,11 +49,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
-
           {/* Administracion */}
           <Route path="/administracion/producto" element={<Producto />} />
           <Route path="/administracion/proveedor" element={<Proveedor />} />
-
           {/* Proceso compra */}
           <Route path="/proceso/compra" element={<CompraRegistrar />} />
           <Route path="/proceso/compra/buscar" element={<CompraBuscar />} />
@@ -80,14 +79,15 @@ function App() {
           {/* Proceso venta */}
           <Route path="/proceso/venta" element={<VentaRegistrar />} />
           <Route path="/proceso/venta/buscar" element={<VentaBuscar />} />
-
           {/* Reporte */}
-
           <Route
             path="/reporte/comprasbuscar"
             element={<ReporteComprasFiltro />}
+          />{" "}
+          <Route
+            path="/reporte/ventasbuscar"
+            element={<ReporteVentasFiltro />}
           />
-
           <Route
             path="/reporte/almacenbuscar"
             element={<ReporteAlmacenFiltro />}
@@ -106,7 +106,6 @@ function App() {
             path="/reporte/trazabilidad"
             element={<ReporteTrazabilidadFiltro />}
           />
-
           <Route path="/cambiar" element={<CambiarContrasena />} />
           <Route path="/configuracion/usuario" element={<Usuario />} />
         </Routes>
