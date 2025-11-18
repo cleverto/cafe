@@ -118,11 +118,10 @@ const CompraBuscar = () => {
                 >
                   <i className="bi bi-pencil-fill me-2"></i>Modificar
                 </Dropdown.Item>
-                <Dropdown.Item
-                onClick={(e) => eliminar(e, row.id_compra)}
-                >
+                <Dropdown.Item onClick={(e) => eliminar(e, row.id_compra)}>
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
+                <Dropdown.Divider />
                 <Dropdown.Item
                   onClick={(e) => {
                     setIdCredito(row.id_credito);
@@ -139,7 +138,6 @@ const CompraBuscar = () => {
     ]);
   };
   const eliminar = async (e, id) => {
-
     let _datos = JSON.stringify({ id: id });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
@@ -156,6 +154,8 @@ const CompraBuscar = () => {
               setRowData((prevData) =>
                 prevData.filter((row) => row.id_compra !== id)
               );
+            } else {
+              Swal.fire({ text: res.data.msg, icon: "info" });
             }
           })
           .catch((error) => {

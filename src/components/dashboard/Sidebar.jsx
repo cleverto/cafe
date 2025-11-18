@@ -64,6 +64,9 @@ const Sidebar = ({ show, handle }) => {
     if (location.pathname.toLowerCase().includes("administración")) {
       return "0";
     }
+    if (location.pathname.toLowerCase().includes("administracion")) {
+      return "0";
+    }
     if (location.pathname.toLowerCase().includes("proceso")) {
       return "1";
     }
@@ -169,16 +172,6 @@ const Sidebar = ({ show, handle }) => {
                         active={isActive("/administracion/proveedor")}
                       >
                         Proveedor / Cliente
-                      </ListGroup.Item>
-                      <ListGroup.Item
-                        className="border-0"
-                        action
-                        style={{ paddingLeft: "45px" }}
-                        as={Link}
-                        to="/administracion/cliente"
-                        active={isActive("/administracion/cliente")}
-                      >
-                        Cliente
                       </ListGroup.Item>
                     </ListGroup>
                   </Accordion.Body>

@@ -8,9 +8,12 @@ import { abrirReporte } from "../global/utils.js";
 
 const ComprasFiltro = () => {
   const [contenido, setContenido] = useState(""); // aquí mantenemos HTML
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
 
   const initialValues = {
-    desde: new Date().toISOString().slice(0, 10),
+    desde: `${year}-${month}-01`,
     hasta: new Date().toISOString().slice(0, 10),
   };
 
@@ -69,7 +72,7 @@ const ComprasFiltro = () => {
                   value={values.desde}
                   onChange={(e) => {
                     handleChange(e);
-                    setFieldValue("hasta", e.target.value);
+                    //setFieldValue("hasta", e.target.value);
                   }}
                   name="desde"
                   type="date"

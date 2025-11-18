@@ -20,17 +20,14 @@ import { useNavigate } from "react-router-dom";
 import CreditoPagarRegistrar from "./CreditoPagarRegistrar";
 import ModalOc from "../global/ModalOc";
 
-
 const VentaBuscar = () => {
   const navigate = useNavigate();
 
   const [columns, setColumns] = useState([]);
   const [rowdata, setRowData] = useState([]);
 
-
   const [idCredito, setIdCredito] = useState(false);
   const [showPagar, setShowPagar] = useState(false);
-
 
   useEffect(() => {
     get_columns();
@@ -42,7 +39,6 @@ const VentaBuscar = () => {
   }, []);
 
   const eliminar = async (e, id) => {
-
     let _datos = JSON.stringify({ id: id });
     Swal.fire({
       title: "¿Confirmar Eliminación?",
@@ -59,6 +55,8 @@ const VentaBuscar = () => {
               setRowData((prevData) =>
                 prevData.filter((row) => row.id_venta !== id)
               );
+            } else {
+              Swal.fire({ text: res.data.msg, icon: "info" });
             }
           })
           .catch((error) => {
@@ -122,12 +120,12 @@ const VentaBuscar = () => {
               style={{
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 1,  // 🔑 solo una línea visible
+                WebkitLineClamp: 1, // 🔑 solo una línea visible
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 minWidth: 0,
                 whiteSpace: "normal", // necesario con line-clamp
-                flex: "1 1 0",        // evita que la celda crezca por el contenido
+                flex: "1 1 0", // evita que la celda crezca por el contenido
               }}
             >
               {row.proveedores}
@@ -169,13 +167,18 @@ const VentaBuscar = () => {
                 </span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={(e) => eliminar(e, row.id_venta, row.operacion)}>
+                <Dropdown.Item
+                  onClick={(e) => eliminar(e, row.id_venta, row.operacion)}
+                >
                   <i className="bi bi bi-trash-fill me-2"></i>Eliminar
                 </Dropdown.Item>
-                <Dropdown.Item onClick={(e) => {
-                  setIdCredito(row.id_credito);
-                  setShowPagar(!showPagar);
-                }}>
+                <Dropdown.Divider />
+                <Dropdown.Item
+                  onClick={(e) => {
+                    setIdCredito(row.id_credito);
+                    setShowPagar(!showPagar);
+                  }}
+                >
                   <i class="bi bi-cash me-2"></i>Pagar
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -187,8 +190,8 @@ const VentaBuscar = () => {
   };
 
   const initialValues = {
-    desde: new Date().toLocaleDateString('en-CA'),
-    hasta: new Date().toLocaleDateString('en-CA'),
+    desde: new Date().toLocaleDateString("en-CA"),
+    hasta: new Date().toLocaleDateString("en-CA"),
   };
 
   const buscar = async (data) => {
@@ -229,7 +232,10 @@ const VentaBuscar = () => {
 
   const componente = (
     <>
-      <Container className="mb-4 mt-3 responsive-container" style={{ paddingBottom: "0px" }}>
+      <Container
+        className="mb-4 mt-3 responsive-container"
+        style={{ paddingBottom: "0px" }}
+      >
         <div className="d-flex justify-content-between">
           <div className="">
             <h5>Buscar venta</h5>
@@ -300,7 +306,6 @@ const VentaBuscar = () => {
             }}
           />
         </Card>
-
       </Container>
       <ModalOc
         componente={
@@ -318,8 +323,6 @@ const VentaBuscar = () => {
   return (
     <>
       <Dashboard componente={componente} />
-
-
     </>
   );
 };

@@ -33,6 +33,7 @@ const ProductoRegistrar = (props) => {
 
       setListaCategoria(res.data.items);
       formik.setFieldValue("id_categoria", res.data.items[0].id);
+     
     } catch (error) {
       console.error("Error lista", error);
       setListaCategoria([]);
@@ -48,6 +49,7 @@ const ProductoRegistrar = (props) => {
         if (res.data.rpta === "1") {
           formik.setFieldValue("operacion", "1");
           formik.setFieldValue("producto", res.data.items.producto);
+          formik.setFieldValue("qq", res.data.items.qq);
         } else {
           Swal.fire({ text: res.data.msg, icon: "warning" });
         }

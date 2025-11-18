@@ -7,9 +7,12 @@ import Dashboard from "../dashboard/Dashboard.jsx";
 
 const VentasFiltro = () => {
   const [contenido, setContenido] = useState(""); // aquí mantenemos HTML
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
 
   const initialValues = {
-    desde: new Date().toISOString().slice(0, 10),
+    desde: `${year}-${month}-01`,
     hasta: new Date().toISOString().slice(0, 10),
   };
 

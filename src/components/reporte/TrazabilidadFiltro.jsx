@@ -10,11 +10,15 @@ const TrazabilidadFiltro = () => {
   const [listaProducto, setListaProducto] = useState([]);
   const [contenido, setContenido] = useState(""); // aquí mantenemos HTML
 
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+
   const initialValues = {
-    idproducto: "",
-    desde: new Date().toISOString().slice(0, 10),
+    desde: `${year}-${month}-01`,
     hasta: new Date().toISOString().slice(0, 10),
     filtro: "consolidado",
+     idproducto: "",
   };
 
   useEffect(() => {
