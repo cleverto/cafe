@@ -21,22 +21,41 @@ const Caja = () => {
   const handleCloseRegistrar = () => setShowRegistrar(false);
   //const [idmodulo, setIdmodulo] = useState("");
   const [idUsuario, setIdUsuario] = useState("");
+  const [idMoneda, setIdMoneda] = useState("");
 
   useEffect(() => {
-    get_lista();
+    get_usuarios();
+
     // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+      if (!idUsuario) return;
+           
+    get_lista(idUsuario, idMoneda);
 
-  const get_lista = async () => {
-    const res = await Axios.post(window.globales.url + "/caja/resumen");
+    // eslint-disable-next-line
+  }, [idUsuario, idMoneda]);
 
+  const get_usuarios = async ($) => {
+
+    const res = await Axios.post(window.globales.url + "/caja/lista_usuarios");
+    setDatosUsuarios(res.data.items);
+    // if (res.data.items.length > 0) {
+
+    //   setIdUsuario(res.data.items[0].id_usuario);
+    //    //get_lista(res.data.items[0].id_usuario, res.data.items[0].id_usuario )
+
+    // } else {
+    //   setIdUsuario(null);
+    // }
+  };
+  const get_lista = async (id_usuario, id_moneda) => {
+    if (!id_usuario) return;
+    let _datos = JSON.stringify({ id_usuario: id_usuario, id_moneda: id_moneda });
+
+    const res = await Axios.post(window.globales.url + "/caja/resumen", _datos);
     setDatos(res.data);
-    setDatosUsuarios(res.data.saldo_usuarios);
-    if (res.data.saldo_usuarios.length > 0) {
-      setIdUsuario(res.data.saldo_usuarios[0].id_usuario);
-    } else {
-      setIdUsuario(null); // o "", depende de tu app
-    }
+    console.log(res.data);
   };
 
 
@@ -71,54 +90,7 @@ const Caja = () => {
             borderBottom: "1px solid #fff",
           }}
         />
-        <div className="p-0">
-          <div className="d-flex flex-wrap gap-3">
-            <div
-              className="flex-fill bg-light rounded p-4 shadow-md"
-              style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
-            >
-              <p className="text-dark mb-1 fw-medium">Apertura de caja</p>
-              <p className="text-dark fw-bold fs-4 mb-0">S/ {Number(datos.apertura ?? 0).toLocaleString("es-PE")}</p>
-              <p className="text-dark fs-4 mb-0 text-muted">$ {Number(datos.apertura_dolares ?? 0).toLocaleString("es-PE")}</p>
-            </div>
 
-            <div
-              className="flex-fill bg-light rounded p-4 shadow-sm"
-              style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
-            >
-              <p className="text-dark mb-1 fw-medium">Ingresos</p>
-              <p className="text-dark fw-bold fs-4 mb-0">  S/ {Number(datos.ingresos ?? 0).toLocaleString("es-PE")} </p>
-              <p className="text-dark fs-4 mb-0 text-muted">$ {Number(datos.ingresos_dolares ?? 0).toLocaleString("es-PE")}</p>
-            </div>
-
-            <div
-              className="flex-fill bg-light rounded p-4 shadow-sm"
-              style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
-            >
-              <p className="text-dark mb-1 fw-medium">Salidas</p>
-              <p className="text-dark fw-bold fs-4 mb-0">S/ {Number(datos.egresos ?? 0).toLocaleString("es-PE")}</p>
-              <p className="text-dark  fs-4 mb-0 text-muted">$ {Number(datos.egresos_dolares ?? 0).toLocaleString("es-PE")}</p>
-            </div>
-
-            <div
-              className="flex-fill bg-light rounded p-4 shadow-sm"
-              style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
-            >
-              <p className="text-dark mb-1 fw-medium">Saldo</p>
-              <p className="text-dark fs-4 mb-0">S/ {Number(datos.saldo ?? 0).toLocaleString("es-PE")}</p>
-              <p className="text-dark fw-bold fs-4 mb-0 text-muted">$ {Number(datos.saldo_dolares ?? 0).toLocaleString("es-PE")}</p>
-            </div>
-          </div>
-        </div>
-
-        <hr
-          className="m"
-          style={{
-            border: 0,
-            borderTop: "1px solid #6cabd4ff",
-            borderBottom: "1px solid #fff",
-          }}
-        />
         <div>
           <div className="d-flex flex-wrap gap-3 ">
             {datosUsuarios.map((item) => (
@@ -133,6 +105,8 @@ const Caja = () => {
                 }}
                 onClick={() => {
                   setIdUsuario(item.id_usuario);
+                  setIdMoneda(item.id_moneda);
+                  get_lista(item.id_usuario, item.id_moneda )
 
                 }}
                 onMouseEnter={(e) =>
@@ -152,11 +126,60 @@ const Caja = () => {
             ))}
           </div >
         </div >
+        <div className="p-0 mt-4">
+          <div className="d-flex flex-wrap gap-3">
+            <div
+              className="flex-fill bg-light rounded p-4 shadow-md"
+              style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
+            >
+              <p className="text-dark mb-1 fw-medium">Apertura de caja</p>
+              <p className="text-dark fw-bold fs-4 mb-0">{datos?.apertura?.simbolo}  {Number(datos?.apertura?.saldo ?? 0).toLocaleString("es-PE")}</p>
+              {/* <p className="text-dark fs-4 mb-0 text-muted">$ {Number(datos.apertura_dolares ?? 0).toLocaleString("es-PE")}</p> */}
+            </div>
+
+            <div
+              className="flex-fill bg-light rounded p-4 shadow-sm"
+              style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
+            >
+              <p className="text-dark mb-1 fw-medium">Ingresos</p>
+              <p className="text-dark fw-bold fs-4 mb-0">{datos?.ingresos?.simbolo}  {Number(datos?.ingresos?.saldo ?? 0).toLocaleString("es-PE")} </p>
+              {/* <p className="text-dark fs-4 mb-0 text-muted">$ {Number(datos.ingresos_dolares ?? 0).toLocaleString("es-PE")}</p> */}
+            </div>
+
+            <div
+              className="flex-fill bg-light rounded p-4 shadow-sm"
+              style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
+            >
+              <p className="text-dark mb-1 fw-medium">Salidas</p>
+              <p className="text-dark fw-bold fs-4 mb-0">{datos?.egresos?.simbolo} {Number(datos?.egresos?.saldo ?? 0).toLocaleString("es-PE")}</p>
+              {/* <p className="text-dark  fs-4 mb-0 text-muted">$ {Number(datos.egresos_dolares ?? 0).toLocaleString("es-PE")}</p> */}
+            </div>
+
+            <div
+              className="flex-fill bg-light rounded p-4 shadow-sm"
+              style={{ minWidth: "158px", backgroundColor: "#e7edf4" }}
+            >
+              <p className="text-dark mb-1 fw-medium">Saldo</p>
+              <p className="text-dark fs-4 mb-0">{datos?.saldo?.simbolo}  {Number(datos?.saldo?.saldo ?? 0).toLocaleString("es-PE")}</p>
+              {/* <p className="text-dark fw-bold fs-4 mb-0 text-muted">$ {Number(datos.saldo_dolares ?? 0).toLocaleString("es-PE")}</p> */}
+            </div>
+          </div>
+        </div>
+
+        <hr
+          className="m"
+          style={{
+            border: 0,
+            borderTop: "1px solid #6cabd4ff",
+            borderBottom: "1px solid #fff",
+          }}
+        />
+
       </Container>
       <CajaUsuario
         formId="formId"
-
         id_usuario={idUsuario}
+        id_moneda={idMoneda}
       />
       {/* 
       <ModalD

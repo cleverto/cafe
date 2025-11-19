@@ -19,7 +19,10 @@ const CajaUsuario = (props) => {
 
   const [showRegistrar, setShowRegistrar] = useState(false);
   const handleCloseRegistrar = () => setShowRegistrar(false);
-
+  useEffect(() => {
+    get_columns();
+    // eslint-disable-next-line
+  }, []);
   useEffect(() => {
     get_columns();
     if (props.id_usuario) {
@@ -27,12 +30,11 @@ const CajaUsuario = (props) => {
     }
 
     // eslint-disable-next-line
-  }, [props.id_usuario]);
+  }, [props.id_usuario, props.id_moneda]);
 
   const get_columns = () => {
     setColumns([
       {
-        id: 0,
         name: "Id",
         selector: (row) => row.id_caja,
         sortable: true,
@@ -41,7 +43,6 @@ const CajaUsuario = (props) => {
         omit: true,
       },
       {
-        id: 1,
         name: "Fecha",
         selector: (row) => row.fecha,
         sortable: true,
@@ -50,7 +51,6 @@ const CajaUsuario = (props) => {
         center: true,
       },
       {
-        id: 2,
         name: "Concepto",
         selector: (row) => row.concepto,
         sortable: true,
@@ -58,28 +58,24 @@ const CajaUsuario = (props) => {
         width: "8rem",
       },
       {
-        id: 3,
         name: "Referencia",
         selector: (row) => row.referencia,
         sortable: true,
         width: "8rem",
       },
       {
-        id: 4,
         name: "Quien",
         selector: (row) => row.proveedor,
         sortable: true,
         wrap: true,
       },
       {
-        id: 5,
         name: "Observaciones",
         selector: (row) => row.observaciones,
         sortable: true,
         width: "10rem",
       },
       {
-        id: 6,
         name: "",
         selector: (row) => row.simbolo,
         sortable: true,
@@ -87,7 +83,6 @@ const CajaUsuario = (props) => {
         right: true,
       },
       {
-        id: 7,
         name: "Monto",
         selector: (row) => row.monto,
         cell: (row) => (
@@ -104,7 +99,6 @@ const CajaUsuario = (props) => {
       },
 
       {
-        id: 8,
         name: " ",
         button: true,
         width: "5rem",
@@ -178,7 +172,7 @@ const CajaUsuario = (props) => {
     });
   };
   const buscar = async (id) => {
-    let _datos = JSON.stringify({ id_usuario: id });
+    let _datos = JSON.stringify({ id_usuario: id, id_moneda: props.id_moneda });
 
     await Axios.post(window.globales.url + "/caja/lista_by_usuario", _datos)
       .then((res) => {
